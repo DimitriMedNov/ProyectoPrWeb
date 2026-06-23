@@ -1,13 +1,58 @@
-![image](https://github.com/user-attachments/assets/a2529d8b-b315-4b03-9881-a1dfb9e4bee5)
+# 🌮 El Taquito Gordo Feliz
 
-![image](https://github.com/user-attachments/assets/0a4cc22b-aece-4959-97a7-b3219a30e824)
+Sitio web de la taquería **El Taquito Gordo Feliz**, construido como sitio estático
+multipágina con un stack moderno.
 
-![image](https://github.com/user-attachments/assets/8c8b696f-77eb-4ba9-9274-4a3bd9467596)
+## Stack
 
-![image](https://github.com/user-attachments/assets/61d69585-5a67-4f47-ba80-8852201dcce5)
+- **[Vite](https://vitejs.dev/)** — servidor de desarrollo y bundler.
+- **[TypeScript](https://www.typescriptlang.org/)** — lógica con tipado estricto.
+- **[Tailwind CSS v4](https://tailwindcss.com/)** — estilos utilitarios y tema de marca.
 
-![image](https://github.com/user-attachments/assets/857b2647-72b0-42d2-89f6-21d4047d1d6c)
+## Páginas
 
-![image](https://github.com/user-attachments/assets/bdfdb81b-a72a-42ab-af8e-5c04058525b0)
+| Archivo          | Ruta        | Descripción                                  |
+| ---------------- | ----------- | -------------------------------------------- |
+| `index.html`     | `/`         | Inicio: hero, menú, delivery y reseñas.      |
+| `catering.html`  | `/catering` | Formulario de solicitud de catering.         |
+| `about.html`     | `/about`    | Historia de la taquería y galería de fotos.  |
 
-![image](https://github.com/user-attachments/assets/3141e1dd-38ee-4921-99a1-b3ab3b177148)
+## Desarrollo
+
+```bash
+npm install      # instala dependencias
+npm run dev      # servidor local con hot-reload (http://localhost:5173)
+npm run build    # typecheck + build de producción en dist/
+npm run preview  # previsualiza el build de producción
+```
+
+## Estructura
+
+```
+.
+├── index.html · catering.html · about.html   # páginas (entradas de Vite)
+├── src/
+│   ├── main.ts          # entrada compartida (menú, año del footer)
+│   ├── ts/
+│   │   ├── menu.ts       # menú móvil + sombra del header
+│   │   └── catering.ts   # lógica del formulario de catering
+│   └── styles/main.css   # Tailwind + tema (colores de marca)
+├── public/photos/        # imágenes (servidas tal cual desde la raíz)
+├── vite.config.ts        # configuración multipágina
+└── vercel.json           # configuración de despliegue
+```
+
+## Despliegue (Vercel)
+
+El proyecto incluye `vercel.json`. Para publicarlo:
+
+1. Sube el repositorio a GitHub.
+2. En [vercel.com](https://vercel.com) importa el repo.
+3. Vercel detecta `vite` automáticamente (`npm run build` → `dist/`).
+
+También funciona en **Netlify** (build: `npm run build`, publish: `dist`).
+
+## Notas
+
+- El formulario de catering es una **demostración**: no procesa ni guarda datos reales.
+- Las imágenes viven en `public/photos/` y se referencian con rutas absolutas (`/photos/...`).

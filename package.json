@@ -1,0 +1,23 @@
+{
+  "name": "el-taquito-gordo-feliz",
+  "version": "1.0.0",
+  "description": "Sitio web de la taquería El Taquito Gordo Feliz — Vite + TypeScript + Tailwind CSS",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.1.0",
+    "@types/node": "^26.0.0",
+    "tailwindcss": "^4.1.0",
+    "typescript": "^5.7.0",
+    "vite": "^6.0.0"
+  },
+  "allowScripts": {
+    "esbuild@0.25.12": true
+  }
+}

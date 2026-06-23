@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Servicio de catering de El Taquito Gordo Feliz: buffet, comida formal y cenas temáticas para tu evento." />
+    <title>Catering — El Taquito Gordo Feliz</title>
+    <link rel="icon" href="/photos/logo.png" type="image/png" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css"
+    />
+  </head>
+  <body class="bg-white text-carbon">
+    <!-- Header -->
+    <header class="site-header">
+      <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-3 md:px-10">
+        <a href="/" class="flex items-center gap-2">
+          <img src="/photos/logo.png" alt="El Taquito Gordo Feliz" class="h-12 w-12 rounded-full" />
+          <span class="hidden font-extrabold text-chile sm:inline">El Taquito Gordo Feliz</span>
+        </a>
+        <button
+          id="menu-icon"
+          class="bx bx-menu text-3xl text-carbon md:hidden"
+          aria-label="Abrir menú"
+          aria-controls="navbar"
+          aria-expanded="false"
+        ></button>
+        <ul id="navbar" class="flex items-center gap-1 md:gap-2">
+          <li><a href="/" class="block px-4 py-2 font-semibold uppercase tracking-wide hover:text-chile">Inicio</a></li>
+          <li><a href="/#menu" class="block px-4 py-2 font-semibold uppercase tracking-wide hover:text-chile">Menú</a></li>
+          <li><a href="/catering" class="block px-4 py-2 font-semibold uppercase tracking-wide text-chile">Catering</a></li>
+          <li><a href="/about" class="block px-4 py-2 font-semibold uppercase tracking-wide hover:text-chile">Nosotros</a></li>
+        </ul>
+      </div>
+    </header>
+
+    <main>
+      <!-- Hero -->
+      <section class="bg-masa">
+        <div class="mx-auto grid max-w-7xl items-center gap-10 px-6 pt-32 pb-16 md:grid-cols-2 md:px-10">
+          <div>
+            <span class="heading-eyebrow">Servicio de catering</span>
+            <h1 class="mt-2 text-4xl font-extrabold leading-tight text-carbon md:text-5xl">
+              Llevamos el sabor de la taquería a <span class="text-chile">tu evento</span>
+            </h1>
+            <p class="mt-4 max-w-prose leading-relaxed text-carbon/80">
+              Bodas, cumpleaños, eventos de empresa o reuniones familiares. Elige un paquete,
+              personaliza el menú y nosotros nos encargamos del resto: montaje, servicio y limpieza.
+            </p>
+            <div class="mt-8 flex flex-wrap gap-3">
+              <button type="button" class="btn-primary" data-open-modal>Solicitar catering</button>
+              <a href="#paquetes" class="btn-outline">Ver paquetes</a>
+            </div>
+          </div>
+          <div class="flex justify-center">
+            <img src="/photos/food.jpg" alt="Mesa con platillos de catering" class="max-h-80 w-full rounded-3xl object-cover shadow-xl" />
+          </div>
+        </div>
+      </section>
+
+      <!-- Features -->
+      <section class="section py-12">
+        <div class="grid gap-6 text-center sm:grid-cols-2 lg:grid-cols-4">
+          <div class="rounded-2xl bg-masa/60 p-6">
+            <div class="mx-auto mb-3 grid h-14 w-14 place-items-center rounded-full bg-maiz text-2xl">🍽️</div>
+            <h3 class="font-bold text-carbon">Menús personalizados</h3>
+            <p class="mt-1 text-sm text-carbon/70">Opciones vegetarianas y veganas incluidas.</p>
+          </div>
+          <div class="rounded-2xl bg-masa/60 p-6">
+            <div class="mx-auto mb-3 grid h-14 w-14 place-items-center rounded-full bg-maiz text-2xl">👩‍🍳</div>
+            <h3 class="font-bold text-carbon">Meseras profesionales</h3>
+            <p class="mt-1 text-sm text-carbon/70">De 3 a 7 personas según tu evento.</p>
+          </div>
+          <div class="rounded-2xl bg-masa/60 p-6">
+            <div class="mx-auto mb-3 grid h-14 w-14 place-items-center rounded-full bg-maiz text-2xl">🚚</div>
+            <h3 class="font-bold text-carbon">Montaje y limpieza</h3>
+            <p class="mt-1 text-sm text-carbon/70">Llegamos, montamos y dejamos todo impecable.</p>
+          </div>
+          <div class="rounded-2xl bg-masa/60 p-6">
+            <div class="mx-auto mb-3 grid h-14 w-14 place-items-center rounded-full bg-maiz text-2xl">📍</div>
+            <h3 class="font-bold text-carbon">Cobertura local</h3>
+            <p class="mt-1 text-sm text-carbon/70">San Ramón, Montes de Ame, Copo y Montebello.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Paquetes -->
+      <section id="paquetes" class="bg-masa">
+        <div class="section">
+          <div class="text-center">
+            <span class="heading-eyebrow">Elige el tuyo</span>
+            <h2 class="heading-title">Paquetes de catering</h2>
+            <p class="mx-auto mt-2 max-w-prose text-carbon/70">
+              Haz clic en un paquete para solicitarlo. Precios por persona, mínimo 20 invitados.
+            </p>
+          </div>
+
+          <div class="mt-12 grid items-stretch gap-8 md:grid-cols-3">
+            <!-- Buffet -->
+            <article class="package-card">
+              <div class="mb-4 grid h-16 w-16 place-items-center rounded-2xl bg-maiz text-3xl">🌮</div>
+              <h3 class="text-xl font-bold text-carbon">Buffet</h3>
+              <p class="mt-1 text-sm text-carbon/70">Variedad y servicio relajado tipo bufé.</p>
+              <p class="mt-4"><span class="text-3xl font-extrabold text-chile">$18</span><span class="text-sm text-carbon/60"> / persona</span></p>
+              <ul class="mt-4 flex-1 space-y-2 text-sm text-carbon/80">
+                <li class="flex gap-2"><i class="bx bx-check text-lg text-chile"></i> Tacos al pastor, asada y pollo</li>
+                <li class="flex gap-2"><i class="bx bx-check text-lg text-chile"></i> Guarniciones y salsas de la casa</li>
+                <li class="flex gap-2"><i class="bx bx-check text-lg text-chile"></i> Aguas frescas ilimitadas</li>
+              </ul>
+              <button type="button" class="btn-outline mt-6" data-open-modal data-package="Buffet">Elegir Buffet</button>
+            </article>
+
+            <!-- Comida formal (destacado) -->
+            <article class="package-card is-featured relative">
+              <span class="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-chile px-3 py-1 text-xs font-bold uppercase tracking-wide text-white">Más popular</span>
+              <div class="mb-4 grid h-16 w-16 place-items-center rounded-2xl bg-maiz text-3xl">🍷</div>
+              <h3 class="text-xl font-bold text-carbon">Comida formal</h3>
+              <p class="mt-1 text-sm text-carbon/70">Menú servido en mesa, de tres tiempos.</p>
+              <p class="mt-4"><span class="text-3xl font-extrabold text-chile">$32</span><span class="text-sm text-carbon/60"> / persona</span></p>
+              <ul class="mt-4 flex-1 space-y-2 text-sm text-carbon/80">
+                <li class="flex gap-2"><i class="bx bx-check text-lg text-chile"></i> Entrada, plato fuerte y postre</li>
+                <li class="flex gap-2"><i class="bx bx-check text-lg text-chile"></i> Meseras y servicio en mesa</li>
+                <li class="flex gap-2"><i class="bx bx-check text-lg text-chile"></i> Vajilla y mantelería incluidas</li>
+              </ul>
+              <button type="button" class="btn-primary mt-6" data-open-modal data-package="Comida formal">Elegir Comida formal</button>
+            </article>
+
+            <!-- Cena temática -->
+            <article class="package-card">
+              <div class="mb-4 grid h-16 w-16 place-items-center rounded-2xl bg-maiz text-3xl">🎉</div>
+              <h3 class="text-xl font-bold text-carbon">Cena temática</h3>
+              <p class="mt-1 text-sm text-carbon/70">Experiencia mexicana completa.</p>
+              <p class="mt-4"><span class="text-3xl font-extrabold text-chile">$42</span><span class="text-sm text-carbon/60"> / persona</span></p>
+              <ul class="mt-4 flex-1 space-y-2 text-sm text-carbon/80">
+                <li class="flex gap-2"><i class="bx bx-check text-lg text-chile"></i> Ambientación y decoración temática</li>
+                <li class="flex gap-2"><i class="bx bx-check text-lg text-chile"></i> Barra de aguas frescas y antojitos</li>
+                <li class="flex gap-2"><i class="bx bx-check text-lg text-chile"></i> Música en vivo (opcional)</li>
+              </ul>
+              <button type="button" class="btn-outline mt-6" data-open-modal data-package="Cena temática">Elegir Cena temática</button>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Cómo funciona -->
+      <section class="section">
+        <div class="text-center">
+          <span class="heading-eyebrow">Sencillo</span>
+          <h2 class="heading-title">Cómo funciona</h2>
+        </div>
+        <div class="mx-auto mt-12 grid max-w-4xl gap-8 sm:grid-cols-3">
+          <div class="text-center">
+            <div class="mx-auto grid h-12 w-12 place-items-center rounded-full bg-chile text-lg font-bold text-white">1</div>
+            <h3 class="mt-3 font-bold">Elige un paquete</h3>
+            <p class="mt-1 text-sm text-carbon/70">Selecciona el que mejor se adapte a tu evento.</p>
+          </div>
+          <div class="text-center">
+            <div class="mx-auto grid h-12 w-12 place-items-center rounded-full bg-chile text-lg font-bold text-white">2</div>
+            <h3 class="mt-3 font-bold">Llena el formulario</h3>
+            <p class="mt-1 text-sm text-carbon/70">Cuéntanos fecha, lugar y número de invitados.</p>
+          </div>
+          <div class="text-center">
+            <div class="mx-auto grid h-12 w-12 place-items-center rounded-full bg-chile text-lg font-bold text-white">3</div>
+            <h3 class="mt-3 font-bold">Nosotros nos encargamos</h3>
+            <p class="mt-1 text-sm text-carbon/70">Confirmamos y montamos todo el día del evento.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="bg-carbon py-10 text-center text-sm text-white/70">
+      <div class="mx-auto flex max-w-7xl flex-col items-center gap-2 px-6">
+        <nav class="flex flex-wrap justify-center gap-x-6 gap-y-2">
+          <a href="/" class="hover:text-white">Inicio</a>
+          <a href="/about" class="hover:text-white">Nosotros</a>
+          <a href="#" class="hover:text-white">Política de privacidad</a>
+        </nav>
+        <p>Avn. San Ramón Norte I, Montes de Ame, Santa Gertrudis Copo y Montebello</p>
+        <p class="text-xs text-white/50">© <span data-year>2026</span> D'mitri Medina Novelo &amp; William Moran Ramírez.</p>
+      </div>
+    </footer>
+
+    <!-- Modal del formulario -->
+    <div id="catering-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-hidden="true">
+      <div class="modal-panel">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <h2 id="modal-title" class="text-2xl font-extrabold text-chile">Solicitud de catering</h2>
+            <p class="mt-1 text-sm text-carbon/70">
+              Paquete: <span id="modal-package" class="font-semibold text-carbon">Buffet</span>
+            </p>
+          </div>
+          <button type="button" class="bx bx-x grid h-10 w-10 place-items-center rounded-full text-2xl text-carbon transition hover:bg-masa" aria-label="Cerrar" data-close-modal></button>
+        </div>
+
+        <form id="catering-form" class="mt-6" novalidate>
+          <!-- Datos de contacto -->
+          <h3 class="mb-3 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-carbon/60">
+            <i class="bx bxs-user text-chile"></i> Datos de contacto
+          </h3>
+          <div class="grid gap-4 sm:grid-cols-2">
+            <div>
+              <label class="field-label" for="name">Nombre</label>
+              <input class="field-input" type="text" id="name" name="nombre" required placeholder="Tu nombre" />
+            </div>
+            <div>
+              <label class="field-label" for="lastname">Apellido</label>
+              <input class="field-input" type="text" id="lastname" name="apellido" required placeholder="Tu apellido" />
+            </div>
+            <div>
+              <label class="field-label" for="email">Email</label>
+              <input class="field-input" type="email" id="email" name="email" required placeholder="tu@correo.com" />
+            </div>
+            <div>
+              <label class="field-label" for="telefono">Teléfono</label>
+              <input class="field-input" type="tel" id="telefono" name="telefono" required placeholder="Tu número de teléfono" />
+            </div>
+          </div>
+
+          <!-- Detalles del evento -->
+          <h3 class="mt-8 mb-3 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-carbon/60">
+            <i class="bx bxs-calendar-event text-chile"></i> Detalles del evento
+          </h3>
+          <div class="grid gap-4 sm:grid-cols-2">
+            <div class="sm:col-span-2">
+              <label class="field-label" for="direccion">Dirección del evento</label>
+              <input class="field-input" type="text" id="direccion" name="direccion" required placeholder="Calle, número y referencias" />
+            </div>
+            <div>
+              <label class="field-label" for="colonia">Colonia</label>
+              <select class="field-input" id="colonia" name="colonia">
+                <option value="San Ramón Norte I">San Ramón Norte I</option>
+                <option value="Montes de Ame">Montes de Ame</option>
+                <option value="Santa Gertrudis Copo">Santa Gertrudis Copo</option>
+                <option value="Montebello">Montebello</option>
+              </select>
+            </div>
+            <div>
+              <label class="field-label" for="cp">Código postal</label>
+              <input class="field-input" type="text" inputmode="numeric" id="cp" name="cp" required pattern="[0-9]{5}" placeholder="97000" />
+            </div>
+            <div>
+              <label class="field-label" for="catering">Tipo de servicio</label>
+              <select class="field-input" id="catering" name="catering" required>
+                <option value="Buffet">Buffet</option>
+                <option value="Comida formal">Comida formal</option>
+                <option value="Cena temática">Cena temática</option>
+              </select>
+            </div>
+            <div>
+              <label class="field-label" for="invitados">Número de invitados</label>
+              <input class="field-input" type="number" id="invitados" name="invitados" min="20" required placeholder="Mínimo 20" />
+            </div>
+            <div>
+              <label class="field-label" for="fecha">Fecha</label>
+              <input class="field-input" type="date" id="fecha" name="fecha" required />
+            </div>
+            <div>
+              <label class="field-label" for="hora">Hora</label>
+              <input class="field-input" type="time" id="hora" name="hora" required />
+            </div>
+            <div>
+              <label class="field-label" for="meseras">Meseras: <output id="meseras-value" class="font-bold text-chile">3</output></label>
+              <input class="mt-3 w-full accent-chile" type="range" id="meseras" name="meseras" min="3" max="7" value="3" />
+            </div>
+            <div>
+              <label class="field-label" for="complementos">Complementos (máx. 2)</label>
+              <select class="field-input h-28" id="complementos" name="complementos" multiple>
+                <option value="servilletas-de-lujo">Servilletas de lujo</option>
+                <option value="utensilios-de-lujo">Utensilios de lujo</option>
+                <option value="salsa-picante">Salsa extra picante</option>
+                <option value="guacamole-extra">Guacamole extra</option>
+              </select>
+            </div>
+            <div class="sm:col-span-2">
+              <label class="field-label" for="issue">Comentarios adicionales</label>
+              <textarea class="field-input resize-none" id="issue" name="issue" rows="3" placeholder="Alergias, temática, peticiones especiales…"></textarea>
+            </div>
+          </div>
+
+          <!-- Pago -->
+          <h3 class="mt-8 mb-1 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-carbon/60">
+            <i class="bx bxs-credit-card text-chile"></i> Pago
+          </h3>
+          <p class="mb-3 text-xs text-carbon/50">Demostración: no se procesa ni se guarda ningún dato. No introduzcas datos reales.</p>
+          <div class="grid gap-4 sm:grid-cols-2">
+            <div class="sm:col-span-2">
+              <label class="field-label" for="card_number">Número de tarjeta</label>
+              <input class="field-input" type="text" inputmode="numeric" id="card_number" name="card_number" required pattern="[0-9]{13,16}" title="13-16 dígitos." placeholder="Número de tarjeta" autocomplete="off" />
+            </div>
+            <div>
+              <label class="field-label" for="card_type">Tipo de tarjeta</label>
+              <select class="field-input" id="card_type" name="card_type">
+                <option value="visa" selected>Visa</option>
+                <option value="mastercard">Mastercard</option>
+                <option value="american_express">American Express</option>
+              </select>
+            </div>
+            <div>
+              <label class="field-label" for="expiration_date">Vencimiento (MM/AA)</label>
+              <input class="field-input" type="text" id="expiration_date" name="expiration_date" required pattern="(0[1-9]|1[0-2])\/[0-9]{2}" title="Formato MM/AA." placeholder="MM/AA" autocomplete="off" />
+            </div>
+            <div>
+              <label class="field-label" for="ccv">CCV</label>
+              <input class="field-input" type="text" inputmode="numeric" id="ccv" name="ccv" required pattern="[0-9]{3,4}" title="3-4 dígitos." placeholder="CCV" autocomplete="off" />
+            </div>
+          </div>
+
+          <div class="mt-8">
+            <button type="submit" class="btn-primary w-full">Realizar pedido</button>
+            <p id="mensaje-enviado" class="mt-4 hidden rounded-lg bg-maiz/40 px-4 py-3 text-center font-semibold text-carbon" role="status" aria-live="polite"></p>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script type="module" src="/src/ts/catering.ts"></script>
+  </body>
+</html>

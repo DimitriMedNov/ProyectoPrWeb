@@ -1,0 +1,210 @@
+/* Fuente de marca (import corregido: el original tenía espacios y no cargaba) */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap");
+@import "tailwindcss";
+
+/* ----- Tokens de tema (Tailwind v4 CSS-first) ----- */
+@theme {
+  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
+
+  /* Paleta de la taquería */
+  --color-masa: #ebdbc8; /* crema / tortilla */
+  --color-masa-dark: #e0ccb3;
+  --color-maiz: #ffdc54; /* amarillo maíz (marca) */
+  --color-maiz-dark: #f5c518;
+  --color-chile: #e63329; /* rojo chile */
+  --color-chile-dark: #c41e16;
+  --color-carbon: #1a1a1a; /* negro suave */
+
+  --radius-pill: 60px;
+
+  --animate-float: float 2.5s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
+}
+
+/* ----- Base ----- */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    color: var(--color-carbon);
+  }
+
+  ::selection {
+    background: var(--color-maiz);
+    color: #fff;
+  }
+
+  /* Scrollbar de marca */
+  ::-webkit-scrollbar {
+    width: 12px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-maiz);
+    border-radius: 50px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-chile);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* ----- Componentes reutilizables ----- */
+@layer components {
+  .btn-primary,
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3
+      font-semibold transition-all duration-200 focus-visible:outline-2
+      focus-visible:outline-offset-2 focus-visible:outline-carbon;
+  }
+  .btn-primary {
+    @apply bg-chile text-white shadow-lg shadow-chile/30 hover:bg-chile-dark hover:-translate-y-0.5;
+  }
+  .btn-outline {
+    @apply border-2 border-carbon text-carbon hover:bg-carbon hover:text-white;
+  }
+
+  .section {
+    @apply mx-auto max-w-7xl px-6 py-20 md:px-10;
+  }
+
+  .heading-eyebrow {
+    @apply text-sm font-semibold uppercase tracking-widest text-chile;
+  }
+  .heading-title {
+    @apply mt-1 text-3xl font-extrabold text-carbon md:text-4xl;
+  }
+
+  .field-label {
+    @apply mb-1 block text-sm font-semibold text-carbon;
+  }
+  .field-input {
+    @apply w-full rounded-lg border border-carbon/20 bg-white px-3 py-2.5 text-carbon
+      outline-none transition focus:border-maiz-dark focus:ring-2 focus:ring-maiz/50;
+  }
+
+  /* Header con sombra al hacer scroll */
+  .site-header {
+    @apply fixed inset-x-0 top-0 z-50 bg-white/95 backdrop-blur transition-shadow duration-200;
+  }
+  .site-header.is-scrolled {
+    @apply shadow-md;
+  }
+
+  /* Tarjeta de paquete de catering */
+  .package-card {
+    @apply flex flex-col rounded-3xl border border-carbon/10 bg-white p-8 text-left shadow-lg
+      transition-all duration-200 hover:-translate-y-2 hover:border-maiz hover:shadow-xl;
+  }
+  .package-card.is-featured {
+    @apply border-maiz-dark ring-2 ring-maiz;
+  }
+
+  /* ----- Modal ----- */
+  .modal {
+    @apply fixed inset-0 z-[100] grid place-items-center p-4;
+    background: rgb(0 0 0 / 0.6);
+    backdrop-filter: blur(4px);
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 0.25s ease,
+      visibility 0.25s ease;
+  }
+  .modal.is-open {
+    opacity: 1;
+    visibility: visible;
+  }
+  .modal-panel {
+    @apply max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-3xl bg-white p-6 shadow-2xl md:p-8;
+    transform: translateY(16px) scale(0.98);
+    transition: transform 0.25s ease;
+  }
+  .modal.is-open .modal-panel {
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Bloquea el scroll del fondo cuando el modal está abierto */
+body.modal-open {
+  overflow: hidden;
+}
+
+/* ----- Navegación móvil ----- */
+/* El ícono de Boxicons fuerza display:inline-block; lo ocultamos en escritorio
+   con un selector por ID (mayor especificidad que .md\:hidden). */
+@media (min-width: 768px) {
+  #menu-icon {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  #navbar {
+    position: absolute;
+    inset: 100% 0 auto 0;
+    flex-direction: column;
+    background: #fff;
+    border-top: 3px solid var(--color-maiz);
+    box-shadow: 0 8px 16px rgb(0 0 0 / 0.08);
+    transform: scaleY(0);
+    transform-origin: top;
+    opacity: 0;
+    transition:
+      transform 0.2s ease,
+      opacity 0.2s ease;
+    pointer-events: none;
+  }
+  #navbar.is-open {
+    transform: scaleY(1);
+    opacity: 1;
+    pointer-events: auto;
+  }
+  #navbar a {
+    padding: 1rem 1.5rem;
+  }
+}
+
+/* ----- Slider de la página About (responsive, antes era 1280px fijo) ----- */
+.slider-track {
+  display: flex;
+  width: 600%;
+  animation: slide 24s infinite alternate ease-in-out;
+}
+.slider-track > * {
+  width: 100%;
+  flex-shrink: 0;
+}
+
+@keyframes slide {
+  0%, 13% { margin-left: 0; }
+  16%, 29% { margin-left: -100%; }
+  33%, 46% { margin-left: -200%; }
+  49%, 62% { margin-left: -300%; }
+  66%, 79% { margin-left: -400%; }
+  83%, 100% { margin-left: -500%; }
+}

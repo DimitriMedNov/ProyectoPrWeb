@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="La historia de El Taquito Gordo Feliz, una taquería de tacos auténticos." />
+    <title>Nosotros — El Taquito Gordo Feliz</title>
+    <link rel="icon" href="/photos/logo.png" type="image/png" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css"
+    />
+  </head>
+  <body class="bg-white text-carbon">
+    <!-- Header -->
+    <header class="site-header">
+      <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-3 md:px-10">
+        <a href="/" class="flex items-center gap-2">
+          <img src="/photos/logo.png" alt="El Taquito Gordo Feliz" class="h-12 w-12 rounded-full" />
+          <span class="hidden font-extrabold text-chile sm:inline">El Taquito Gordo Feliz</span>
+        </a>
+        <button
+          id="menu-icon"
+          class="bx bx-menu text-3xl text-carbon md:hidden"
+          aria-label="Abrir menú"
+          aria-controls="navbar"
+          aria-expanded="false"
+        ></button>
+        <ul id="navbar" class="flex items-center gap-1 md:gap-2">
+          <li><a href="/" class="block px-4 py-2 font-semibold uppercase tracking-wide hover:text-chile">Inicio</a></li>
+          <li><a href="/#menu" class="block px-4 py-2 font-semibold uppercase tracking-wide hover:text-chile">Menú</a></li>
+          <li><a href="/catering" class="block px-4 py-2 font-semibold uppercase tracking-wide hover:text-chile">Catering</a></li>
+          <li><a href="/about" class="block px-4 py-2 font-semibold uppercase tracking-wide text-chile">Nosotros</a></li>
+        </ul>
+      </div>
+    </header>
+
+    <main>
+      <!-- Historia -->
+      <section class="relative overflow-hidden bg-masa">
+        <div class="absolute right-0 top-0 -z-0 hidden h-full w-1/2 bg-maiz [clip-path:circle(70%_at_80%_20%)] lg:block"></div>
+        <div class="section relative z-10 grid items-center gap-10 pt-32 md:grid-cols-2">
+          <div>
+            <h1 class="text-3xl font-extrabold leading-tight text-carbon md:text-4xl">
+              No es solo un taco<br />es <span class="text-chile">El Taquito Gordo Feliz</span>
+            </h1>
+            <p class="mt-6 text-justify leading-relaxed text-carbon/80">
+              El Taquito Gordo Feliz es una taquería con tres años de operación, fundada por
+              D'mitri Medina Novelo y William Moran Ramírez. La historia comenzó cuando ambos
+              se conocieron en la universidad y compartieron su amor por la comida mexicana,
+              notando la falta de opciones auténticas en su zona.
+            </p>
+            <p class="mt-4 text-justify leading-relaxed text-carbon/80">
+              Tras meses desarrollando el concepto y el menú, encontraron el local perfecto y
+              lo decoraron con un estilo alegre y colorido que refleja la cultura mexicana. El
+              menú abarca desde los clásicos tacos de carne asada y al pastor hasta opciones
+              vegetarianas y veganas, además de bebidas como horchata y agua de jamaica.
+            </p>
+            <p class="mt-4 text-justify leading-relaxed text-carbon/80">
+              Desde su apertura, ha sido un éxito en la comunidad. Los clientes destacan la
+              autenticidad de la comida y el ambiente acogedor. D'mitri y William están
+              orgullosos de seguir sirviendo tacos deliciosos y difundiendo la cultura
+              mexicana por muchos años más.
+            </p>
+            <a href="/catering" class="btn-primary mt-8">Haz tu pedido</a>
+          </div>
+          <div class="flex justify-center">
+            <img src="/photos/logo-full.png" alt="Logo de El Taquito Gordo Feliz" class="max-w-xs drop-shadow-xl md:max-w-sm" />
+          </div>
+        </div>
+      </section>
+
+      <!-- Galería -->
+      <section class="section">
+        <h2 class="heading-title text-center">¡Bienvenido al mejor restaurante!</h2>
+        <div class="mx-auto mt-10 max-w-5xl overflow-hidden rounded-3xl shadow-lg">
+          <div class="slider-track">
+            <img src="/photos/fachada.jpg" alt="Fachada del restaurante" class="aspect-video object-cover" loading="lazy" />
+            <img src="/photos/restaurant.png" alt="Interior del restaurante" class="aspect-video object-cover" loading="lazy" />
+            <img src="/photos/Drinks.jpg" alt="Bebidas mexicanas" class="aspect-video object-cover" loading="lazy" />
+            <img src="/photos/food.jpg" alt="Platillos del menú" class="aspect-video object-cover" loading="lazy" />
+            <img src="/photos/people.jpg" alt="Clientes disfrutando" class="aspect-video object-cover" loading="lazy" />
+            <img src="/photos/tacos.jpg" alt="Tacos recién hechos" class="aspect-video object-cover" loading="lazy" />
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="bg-carbon py-10 text-center text-sm text-white/70">
+      <div class="mx-auto flex max-w-7xl flex-col items-center gap-2 px-6">
+        <nav class="flex flex-wrap justify-center gap-x-6 gap-y-2">
+          <a href="/" class="hover:text-white">Inicio</a>
+          <a href="/catering" class="hover:text-white">Catering</a>
+        </nav>
+        <p>Avn. San Ramón Norte I, Montes de Ame, Santa Gertrudis Copo y Montebello</p>
+        <p class="text-xs text-white/50">© <span data-year>2026</span> D'mitri Medina Novelo &amp; William Moran Ramírez.</p>
+      </div>
+    </footer>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

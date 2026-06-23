@@ -1,187 +1,223 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta property="og:title" content="El Taquito Gordo Feliz taqueria">
-    <meta property="og:description" content="Taquería El Taquito Gordo Feliz offers a variety of delicious tacos in the center of the city.">
-    <meta property="og:image" content="https://www.eltaquitogordofeliz.com/images/logo.png">
-    <meta property="og:type" content="restaurant">
-    <title>El Taquito Gordo Feliz taqueria</title>
-    <!--Link to Bs-->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <!--Link to css-->
-    <link rel="stylesheet" href="styles/style.css">
-    <!--Box Icons-->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="El Taquito Gordo Feliz: taquería con los tacos más auténticos del centro de la ciudad. Pide en línea o por apps de delivery."
+    />
+    <title>El Taquito Gordo Feliz — Taquería</title>
 
-    <link rel="shortcut icon" href="photos/El Taquito Gordo Feliz taqueria_.png" type="image/x-icon">
+    <meta property="og:title" content="El Taquito Gordo Feliz" />
+    <meta
+      property="og:description"
+      content="Tacos auténticos en el centro de la ciudad. Pide en línea."
+    />
+    <meta property="og:image" content="/photos/logo.png" />
+    <meta property="og:type" content="website" />
 
-</head>
-<body>
-    
-    <!--Navbar-->
-    <header>
-        <a href="#" class="logo"><img src="photos/El Taquito Gordo Feliz taqueria_.png" alt=""></a>
-        <div class="bx bx-menu" id="menu-icon"></div>
-    
-        <ul class="navbar">
-            <li><a href="#">Home</a></li>
-            <li><a href="Catering.html">Catering</a></li>
-            <li><a href="aboutus.html">About US</a></li>
+    <link rel="icon" href="/photos/logo.png" type="image/png" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css"
+    />
+  </head>
+  <body class="bg-white text-carbon">
+    <!-- Header -->
+    <header class="site-header">
+      <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-3 md:px-10">
+        <a href="/" class="flex items-center gap-2">
+          <img src="/photos/logo.png" alt="El Taquito Gordo Feliz" class="h-12 w-12 rounded-full" />
+          <span class="hidden font-extrabold text-chile sm:inline">El Taquito Gordo Feliz</span>
+        </a>
+
+        <button
+          id="menu-icon"
+          class="bx bx-menu text-3xl text-carbon md:hidden"
+          aria-label="Abrir menú"
+          aria-controls="navbar"
+          aria-expanded="false"
+        ></button>
+
+        <ul id="navbar" class="flex items-center gap-1 md:gap-2">
+          <li><a href="/" class="block px-4 py-2 font-semibold uppercase tracking-wide hover:text-chile">Inicio</a></li>
+          <li><a href="/#menu" class="block px-4 py-2 font-semibold uppercase tracking-wide hover:text-chile">Menú</a></li>
+          <li><a href="/catering" class="block px-4 py-2 font-semibold uppercase tracking-wide hover:text-chile">Catering</a></li>
+          <li><a href="/about" class="block px-4 py-2 font-semibold uppercase tracking-wide hover:text-chile">Nosotros</a></li>
         </ul>
-
+      </div>
     </header>
 
-    <!--Home-->
-    <section class="home" id="home">
-        <div class="home-text">
-            <span>Welcome to</span>
-            <h1>El Taquito Gordo Feliz taqueria™</h1>
-            <h2>Free Taco is a<br>tap away</h2>
-            <a href="Catering.html" class="btn">Order Now</a>
+    <main>
+      <!-- Hero -->
+      <section
+        id="home"
+        class="flex min-h-screen flex-wrap items-center gap-8 bg-masa px-6 pt-28 pb-16 md:px-10"
+      >
+        <div class="flex-1 basis-72">
+          <span class="text-sm font-semibold uppercase tracking-widest text-carbon">Bienvenido a</span>
+          <h1 class="mt-2 text-4xl font-extrabold leading-tight text-chile md:text-6xl">
+            El Taquito Gordo Feliz™
+          </h1>
+          <h2 class="mt-3 text-xl font-semibold uppercase text-carbon md:text-2xl">
+            Tu próximo taco está<br />a un clic de distancia
+          </h2>
+          <a href="/catering" class="btn-primary mt-8">Pedir ahora</a>
         </div>
-        <div class="home-img">
-            <img src="photos/Mascota.jpg" alt="">
+        <div class="flex-1 basis-72">
+          <img
+            src="/photos/Mascota.jpg"
+            alt="Mascota de El Taquito Gordo Feliz"
+            class="mx-auto max-w-md animate-float rounded-3xl"
+          />
         </div>
-    </section>
+      </section>
 
-    <!--Catering-->
-    <section class="shop" id="shop">
-        <div class="heading">
-            <span>Shop Now</span>
-            <h1>Shop a Taco</h1>
-        </div> 
-        <div class="shop-container">
-        <!--Box 1-->
-        <div class="box">
-            <div class="box-img">
-                <img src="photos/rsz_11rsz_1taco2.png" alt="">
-            </div>
-            <h2>El Taco-Liz</h2>
-            <h4>This delicious taco features tender, seasoned beef or chicken, topped with fresh cilantro and onions, and wrapped in a warm tortilla. Served with a side of tangy salsa, it's the perfect choice for anyone craving authentic Mexican flavor.</h4>
-            <span>$ 2.35</span>
-            <a href="Catering.html" class="btn">Order Now</a>
+      <!-- Menú -->
+      <section id="menu" class="section">
+        <div class="text-center">
+          <span class="heading-eyebrow">Pide ahora</span>
+          <h2 class="heading-title">Nuestro menú</h2>
         </div>
-        <!--Box 2-->
-        <div class="box">
-            <div class="box-img">
-                <img src="photos/rsz_1rsz_1burrito.png" alt="">
-            </div>
-            <h2>El Burrito-Sabanero</h2>
-            <h4>Our signature burrito is stuffed with your choice of savory meat, along with fluffy rice, creamy refried beans, and a blend of melted cheese. Topped with zesty salsa and a dollop of sour cream, it's a filling and flavorful meal that's sure to satisfy.</h4>
-            <span>$ 4.°°</span>
-            <a href="Catering.html" class="btn">Order Now</a>
-        </div>
-        <!--Box 3-->
-        <div class="box">
-            <div class="box-img">
-                <img src="photos/rsz_1rsz_1nachos.png" alt="">
-            </div>
-            <h2>El Nacho-licious</h2>
-            <h4>These mouth-watering nachos are piled high with crispy tortilla chips, melted cheese, and your choice of seasoned beef or spicy chicken. Topped with fresh pico de gallo, guacamole, and sour cream, they're a perfect snack or meal for any occasion.</h4>
-            <span>$ 4.25</span>
-            <a href="Catering.html" class="btn">Order Now</a>
-            </div>
-        </div>
-    </section>
 
-    <!--Delivery -->
-    <section class="delivery" id="delivery">
-        <div class="heading">
-            <span>Get Now</span>
-            <h1>Order With Delivery Apps</h1>
-        </div>
-        <div class="container">
-            <div class="delivery-img">
-                <img src="photos/DeliveryFoods.jpg" alt="">
-            </div>
-            <div class="delivery-text">
-                <h2>Receive your food without the need to go out.</h2>
-                <p>Ordering tacos from El Taquito Gordo Feliz taqueria through Delivery Apps is a great choice for several reasons. First, El Taquito Gordo Feliz is a highly-rated taqueria that offers authentic and delicious tacos made with high-quality ingredients. By using Delivery Apps, you can enjoy their tasty food without leaving your home, as the service provides a convenient and reliable delivery option. Additionally, the Delivery Apps allows you to track your order in real-time, ensuring that your tacos will arrive fresh and hot. Overall, ordering tacos from El Taquito Gordo Feliz taqueria with Delivery Apps is a great option for anyone who wants to enjoy delicious and authentic Mexican food without the hassle of going out.</p>
-            </div>
-        </div>
-    </section>
+        <div class="mt-20 grid gap-12 sm:grid-cols-2 lg:grid-cols-3">
+          <!-- Tarjeta -->
+          <article class="relative flex flex-col items-center rounded-3xl bg-maiz px-6 pb-8 pt-20 text-center shadow-lg">
+            <img src="/photos/rsz_11rsz_1taco2.png" alt="Taco El Taco-Liz" class="absolute -top-16 h-32 w-32 animate-float object-contain" />
+            <h3 class="text-xl font-bold text-chile">El Taco-Liz</h3>
+            <p class="mt-2 text-sm text-carbon/80">
+              Tierna carne o pollo sazonado, con cilantro y cebolla fresca en una tortilla
+              calientita. Servido con salsa de la casa.
+            </p>
+            <span class="mt-4 text-2xl font-extrabold text-chile">$2.35</span>
+            <a href="/catering" class="btn-outline mt-4">Pedir ahora</a>
+          </article>
 
-    <!--Reviews-->
-    <section class="Reviews" id="Reviews">
-        <div class="heading">
-            <h1 style="color: #000000;">Reviews</h1>
-        </div> 
-        <div class="Reviews-container">
-        <!--Review 1-->
-        <div class="box">
-            <div class="box-img">
-                <img src="photos/ELON.jpg" alt="">
-            </div>
-            <h2>Elon Reeve Musk</h2>
-            <h4>This taqueria is the real deal! The tacos are some of the best I've ever had, with generous portions of delicious meat and fresh toppings. The tortillas are made in-house and taste amazing. The service is always friendly and efficient. Highly recommended!</h4>
-            <div class="stars">
-                <i class='bx bxs-star'></i>
-                <i class='bx bxs-star'></i>
-                <i class='bx bxs-star'></i>
-                <i class='bx bxs-star'></i>
-                <i class='bx bxs-star'></i> 
-            </div>
-        </div>
-        <!--Review 2-->
-        <div class="box">
-            <div class="box-img">
-                <img src="photos/MRBEAST.jpg" alt="">
-            </div>
-            <h2>Jimmy Donaldson</h2>
-            <h4>El Taquito Gordo Feliz is my go-to spot for authentic Mexican food. The salsas are amazing, and the tacos are always bursting with flavor. They have a great selection of meats to choose from, and the portions are very generous. Prices are reasonable too. Don't miss out on this gem!</h4>
-            <div class="stars">
-                <i class='bx bxs-star'></i>
-                <i class='bx bxs-star'></i>
-                <i class='bx bxs-star'></i>
-                <i class='bx bxs-star'></i>
-                <i class='bx bxs-star'></i> 
-            </div>
-        </div>
-        <!--Review 3-->
-        <div class="box">
-            <div class="box-img">
-                <img src="photos/BADBUNNY.jpeg" alt="">
-            </div>
-            <h2>Benito Antonio Martínez Ocasio</h2>
-            <h4>I tried El Taquito Gordo Feliz for the first time today, and I'm already planning my next visit. The tacos are simply amazing - juicy and full of flavor. The customer service is fantastic, and the atmosphere is welcoming and cozy. Highly recommend giving this place a try!</h4>
-            <div class="stars">
-                <i class='bx bxs-star'></i>
-                <i class='bx bxs-star'></i>
-                <i class='bx bxs-star'></i>
-                <i class='bx bxs-star'></i>
-                <i class='bx bxs-star'></i> 
-            </div>  
-        </div>
-        </div>
-    </section>
-    
-    <!--Contact-->
-    <section class="contact" id="contact">
-        <div class="social">
-            <a href="#"><i class='bx bxl-facebook-circle'></i></a>
-            <a href="#"><i class='bx bxl-instagram'></i></a>
-            <a href="#"><i class='bx bxl-twitter'></i></a>
-            <a href="#"><i class='bx bxl-youtube'></i></a>
-        </div>
-        <div class="links">
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms Of Use</a>
-            <a href="aboutus.html">About Us</a>
-        </div>
-        <p>&#169; Carpool Venom All Right Reserved.</p>
-        <p>D'mitri Medina Novelo & William Moran Ramirez.</p>
-        <p>Avn. San Ramón Norte I, Montes de Ame, Santa Gertrudis Copo y Montebello</p>
-        <p>All Rights Reserves</p>
-    </section>
-    
-    <!--Link to Custom js-->
-    <script src="js/main.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.min.js"></script>
+          <article class="relative flex flex-col items-center rounded-3xl bg-maiz px-6 pb-8 pt-20 text-center shadow-lg">
+            <img src="/photos/rsz_1rsz_1burrito.png" alt="Burrito El Burrito-Sabanero" class="absolute -top-16 h-32 w-32 animate-float object-contain" />
+            <h3 class="text-xl font-bold text-chile">El Burrito-Sabanero</h3>
+            <p class="mt-2 text-sm text-carbon/80">
+              Relleno de tu carne favorita, arroz, frijoles refritos y queso fundido. Con
+              salsa y crema. Un platillo que llena y encanta.
+            </p>
+            <span class="mt-4 text-2xl font-extrabold text-chile">$4.00</span>
+            <a href="/catering" class="btn-outline mt-4">Pedir ahora</a>
+          </article>
 
-</body>
+          <article class="relative flex flex-col items-center rounded-3xl bg-maiz px-6 pb-8 pt-20 text-center shadow-lg sm:col-span-2 sm:mx-auto sm:max-w-sm lg:col-span-1 lg:max-w-none">
+            <img src="/photos/rsz_1rsz_1nachos.png" alt="Nachos El Nacho-licious" class="absolute -top-16 h-32 w-32 animate-float object-contain" />
+            <h3 class="text-xl font-bold text-chile">El Nacho-licious</h3>
+            <p class="mt-2 text-sm text-carbon/80">
+              Totopos crujientes con queso fundido y carne o pollo. Con pico de gallo,
+              guacamole y crema. El antojo perfecto.
+            </p>
+            <span class="mt-4 text-2xl font-extrabold text-chile">$4.25</span>
+            <a href="/catering" class="btn-outline mt-4">Pedir ahora</a>
+          </article>
+        </div>
+      </section>
+
+      <!-- Delivery -->
+      <section id="delivery" class="bg-masa">
+        <div class="section">
+          <div class="text-center">
+            <span class="heading-eyebrow">Recíbelo en casa</span>
+            <h2 class="heading-title">Pide por apps de delivery</h2>
+          </div>
+          <div class="mt-12 grid items-center gap-10 md:grid-cols-2">
+            <img
+              src="/photos/DeliveryFoods.jpg"
+              alt="Comida lista para entrega a domicilio"
+              class="rounded-3xl shadow-lg"
+              loading="lazy"
+            />
+            <div>
+              <h3 class="text-2xl font-bold text-chile">
+                Disfruta tu comida sin salir de casa.
+              </h3>
+              <p class="mt-4 text-justify leading-relaxed text-carbon/80">
+                Pedir tacos de El Taquito Gordo Feliz por apps de delivery es una gran
+                opción: somos una taquería muy bien valorada que ofrece tacos auténticos y
+                deliciosos hechos con ingredientes de calidad. Disfruta nuestra comida desde
+                tu hogar con un servicio cómodo y confiable, sigue tu pedido en tiempo real y
+                recíbelo siempre fresco y caliente.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Reviews -->
+      <section id="reviews" class="section">
+        <div class="text-center">
+          <span class="heading-eyebrow">Lo que dicen</span>
+          <h2 class="heading-title">Reseñas</h2>
+        </div>
+
+        <div class="mt-20 grid gap-12 sm:grid-cols-2 lg:grid-cols-3">
+          <article class="relative flex flex-col items-center rounded-3xl bg-masa px-6 pb-8 pt-20 text-center shadow-md">
+            <img src="/photos/ELON.jpg" alt="Elon Reeve Musk" class="absolute -top-14 h-28 w-28 rounded-full object-cover ring-4 ring-white" loading="lazy" />
+            <h3 class="text-lg font-bold text-carbon">Elon Reeve Musk</h3>
+            <div class="my-2 text-chile" aria-label="5 de 5 estrellas">
+              <i class="bx bxs-star"></i><i class="bx bxs-star"></i><i class="bx bxs-star"></i><i class="bx bxs-star"></i><i class="bx bxs-star"></i>
+            </div>
+            <p class="text-sm text-carbon/80">
+              ¡Esta taquería es de otro nivel! Los mejores tacos que he probado, con
+              porciones generosas y tortillas hechas en casa. Servicio amable y eficiente.
+              ¡Muy recomendado!
+            </p>
+          </article>
+
+          <article class="relative flex flex-col items-center rounded-3xl bg-masa px-6 pb-8 pt-20 text-center shadow-md">
+            <img src="/photos/MRBEAST.jpg" alt="Jimmy Donaldson" class="absolute -top-14 h-28 w-28 rounded-full object-cover ring-4 ring-white" loading="lazy" />
+            <h3 class="text-lg font-bold text-carbon">Jimmy Donaldson</h3>
+            <div class="my-2 text-chile" aria-label="5 de 5 estrellas">
+              <i class="bx bxs-star"></i><i class="bx bxs-star"></i><i class="bx bxs-star"></i><i class="bx bxs-star"></i><i class="bx bxs-star"></i>
+            </div>
+            <p class="text-sm text-carbon/80">
+              Mi lugar favorito de comida mexicana auténtica. Las salsas son increíbles y los
+              tacos siempre llenos de sabor. Gran variedad de carnes y precios razonables.
+              ¡No se lo pierdan!
+            </p>
+          </article>
+
+          <article class="relative flex flex-col items-center rounded-3xl bg-masa px-6 pb-8 pt-20 text-center shadow-md sm:col-span-2 sm:mx-auto sm:max-w-sm lg:col-span-1 lg:max-w-none">
+            <img src="/photos/BADBUNNY.jpeg" alt="Benito Antonio Martínez Ocasio" class="absolute -top-14 h-28 w-28 rounded-full object-cover ring-4 ring-white" loading="lazy" />
+            <h3 class="text-lg font-bold text-carbon">Benito A. Martínez Ocasio</h3>
+            <div class="my-2 text-chile" aria-label="5 de 5 estrellas">
+              <i class="bx bxs-star"></i><i class="bx bxs-star"></i><i class="bx bxs-star"></i><i class="bx bxs-star"></i><i class="bx bxs-star"></i>
+            </div>
+            <p class="text-sm text-carbon/80">
+              Lo probé por primera vez hoy y ya estoy planeando volver. Tacos jugosos y llenos
+              de sabor, atención fantástica y un ambiente acogedor. ¡Muy recomendado!
+            </p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-carbon py-12 text-center text-white/80">
+      <div class="mx-auto flex max-w-7xl flex-col items-center gap-4 px-6">
+        <div class="flex gap-3 text-2xl">
+          <a href="#" aria-label="Facebook" class="grid h-11 w-11 place-items-center rounded-full bg-white/10 transition hover:bg-chile"><i class="bx bxl-facebook"></i></a>
+          <a href="#" aria-label="Instagram" class="grid h-11 w-11 place-items-center rounded-full bg-white/10 transition hover:bg-chile"><i class="bx bxl-instagram"></i></a>
+          <a href="#" aria-label="Twitter" class="grid h-11 w-11 place-items-center rounded-full bg-white/10 transition hover:bg-chile"><i class="bx bxl-twitter"></i></a>
+          <a href="#" aria-label="YouTube" class="grid h-11 w-11 place-items-center rounded-full bg-white/10 transition hover:bg-chile"><i class="bx bxl-youtube"></i></a>
+        </div>
+        <nav class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm">
+          <a href="#" class="hover:text-white">Política de privacidad</a>
+          <a href="#" class="hover:text-white">Términos de uso</a>
+          <a href="/about" class="hover:text-white">Nosotros</a>
+        </nav>
+        <p class="text-sm">Avn. San Ramón Norte I, Montes de Ame, Santa Gertrudis Copo y Montebello</p>
+        <p class="text-xs text-white/50">
+          © <span data-year>2026</span> Carpool Venom · D'mitri Medina Novelo &amp; William Moran Ramírez. Todos los derechos reservados.
+        </p>
+      </div>
+    </footer>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
 </html>
