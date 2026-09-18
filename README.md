@@ -32,23 +32,36 @@ npm run preview  # previsualiza el build de producción
 ```
 .
 ├── index.html · menu.html · catering.html · about.html   # páginas (entradas de Vite)
+├── build/
+│   └── html.ts           # plugin de Vite: cabecera, pie y menú compartidos
 ├── src/
-│   ├── main.ts          # entrada compartida (menú, año, galería, revelado)
+│   ├── data/menu.ts      # ÚNICA fuente del menú, precios y paquetes de catering
+│   ├── main.ts           # entrada compartida (menú, año, galería, revelado)
 │   ├── ts/
 │   │   ├── menu.ts       # menú móvil + estado de la barra al hacer scroll
 │   │   ├── catering.ts   # lógica del formulario de catering
 │   │   ├── gallery.ts    # botón de pausa del carrusel de fotos
+│   │   ├── menu-page.ts  # filtro y pestañas de la página de menú
 │   │   └── reveal.ts     # revelado al entrar en pantalla (nace visible)
 │   └── styles/main.css   # Tailwind + tokens de diseño (claro y oscuro)
 ├── public/
-│   ├── photos/           # imágenes originales (servidas tal cual)
+│   ├── photos/           # fotos que usa la web (servidas tal cual)
 │   ├── img/              # derivadas: recortes sin fondo, logo ligero, favicon
 │   ├── icons.svg         # iconos dibujados a mano (sprite SVG)
 │   ├── og.png            # imagen para compartir (1200×630)
 │   └── apple-touch-icon.png
+├── assets-src/           # originales de las imágenes optimizadas (no se publican)
+├── docs/                 # material del proyecto (no se publica)
 ├── vite.config.ts        # configuración multipágina
 └── vercel.json           # configuración de despliegue
 ```
+
+## Cómo cambiar contenido compartido
+
+- **Menú, precios o paquetes:** edita `src/data/menu.ts`. La portada, `/menu` y
+  `/catering` se generan desde ahí al compilar.
+- **Cabecera o pie:** edita `build/html.ts`. En los HTML solo hay marcadores como
+  `<!--#header current="menu"-->`.
 
 ## Despliegue (Vercel)
 
