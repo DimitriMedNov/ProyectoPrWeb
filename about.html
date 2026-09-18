@@ -34,30 +34,7 @@
   <body class="bg-void text-txt">
     <a href="#main" class="skip-link">Saltar al contenido</a>
     <!-- Header -->
-    <header class="site-header">
-      <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-2 md:px-10">
-        <a href="/" class="flex min-h-11 items-center gap-2.5">
-          <img src="/img/logo-120.webp" alt="" width="40" height="40" class="h-10 w-10 rounded-full" />
-          <span class="font-display text-body font-semibold text-arc">El Taquito Gordo Feliz</span>
-        </a>
-        <button
-          id="menu-icon"
-          type="button"
-          class="grid h-11 w-11 place-items-center rounded-full text-txt md:hidden"
-          aria-label="Abrir menú"
-          aria-controls="navbar"
-          aria-expanded="false"
-        >
-          <svg class="icon size-6" aria-hidden="true"><use href="/icons.svg#menu" /></svg>
-        </button>
-        <ul id="navbar" class="flex items-center gap-1">
-          <li><a href="/" class="flex min-h-11 items-center px-4 text-meta text-txt hover:text-arc">Inicio</a></li>
-          <li><a href="/menu" class="flex min-h-11 items-center px-4 text-meta text-txt hover:text-arc">Menú</a></li>
-          <li><a href="/catering" class="flex min-h-11 items-center px-4 text-meta text-txt hover:text-arc">Catering</a></li>
-          <li><a href="/about" aria-current="page" class="flex min-h-11 items-center px-4 text-meta font-medium text-arc">Nosotros</a></li>
-        </ul>
-      </div>
-    </header>
+    <!--#header current="about"-->
 
     <main id="main">
       <!-- Historia -->
@@ -139,17 +116,7 @@
       </section>
     </main>
 
-    <footer class="bg-ink py-12 text-center text-label text-ink-mut">
-      <div class="mx-auto flex max-w-7xl flex-col items-center gap-3 px-6">
-        <nav class="flex flex-wrap justify-center gap-x-4">
-          <a href="/" class="hit-link px-2 hover:text-ink-txt">Inicio</a>
-          <a href="/menu" class="hit-link px-2 hover:text-ink-txt">Menú</a>
-          <a href="/catering" class="hit-link px-2 hover:text-ink-txt">Catering</a>
-        </nav>
-        <p>Avn. San Ramón Norte I, Montes de Ame, Santa Gertrudis Copo y Montebello</p>
-        <p class="text-caption">© <span data-year>2026</span> D'mitri Medina Novelo &amp; William Moran Ramírez.</p>
-      </div>
-    </footer>
+    <!--#footer current="about"-->
 
     <script type="module" src="/src/main.ts"></script>
   </body>

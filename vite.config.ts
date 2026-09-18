@@ -1,10 +1,11 @@
 import { defineConfig } from "vite";
 import tailwindcss from "@tailwindcss/vite";
+import { sharedHtml } from "./build/html";
 import { resolve } from "node:path";
 
 // Sitio estático multipágina (MPA). Cada HTML es un punto de entrada.
 export default defineConfig({
-  plugins: [tailwindcss()],
+  plugins: [sharedHtml(), tailwindcss()],
   build: {
     rollupOptions: {
       input: {

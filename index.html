@@ -40,32 +40,7 @@
   <body class="bg-void text-txt">
     <a href="#main" class="skip-link">Saltar al contenido</a>
     <!-- Header -->
-    <header class="site-header">
-      <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-2 md:px-10">
-        <a href="/" class="flex min-h-11 items-center gap-2.5">
-          <img src="/img/logo-120.webp" alt="" width="40" height="40" class="h-10 w-10 rounded-full" />
-          <span class="font-display text-body font-semibold text-arc">El Taquito Gordo Feliz</span>
-        </a>
-
-        <button
-          id="menu-icon"
-          type="button"
-          class="grid h-11 w-11 place-items-center rounded-full text-txt md:hidden"
-          aria-label="Abrir menú"
-          aria-controls="navbar"
-          aria-expanded="false"
-        >
-          <svg class="icon size-6" aria-hidden="true"><use href="/icons.svg#menu" /></svg>
-        </button>
-
-        <ul id="navbar" class="flex items-center gap-1">
-          <li><a href="/" aria-current="page" class="flex min-h-11 items-center px-4 text-meta font-medium text-arc">Inicio</a></li>
-          <li><a href="/menu" class="flex min-h-11 items-center px-4 text-meta text-txt hover:text-arc">Menú</a></li>
-          <li><a href="/catering" class="flex min-h-11 items-center px-4 text-meta text-txt hover:text-arc">Catering</a></li>
-          <li><a href="/about" class="flex min-h-11 items-center px-4 text-meta text-txt hover:text-arc">Nosotros</a></li>
-        </ul>
-      </div>
-    </header>
+    <!--#header current="index"-->
 
     <main id="main">
       <!-- Hero -->
@@ -114,45 +89,7 @@
         </div>
 
         <div class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          <!-- Tarjeta -->
-          <article class="panel lift flex flex-col items-center px-6 pt-8 pb-8 text-center" data-reveal>
-            <div class="plate grid size-36 place-items-center rounded-full">
-              <img src="/photos/rsz_11rsz_1taco2.png" alt="Taco El Taco-Liz" width="128" height="128" class="size-28 object-contain" loading="lazy" />
-            </div>
-            <h3 class="mt-6 text-title font-semibold text-txt">El Taco-Liz</h3>
-            <p class="mt-2 text-meta text-mut">
-              Tierna carne o pollo sazonado, con cilantro y cebolla fresca en una tortilla
-              calientita. Servido con salsa de la casa.
-            </p>
-            <span class="mt-4 text-headline font-semibold text-arc">$2.35</span>
-            <a href="/catering" class="btn-secondary mt-5">Pedir ahora</a>
-          </article>
-
-          <article class="panel lift flex flex-col items-center px-6 pt-8 pb-8 text-center" data-reveal data-reveal-delay="0.08">
-            <div class="plate grid size-36 place-items-center rounded-full">
-              <img src="/photos/rsz_1rsz_1burrito.png" alt="Burrito El Burrito-Sabanero" width="160" height="128" class="h-28 w-32 object-contain" loading="lazy" />
-            </div>
-            <h3 class="mt-6 text-title font-semibold text-txt">El Burrito-Sabanero</h3>
-            <p class="mt-2 text-meta text-mut">
-              Relleno de tu carne favorita, arroz, frijoles refritos y queso fundido. Con
-              salsa y crema. Un platillo que llena y encanta.
-            </p>
-            <span class="mt-4 text-headline font-semibold text-arc">$4.00</span>
-            <a href="/catering" class="btn-secondary mt-5">Pedir ahora</a>
-          </article>
-
-          <article class="panel lift flex flex-col items-center px-6 pt-8 pb-8 text-center sm:col-span-2 sm:mx-auto sm:w-1/2 lg:col-span-1 lg:w-auto" data-reveal data-reveal-delay="0.16">
-            <div class="plate grid size-36 place-items-center rounded-full">
-              <img src="/photos/rsz_1rsz_1nachos.png" alt="Nachos El Nacho-licious" width="128" height="128" class="size-28 object-contain" loading="lazy" />
-            </div>
-            <h3 class="mt-6 text-title font-semibold text-txt">El Nacho-licious</h3>
-            <p class="mt-2 text-meta text-mut">
-              Totopos crujientes con queso fundido y carne o pollo. Con pico de gallo,
-              guacamole y crema. El antojo perfecto.
-            </p>
-            <span class="mt-4 text-headline font-semibold text-arc">$4.25</span>
-            <a href="/catering" class="btn-secondary mt-5">Pedir ahora</a>
-          </article>
+<!--#specials variant="home"-->
         </div>
       </section>
 
@@ -192,19 +129,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-ink py-12 text-center text-label text-ink-mut">
-      <div class="mx-auto flex max-w-7xl flex-col items-center gap-3 px-6">
-        <nav class="flex flex-wrap justify-center gap-x-4">
-          <a href="/menu" class="hit-link px-2 hover:text-ink-txt">Menú</a>
-          <a href="/catering" class="hit-link px-2 hover:text-ink-txt">Catering</a>
-          <a href="/about" class="hit-link px-2 hover:text-ink-txt">Nosotros</a>
-        </nav>
-        <p>Avn. San Ramón Norte I, Montes de Ame, Santa Gertrudis Copo y Montebello</p>
-        <p class="text-caption">
-          © <span data-year>2026</span> Carpool Venom · D'mitri Medina Novelo &amp; William Moran Ramírez. Todos los derechos reservados.
-        </p>
-      </div>
-    </footer>
+    <!--#footer current="index" credit="Carpool Venom · " suffix=" Todos los derechos reservados."-->
 
     <script type="module" src="/src/main.ts"></script>
   </body>
