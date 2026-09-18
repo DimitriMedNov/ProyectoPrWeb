@@ -1,6 +1,6 @@
-/* SF Pro en dispositivos de Apple; Inter de respaldo en el resto. El navegador
-   solo descarga Inter si de verdad la necesita. */
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+/* SF Pro en dispositivos de Apple; Inter de respaldo en el resto. Inter se
+   enlaza desde el <head> (build/html.ts) para que cargue en paralelo con esta
+   hoja y no en cadena; el navegador solo descarga la fuente si la necesita. */
 @import "tailwindcss";
 
 /* ----- Tokens de color -----
