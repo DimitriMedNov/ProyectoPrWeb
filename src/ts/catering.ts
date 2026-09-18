@@ -67,6 +67,15 @@ function initAddonsLimit(max = 2): void {
   sync();
 }
 
+/** La fecha del evento no puede ser anterior a hoy (fecha local del navegador). */
+function initDateMin(): void {
+  const date = document.querySelector<HTMLInputElement>("#fecha");
+  if (!date) return;
+  const now = new Date();
+  const pad = (n: number) => String(n).padStart(2, "0");
+  date.min = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+}
+
 /**
  * Paquete elegido (radios name="catering"): lo refleja en la cabecera del modal
  * y calcula el total estimado con el precio por persona de cada paquete.
@@ -256,5 +265,6 @@ function initFormSubmit(): void {
 initWaitressStepper();
 initAddonsLimit();
 initPackagePicker();
+initDateMin();
 initModal();
 initFormSubmit();

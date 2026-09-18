@@ -46,7 +46,16 @@ const esFecha = (s: string) => {
   return !Number.isNaN(d.getTime()) && d.toISOString().startsWith(s);
 };
 
-export function validarSolicitud(input: unknown): Resultado {
+/**
+ * ¿La fecha es hoy o después? Con un día de margen: el servidor corre en UTC y
+ * en México (UTC−6) ya puede ser "mañana" en UTC cuando para la persona es hoy.
+ */
+const noEsPasada = (s: string, hoy = new Date()) => {
+  const limite = new Date(Date.UTC(hoy.getUTCFullYear(), hoy.getUTCMonth(), hoy.getUTCDate() - 1));
+  return new Date(`${s}T00:00:00Z`) >= limite;
+};
+
+export function validarSolicitud(input: unknown, hoy = new Date()): Resultado {
   const raw = (typeof input === "object" && input !== null ? input : {}) as Record<string, unknown>;
   const errores: Partial<Record<keyof Solicitud, string>> = {};
 
@@ -74,6 +83,7 @@ export function validarSolicitud(input: unknown): Resultado {
     errores.invitados = `Mínimo ${cateringRules.minGuests} invitados.`;
   }
   if (!esFecha(s.fecha)) errores.fecha = "Fecha no válida.";
+  else if (!noEsPasada(s.fecha, hoy)) errores.fecha = "Elige una fecha a partir de hoy.";
   if (!/^([01]\d|2[0-3]):[0-5]\d$/.test(s.hora)) errores.hora = "Hora no válida.";
   if (!s.direccion || s.direccion.length > MAX_TEXTO) errores.direccion = "Escribe la dirección del evento.";
   if (!(cateringRules.colonias as readonly string[]).includes(s.colonia)) errores.colonia = "Elige una colonia.";
