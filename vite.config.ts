@@ -13,6 +13,7 @@ export default defineConfig({
         catering: resolve(__dirname, "catering.html"),
         about: resolve(__dirname, "about.html"),
         menu: resolve(__dirname, "menu.html"),
+        notFound: resolve(__dirname, "404.html"),
       },
     },
   },

@@ -11,10 +11,16 @@
  *   <!--#package-options-->  opciones de paquete del formulario
  *   <!--#addons-->           casillas de complementos del formulario
  *   <!--#colonias-->         opciones del select de colonia
+ *   <!--#jsonld-->           datos estructurados de tipo Restaurant (portada)
+ *
+ * Además añade canonical y og:url a cada página, vuelve absoluta la URL de
+ * og:image y genera sitemap.xml al compilar.
  *
  * El resultado es HTML estático: la página se ve completa sin JavaScript.
  */
+import { basename } from "node:path";
 import type { Plugin } from "vite";
+import { ADDRESS, PAGES, SITE_URL } from "./site";
 import {
   carta,
   cateringPackages,
@@ -27,7 +33,7 @@ import {
   type Tag,
 } from "../src/data/menu";
 
-type Page = "index" | "menu" | "catering" | "about";
+type Page = "index" | "menu" | "catering" | "about" | "404";
 
 const NAV: { page: Page; href: string; label: string }[] = [
   { page: "index", href: "/", label: "Inicio" },
@@ -85,7 +91,7 @@ function footer(current: Page | undefined, credit = "", suffix = ""): string {
         <nav class="flex flex-wrap justify-center gap-x-4">
 ${links}
         </nav>
-        <p>Avn. San Ramón Norte I, Montes de Ame, Santa Gertrudis Copo y Montebello</p>
+        <p>${ADDRESS}</p>
         <p class="text-caption">© <span data-year>2026</span> ${esc(credit)}D'mitri Medina Novelo &amp; William Moran Ramírez.${esc(suffix)}</p>
       </div>
     </footer>`;
@@ -239,6 +245,56 @@ const addons = () =>
 const colonias = () =>
   cateringRules.colonias.map((c) => `                  <option value="${esc(c)}">${esc(c)}</option>`).join("\n");
 
+// ----- SEO -----
+
+/** Restaurant de schema.org. Sin precios: schema.org exige moneda y no está definida. */
+function jsonLd(): string {
+  const data = {
+    "@context": "https://schema.org",
+    "@type": "Restaurant",
+    name: "El Taquito Gordo Feliz",
+    url: `${SITE_URL}/`,
+    image: `${SITE_URL}/og.png`,
+    logo: `${SITE_URL}/apple-touch-icon.png`,
+    servesCuisine: "Mexicana",
+    address: { "@type": "PostalAddress", streetAddress: ADDRESS },
+    hasMenu: {
+      "@type": "Menu",
+      url: `${SITE_URL}/menu`,
+      hasMenuSection: [
+        { "@type": "MenuSection", name: "Especialidades de la casa", hasMenuItem: specials.map((d) => ({ "@type": "MenuItem", name: d.name, description: d.description })) },
+        ...carta.map((c) => ({
+          "@type": "MenuSection",
+          name: c.title,
+          hasMenuItem: c.dishes.map((d) => ({ "@type": "MenuItem", name: d.name, description: d.description })),
+        })),
+      ],
+    },
+  };
+  // "<" escapado para que el JSON no pueda cerrar la etiqueta <script>.
+  return `<script type="application/ld+json">${JSON.stringify(data).replace(/</g, "\\u003c")}</script>`;
+}
+
+/** canonical + og:url, y og:image absoluta (los rastreadores no resuelven rutas relativas). */
+function seoHead(html: string, file: string): string {
+  const page = PAGES.find((p) => p.file === file);
+  html = html.replace('content="/og.png"', `content="${SITE_URL}/og.png"`);
+  if (!page) return html;
+  const url = `${SITE_URL}${page.path}`;
+  return html.replace(
+    "</head>",
+    `    <link rel="canonical" href="${url}" />\n    <meta property="og:url" content="${url}" />\n  </head>`,
+  );
+}
+
+function sitemap(): string {
+  const today = new Date().toISOString().slice(0, 10);
+  const urls = PAGES.map(
+    (p) => `  <url><loc>${SITE_URL}${p.path}</loc><lastmod>${today}</lastmod></url>`,
+  ).join("\n");
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
+}
+
 // ----- Plugin -----
 
 const DIRECTIVE = /<!--#([\w-]+)((?:\s+[\w-]+="[^"]*")*)\s*-->/g;
@@ -264,6 +320,8 @@ function render(name: string, attrs: Record<string, string>): string {
       return addons();
     case "colonias":
       return colonias();
+    case "jsonld":
+      return jsonLd();
     default:
       throw new Error(`build/html.ts: marcador desconocido <!--#${name}-->`);
   }
@@ -274,13 +332,18 @@ export function sharedHtml(): Plugin {
     name: "taquito-shared-html",
     transformIndexHtml: {
       order: "pre",
-      handler: (html) =>
-        html.replace(DIRECTIVE, (_, name: string, rawAttrs: string) => {
+      handler: (html, ctx) => {
+        const withParts = html.replace(DIRECTIVE, (_, name: string, rawAttrs: string) => {
           const attrs = Object.fromEntries(
             [...rawAttrs.matchAll(/([\w-]+)="([^"]*)"/g)].map((m) => [m[1], m[2]]),
           );
           return render(name, attrs);
-        }),
+        });
+        return seoHead(withParts, basename(ctx.filename, ".html"));
+      },
+    },
+    generateBundle() {
+      this.emitFile({ type: "asset", fileName: "sitemap.xml", source: sitemap() });
     },
   };
 }

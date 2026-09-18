@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="robots" content="noindex" />
+    <title>Página no encontrada — El Taquito Gordo Feliz</title>
+
+    <meta name="color-scheme" content="light dark" />
+    <!-- CSS crítico en línea: fondo del tema y tamaños básicos antes de que
+         cargue la hoja de estilos (en desarrollo, Vite la inyecta con JS). -->
+    <style>
+      html { background: #fffdfa; color: #1a1a1a; }
+      @media (prefers-color-scheme: dark) { html { background: #110f0d; color: #f5f0e8; } }
+      img { max-width: 100%; height: auto; }
+      svg.icon { width: 1.25rem; height: 1.25rem; }
+    </style>
+    <!-- Hoja de estilos enlazada: bloquea el primer pintado hasta que carga,
+         así la página nunca se ve sin estilos (ni en desarrollo ni publicada). -->
+    <link rel="stylesheet" href="/src/styles/main.css" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fffdfa" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#110f0d" />
+    <link rel="icon" href="/img/favicon-64.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  </head>
+  <body class="bg-void text-txt">
+    <a href="#main" class="skip-link">Saltar al contenido</a>
+    <!--#header current="404"-->
+
+    <main id="main">
+      <section class="flex min-h-svh items-center px-6 pt-24 pb-16 md:px-10">
+        <div class="mx-auto grid w-full max-w-5xl items-center gap-10 md:grid-cols-[1.2fr_1fr]">
+          <div>
+            <p class="enter heading-eyebrow" style="--i: 0">Error 404</p>
+            <h1 class="enter gradient-name mt-2 pb-2 text-hero font-bold" style="--i: 1">
+              Esta página se fue por tacos
+            </h1>
+            <p class="enter mt-4 max-w-md text-title font-medium text-txt" style="--i: 2">
+              No encontramos lo que buscabas.
+            </p>
+            <p class="enter mt-3 max-w-md text-body text-mut" style="--i: 3">
+              Puede que el enlace esté mal escrito o que la página ya no exista. Desde aquí
+              puedes volver al inicio o ir directo al menú.
+            </p>
+            <div class="enter mt-8 flex flex-wrap items-center gap-x-6 gap-y-2" style="--i: 4">
+              <a href="/" class="btn-primary">Volver al inicio</a>
+              <a href="/menu" class="link-chevron">Ver el menú <span aria-hidden="true">›</span></a>
+            </div>
+          </div>
+          <div class="enter relative mx-auto w-full max-w-sm" style="--i: 2">
+            <div class="plate absolute inset-[4%] rounded-full" aria-hidden="true"></div>
+            <img src="/photos/logo-full.png" width="500" height="500" alt="" class="relative w-full animate-float" />
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!--#footer current="404"-->
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

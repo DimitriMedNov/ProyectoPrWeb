@@ -25,6 +25,7 @@ npm install      # instala dependencias
 npm run dev      # servidor local con hot-reload (http://localhost:5173)
 npm run build    # typecheck + build de producción en dist/
 npm run preview  # previsualiza el build de producción
+npm run check    # typecheck + build + revisión de dist (lo mismo que corre CI)
 ```
 
 ## Estructura

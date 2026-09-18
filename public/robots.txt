@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://taquito.vercel.app/sitemap.xml
