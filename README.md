@@ -76,7 +76,12 @@ También funciona en **Netlify** (build: `npm run build`, publish: `dist`).
 
 ## Notas
 
-- El formulario de catering es una **demostración**: no procesa ni guarda datos reales.
+- El formulario de catering se envía a `api/solicitud.ts`, una función de Vercel
+  que vuelve a validar los datos, recalcula el total con los precios de
+  `src/data/menu.ts` y registra la solicitud en los logs de Vercel (sin correo ni
+  teléfono). **Pendiente:** enviarla por correo o guardarla en una base de datos.
+  No se cobra en línea ni se piden datos de tarjeta.
+- En `npm run dev`, `/api/solicitud` la sirve `build/api-dev.ts` con el mismo archivo.
 - Las imágenes viven en `public/photos/` y se referencian con rutas absolutas (`/photos/...`).
 - El tema claro u oscuro sigue la preferencia del sistema; no hay interruptor.
 - Después de tocar el bloque `@theme` de `main.css` o `vite.config.ts`, reinicia `npm run dev`

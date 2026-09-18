@@ -248,40 +248,24 @@
             </div>
           </fieldset>
 
-          <!-- 4. Pago -->
-          <fieldset class="step">
-            <legend class="step-legend">
+          <!-- Campo trampa antispam: fuera de pantalla y fuera del lector de
+               pantalla. Las personas no lo ven; los bots que rellenan todo, sí. -->
+          <div class="honeypot" aria-hidden="true">
+            <label for="sitio_web">No llenes este campo</label>
+            <input type="text" id="sitio_web" name="sitio_web" tabindex="-1" autocomplete="off" />
+          </div>
+
+          <!-- 4. Pago: no se cobra en línea -->
+          <div class="step">
+            <p class="step-legend">
               <span class="step-num" aria-hidden="true">4</span>
               <span>Pago</span>
-            </legend>
-            <p class="-mt-2 mb-4 flex items-start gap-2 rounded-xl bg-panel-2 px-3 py-2.5 text-caption text-mut">
-              <svg class="icon mt-px size-4 text-arc" aria-hidden="true"><use href="/icons.svg#card" /></svg>
-              Demostración: no se procesa ni se guarda ningún dato. No introduzcas datos reales.
             </p>
-            <div class="grid gap-4 sm:grid-cols-3">
-              <div class="sm:col-span-3">
-                <label class="field-label" for="card_number">Número de tarjeta</label>
-                <input class="field-input" type="text" inputmode="numeric" id="card_number" name="card_number" required pattern="[0-9]{13,16}" title="13-16 dígitos." placeholder="Número de tarjeta" autocomplete="off" aria-describedby="card-hint" />
-                <p id="card-hint" class="field-hint">De 13 a 16 dígitos, sin espacios</p>
-              </div>
-              <div>
-                <label class="field-label" for="card_type">Tipo de tarjeta</label>
-                <select class="field-input" id="card_type" name="card_type">
-                  <option value="visa" selected>Visa</option>
-                  <option value="mastercard">Mastercard</option>
-                  <option value="american_express">American Express</option>
-                </select>
-              </div>
-              <div>
-                <label class="field-label" for="expiration_date">Vencimiento</label>
-                <input class="field-input" type="text" id="expiration_date" name="expiration_date" required pattern="(0[1-9]|1[0-2])\/[0-9]{2}" title="Formato MM/AA." placeholder="MM/AA" autocomplete="off" />
-              </div>
-              <div>
-                <label class="field-label" for="ccv">CCV</label>
-                <input class="field-input" type="text" inputmode="numeric" id="ccv" name="ccv" required pattern="[0-9]{3,4}" title="3-4 dígitos." placeholder="CCV" autocomplete="off" />
-              </div>
-            </div>
-          </fieldset>
+            <p class="flex items-start gap-3 rounded-xl bg-panel-2 px-4 py-3 text-meta text-mut">
+              <svg class="icon mt-0.5 shrink-0 text-arc" aria-hidden="true"><use href="/icons.svg#card" /></svg>
+              <span>No cobramos en línea. Cuando recibamos tu solicitud, te contactamos para confirmar la fecha y acordar el pago.</span>
+            </p>
+          </div>
           </div>
 
           <div class="modal-foot">

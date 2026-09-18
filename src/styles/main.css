@@ -483,6 +483,19 @@
   .field-hint {
     @apply mt-1 text-caption text-mut;
   }
+  /* Campo trampa antispam: fuera de la pantalla, no oculto con display:none
+     (muchos bots se saltan los campos ocultos). */
+  .honeypot {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+  #mensaje-enviado[data-state="error"] {
+    background-color: rgb(var(--arc) / 0.1);
+    box-shadow: inset 0 0 0 1px rgb(var(--arc) / 0.5);
+  }
 
   /* Errores: solo cuando la persona ya interactuó con el campo. */
   .field-input:user-invalid {

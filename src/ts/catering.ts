@@ -189,23 +189,64 @@ function initModal(): void {
 }
 
 /**
- * Envío simulado (no hay backend). Previene el submit, muestra confirmación
- * dentro del modal y resetea el formulario.
+ * Envío real: valida en el navegador, manda la solicitud a /api/solicitud
+ * (que vuelve a validar y recalcula el total) y muestra el resultado dentro del
+ * modal. Mientras envía, ignora clics repetidos sin deshabilitar el botón, para
+ * no perder el foco.
  */
 function initFormSubmit(): void {
   const form = document.querySelector<HTMLFormElement>("#catering-form");
   const message = document.querySelector<HTMLElement>("#mensaje-enviado");
-  if (!form || !message) return;
+  const submit = form?.querySelector<HTMLButtonElement>('button[type="submit"]');
+  if (!form || !message || !submit) return;
 
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    if (!form.reportValidity()) return;
+  const label = submit.textContent ?? "";
+  let sending = false;
 
-    message.textContent =
-      "¡Tu solicitud se envió correctamente! Te contactaremos pronto. 🌮";
+  const show = (text: string, state: "ok" | "error") => {
+    message.textContent = text;
+    message.dataset.state = state;
     message.classList.remove("hidden");
-    form.reset(); // cada control se resincroniza escuchando el evento "reset"
     message.scrollIntoView({ behavior: "smooth", block: "center" });
+  };
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (sending || !form.reportValidity()) return;
+
+    const data = new FormData(form);
+    const payload: Record<string, unknown> = Object.fromEntries(data);
+    payload.complementos = data.getAll("complementos");
+
+    sending = true;
+    submit.setAttribute("aria-disabled", "true");
+    submit.textContent = "Enviando…";
+    try {
+      const res = await fetch("/api/solicitud", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const body = (await res.json().catch(() => ({}))) as {
+        ok?: boolean;
+        mensaje?: string;
+        errores?: Record<string, string>;
+      };
+
+      if (res.ok && body.ok) {
+        show("¡Tu solicitud se envió correctamente! Te contactaremos pronto. 🌮", "ok");
+        form.reset(); // cada control se resincroniza escuchando el evento "reset"
+      } else {
+        const detalle = body.errores ? ` ${Object.values(body.errores).join(" ")}` : "";
+        show(`${body.mensaje ?? "No pudimos enviar tu solicitud."}${detalle}`, "error");
+      }
+    } catch {
+      show("No pudimos conectar. Revisa tu conexión e inténtalo de nuevo.", "error");
+    } finally {
+      sending = false;
+      submit.removeAttribute("aria-disabled");
+      submit.textContent = label;
+    }
   });
 }
 
