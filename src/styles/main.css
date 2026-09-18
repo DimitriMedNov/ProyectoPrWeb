@@ -811,46 +811,39 @@ body.modal-open {
   }
 }
 
-/* ----- Carrusel de la página About ----- */
-.slider-track {
+/* ----- Galería de la página About ----- */
+/* Desplazamiento horizontal con encaje por foto: funciona con el dedo, el
+   trackpad y las flechas del teclado, sin JavaScript. */
+.gallery-track {
   display: flex;
-  width: 600%;
-  animation: slide 24s infinite alternate ease-in-out;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
 }
-.slider-track > * {
-  width: calc(100% / 6);
-  flex-shrink: 0;
+.gallery-track::-webkit-scrollbar {
+  display: none;
 }
-
-/* Se detiene con el botón de pausa, al pasar el cursor o al enfocar dentro. */
-.gallery[data-paused="true"] .slider-track,
-.gallery:hover .slider-track,
-.gallery:focus-within .slider-track {
-  animation-play-state: paused;
+.gallery-slide {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
 }
-
-/* Con movimiento reducido no hay avance automático: las fotos se recorren a mano. */
+.gallery-btn {
+  @apply grid size-11 place-items-center rounded-full bg-panel-2 text-txt;
+  transition:
+    opacity 0.2s var(--ease),
+    transform 0.2s var(--ease);
+}
+.gallery-btn:active {
+  transform: scale(0.94);
+}
+.gallery-btn[aria-disabled="true"] {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
 @media (prefers-reduced-motion: reduce) {
-  .gallery-viewport {
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
+  .gallery-track {
+    scroll-behavior: auto;
   }
-  .slider-track {
-    animation: none;
-  }
-  .slider-track > * {
-    scroll-snap-align: start;
-  }
-  .gallery-toggle {
-    display: none;
-  }
-}
-
-@keyframes slide {
-  0%, 13% { margin-left: 0; }
-  16%, 29% { margin-left: -100%; }
-  33%, 46% { margin-left: -200%; }
-  49%, 62% { margin-left: -300%; }
-  66%, 79% { margin-left: -400%; }
-  83%, 100% { margin-left: -500%; }
 }

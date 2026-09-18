@@ -89,27 +89,37 @@
             <span class="heading-eyebrow text-acc-maiz">Galería</span>
             <h2 id="galeria-titulo" class="heading-title">Así se ve la taquería</h2>
           </div>
-          <div
-            class="gallery mx-auto mt-12 max-w-5xl"
-            data-gallery
-            data-paused="false"
-            role="region"
-            aria-roledescription="carrusel"
-            aria-labelledby="galeria-titulo"
-            data-reveal
-          >
-            <div class="gallery-viewport overflow-hidden rounded-card shadow-[0_24px_48px_-28px_rgb(0_0_0/0.45)]">
-              <div class="slider-track">
-                <img src="/img/fotos/fachada-1280.webp" srcset="/img/fotos/fachada-640.webp 640w, /img/fotos/fachada-1280.webp 1280w" sizes="(min-width: 1100px) 1024px, calc(100vw - 3rem)" width="1280" height="853" alt="Fachada del restaurante" class="aspect-video object-cover" loading="lazy" />
-                <img src="/img/fotos/restaurant-640.webp" srcset="/img/fotos/restaurant-640.webp 640w" sizes="(min-width: 1100px) 1024px, calc(100vw - 3rem)" width="640" height="400" alt="Interior del restaurante" class="aspect-video object-cover" loading="lazy" />
-                <img src="/img/fotos/drinks-1280.webp" srcset="/img/fotos/drinks-640.webp 640w, /img/fotos/drinks-1280.webp 1280w" sizes="(min-width: 1100px) 1024px, calc(100vw - 3rem)" width="1280" height="841" alt="Bebidas mexicanas" class="aspect-video object-cover" loading="lazy" />
-                <img src="/img/fotos/food-800.webp" srcset="/img/fotos/food-640.webp 640w, /img/fotos/food-800.webp 800w" sizes="(min-width: 1100px) 1024px, calc(100vw - 3rem)" width="800" height="600" alt="Platillos del menú" class="aspect-video object-cover" loading="lazy" />
-                <img src="/img/fotos/people-760.webp" srcset="/img/fotos/people-640.webp 640w, /img/fotos/people-760.webp 760w" sizes="(min-width: 1100px) 1024px, calc(100vw - 3rem)" width="760" height="610" alt="Clientes disfrutando" class="aspect-video object-cover" loading="lazy" />
-                <img src="/img/fotos/tacos-1024.webp" srcset="/img/fotos/tacos-640.webp 640w, /img/fotos/tacos-1024.webp 1024w" sizes="(min-width: 1100px) 1024px, calc(100vw - 3rem)" width="1024" height="683" alt="Tacos recién hechos" class="aspect-video object-cover" loading="lazy" />
-              </div>
+          <!-- Galería deslizable: se recorre con el dedo, el trackpad o las flechas
+               del teclado; gallery.ts añade los botones y el contador. -->
+          <div class="gallery mx-auto mt-12 max-w-5xl" role="region" aria-roledescription="carrusel" aria-labelledby="galeria-titulo" data-gallery data-reveal>
+            <div class="gallery-track rounded-card shadow-[0_24px_48px_-28px_rgb(0_0_0/0.45)]" tabindex="0" aria-label="Fotos de la taquería. Desliza o usa las flechas para ver más." data-gallery-track>
+              <figure class="gallery-slide" aria-roledescription="diapositiva" aria-label="1 de 6">
+                <img src="/img/fotos/fachada-1280.webp" srcset="/img/fotos/fachada-640.webp 640w, /img/fotos/fachada-1280.webp 1280w" sizes="(min-width: 1100px) 1024px, calc(100vw - 3rem)" width="1280" height="853" alt="Fachada del restaurante" class="aspect-video w-full object-cover" loading="lazy" />
+              </figure>
+              <figure class="gallery-slide" aria-roledescription="diapositiva" aria-label="2 de 6">
+                <img src="/img/fotos/restaurant-640.webp" srcset="/img/fotos/restaurant-640.webp 640w" sizes="(min-width: 1100px) 1024px, calc(100vw - 3rem)" width="640" height="400" alt="Interior del restaurante" class="aspect-video w-full object-cover" loading="lazy" />
+              </figure>
+              <figure class="gallery-slide" aria-roledescription="diapositiva" aria-label="3 de 6">
+                <img src="/img/fotos/drinks-1280.webp" srcset="/img/fotos/drinks-640.webp 640w, /img/fotos/drinks-1280.webp 1280w" sizes="(min-width: 1100px) 1024px, calc(100vw - 3rem)" width="1280" height="841" alt="Bebidas mexicanas" class="aspect-video w-full object-cover" loading="lazy" />
+              </figure>
+              <figure class="gallery-slide" aria-roledescription="diapositiva" aria-label="4 de 6">
+                <img src="/img/fotos/food-800.webp" srcset="/img/fotos/food-640.webp 640w, /img/fotos/food-800.webp 800w" sizes="(min-width: 1100px) 1024px, calc(100vw - 3rem)" width="800" height="600" alt="Platillos del menú" class="aspect-video w-full object-cover" loading="lazy" />
+              </figure>
+              <figure class="gallery-slide" aria-roledescription="diapositiva" aria-label="5 de 6">
+                <img src="/img/fotos/people-760.webp" srcset="/img/fotos/people-640.webp 640w, /img/fotos/people-760.webp 760w" sizes="(min-width: 1100px) 1024px, calc(100vw - 3rem)" width="760" height="610" alt="Clientes disfrutando" class="aspect-video w-full object-cover" loading="lazy" />
+              </figure>
+              <figure class="gallery-slide" aria-roledescription="diapositiva" aria-label="6 de 6">
+                <img src="/img/fotos/tacos-1024.webp" srcset="/img/fotos/tacos-640.webp 640w, /img/fotos/tacos-1024.webp 1024w" sizes="(min-width: 1100px) 1024px, calc(100vw - 3rem)" width="1024" height="683" alt="Tacos recién hechos" class="aspect-video w-full object-cover" loading="lazy" />
+              </figure>
             </div>
-            <div class="mt-5 flex justify-center">
-              <button type="button" class="gallery-toggle btn-secondary" data-gallery-toggle>Pausar fotos</button>
+            <div class="mt-5 flex items-center justify-center gap-4" data-gallery-controls hidden>
+              <button type="button" class="gallery-btn" aria-label="Foto anterior" data-gallery-prev>
+                <svg class="icon size-5" aria-hidden="true"><use href="/icons.svg#chevron-left" /></svg>
+              </button>
+              <p class="min-w-14 text-center text-meta text-mut tabular-nums" aria-live="polite" data-gallery-status>1 / 6</p>
+              <button type="button" class="gallery-btn" aria-label="Foto siguiente" data-gallery-next>
+                <svg class="icon size-5" aria-hidden="true"><use href="/icons.svg#chevron-right" /></svg>
+              </button>
             </div>
           </div>
         </div>

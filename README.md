@@ -41,7 +41,7 @@ npm run check    # typecheck + build + revisión de dist (lo mismo que corre CI)
 │   ├── ts/
 │   │   ├── menu.ts       # menú móvil + estado de la barra al hacer scroll
 │   │   ├── catering.ts   # lógica del formulario de catering
-│   │   ├── gallery.ts    # botón de pausa del carrusel de fotos
+│   │   ├── gallery.ts    # flechas y contador de la galería deslizable
 │   │   ├── menu-page.ts  # filtro y pestañas de la página de menú
 │   │   └── reveal.ts     # revelado al entrar en pantalla (nace visible)
 │   └── styles/main.css   # Tailwind + tokens de diseño (claro y oscuro)
