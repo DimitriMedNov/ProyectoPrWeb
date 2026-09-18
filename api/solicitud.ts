@@ -4,9 +4,9 @@
  * Función de Vercel con la interfaz web estándar (Request → Response), sin
  * dependencias. En desarrollo la sirve build/api-dev.ts desde el mismo archivo.
  *
- * Qué hace hoy: valida con las mismas reglas del formulario, recalcula el total
- * con los precios de src/data/menu.ts y registra la solicitud en los logs de
- * Vercel. PENDIENTE: enviarla por correo o guardarla (requiere un servicio).
+ * Valida con las mismas reglas del formulario, recalcula el total con los
+ * precios de src/data/menu.ts y registra un resumen en los logs de Vercel.
+ * Es un proyecto universitario: la solicitud no se guarda ni se envía a nadie.
  */
 import { validarSolicitud } from "../src/lib/solicitud.js";
 

@@ -12,3 +12,13 @@ export const PAGES = [
 ] as const;
 
 export const ADDRESS = "Avn. San Ramón Norte I, Montes de Ame, Santa Gertrudis Copo y Montebello";
+
+/** Horario de ejemplo (la taquería es ficticia). */
+export const HOURS = "Abierto todos los días, de 12:00 a 22:00";
+
+/**
+ * Aviso en el pie de todas las páginas: es un proyecto universitario sin fines
+ * comerciales, para que nadie tome la taquería por un negocio real.
+ */
+export const DISCLAIMER =
+  "Proyecto universitario sin fines comerciales: la taquería, el menú y los precios son ficticios.";

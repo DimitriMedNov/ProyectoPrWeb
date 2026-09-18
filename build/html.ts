@@ -3,7 +3,7 @@
  * HTML por piezas compartidas al compilar y en desarrollo.
  *
  *   <!--#header current="menu"-->
- *   <!--#footer current="index" credit="…" suffix="…"-->
+ *   <!--#footer current="index"-->
  *   <!--#specials variant="home|menu"-->
  *   <!--#carta-->            categorías de la carta en /menu
  *   <!--#menu-tabs-->        pestañas de categoría de /menu
@@ -11,7 +11,6 @@
  *   <!--#package-options-->  opciones de paquete del formulario
  *   <!--#addons-->           casillas de complementos del formulario
  *   <!--#colonias-->         opciones del select de colonia
- *   <!--#jsonld-->           datos estructurados de tipo Restaurant (portada)
  *
  * Además añade canonical y og:url a cada página, vuelve absoluta la URL de
  * og:image y genera sitemap.xml al compilar.
@@ -20,7 +19,7 @@
  */
 import { basename } from "node:path";
 import type { Plugin } from "vite";
-import { ADDRESS, PAGES, SITE_URL } from "./site";
+import { ADDRESS, DISCLAIMER, HOURS, PAGES, SITE_URL } from "./site";
 import {
   carta,
   cateringPackages,
@@ -82,7 +81,7 @@ ${items}
     </header>`;
 }
 
-function footer(current: Page | undefined, credit = "", suffix = ""): string {
+function footer(current: Page | undefined): string {
   const links = NAV.filter(({ page }) => page !== current)
     .map(({ href, label }) => `          <a href="${href}" class="hit-link px-2 hover:text-ink-txt">${label}</a>`)
     .join("\n");
@@ -92,7 +91,9 @@ function footer(current: Page | undefined, credit = "", suffix = ""): string {
 ${links}
         </nav>
         <p>${ADDRESS}</p>
-        <p class="text-caption">© <span data-year>2026</span> ${esc(credit)}D'mitri Medina Novelo &amp; William Moran Ramírez.${esc(suffix)}</p>
+        <p>${HOURS}</p>
+        <p class="text-caption">© <span data-year>2026</span> Carpool Venom · D'mitri Medina Novelo &amp; William Moran Ramírez.</p>
+        <p class="max-w-md text-caption">${DISCLAIMER}</p>
       </div>
     </footer>`;
 }
@@ -247,34 +248,6 @@ const colonias = () =>
 
 // ----- SEO -----
 
-/** Restaurant de schema.org. Sin precios: schema.org exige moneda y no está definida. */
-function jsonLd(): string {
-  const data = {
-    "@context": "https://schema.org",
-    "@type": "Restaurant",
-    name: "El Taquito Gordo Feliz",
-    url: `${SITE_URL}/`,
-    image: `${SITE_URL}/og.png`,
-    logo: `${SITE_URL}/apple-touch-icon.png`,
-    servesCuisine: "Mexicana",
-    address: { "@type": "PostalAddress", streetAddress: ADDRESS },
-    hasMenu: {
-      "@type": "Menu",
-      url: `${SITE_URL}/menu`,
-      hasMenuSection: [
-        { "@type": "MenuSection", name: "Especialidades de la casa", hasMenuItem: specials.map((d) => ({ "@type": "MenuItem", name: d.name, description: d.description })) },
-        ...carta.map((c) => ({
-          "@type": "MenuSection",
-          name: c.title,
-          hasMenuItem: c.dishes.map((d) => ({ "@type": "MenuItem", name: d.name, description: d.description })),
-        })),
-      ],
-    },
-  };
-  // "<" escapado para que el JSON no pueda cerrar la etiqueta <script>.
-  return `<script type="application/ld+json">${JSON.stringify(data).replace(/</g, "\\u003c")}</script>`;
-}
-
 /** canonical + og:url, y og:image absoluta (los rastreadores no resuelven rutas relativas). */
 function seoHead(html: string, file: string): string {
   const page = PAGES.find((p) => p.file === file);
@@ -305,7 +278,7 @@ function render(name: string, attrs: Record<string, string>): string {
     case "header":
       return header(current);
     case "footer":
-      return footer(current, attrs.credit, attrs.suffix);
+      return footer(current);
     case "specials":
       return attrs.variant === "menu" ? specialsMenu() : specialsHome();
     case "carta":
@@ -320,8 +293,6 @@ function render(name: string, attrs: Record<string, string>): string {
       return addons();
     case "colonias":
       return colonias();
-    case "jsonld":
-      return jsonLd();
     default:
       throw new Error(`build/html.ts: marcador desconocido <!--#${name}-->`);
   }

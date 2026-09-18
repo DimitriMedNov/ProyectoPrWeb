@@ -234,7 +234,10 @@ function initFormSubmit(): void {
       };
 
       if (res.ok && body.ok) {
-        show("¡Tu solicitud se envió correctamente! Te contactaremos pronto. 🌮", "ok");
+        show(
+          "¡Listo! Tu solicitud pasó todas las validaciones. Como es un proyecto universitario, no se envía a ningún restaurante. 🌮",
+          "ok",
+        );
         form.reset(); // cada control se resincroniza escuchando el evento "reset"
       } else {
         const detalle = body.errores ? ` ${Object.values(body.errores).join(" ")}` : "";
