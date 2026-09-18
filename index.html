@@ -2,7 +2,7 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta
       name="description"
       content="El Taquito Gordo Feliz: taquería con los tacos más auténticos del centro de la ciudad. Pide en línea o por apps de delivery."
@@ -14,132 +14,174 @@
       property="og:description"
       content="Tacos auténticos en el centro de la ciudad. Pide en línea."
     />
-    <meta property="og:image" content="/photos/logo.png" />
+    <meta property="og:image" content="/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
 
-    <link rel="icon" href="/photos/logo.png" type="image/png" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css"
-    />
+    <meta name="color-scheme" content="light dark" />
+    <!-- CSS crítico en línea: fondo del tema y tamaños básicos antes de que
+         cargue la hoja de estilos (en desarrollo, Vite la inyecta con JS). -->
+    <style>
+      html { background: #fffdfa; color: #1a1a1a; }
+      @media (prefers-color-scheme: dark) { html { background: #110f0d; color: #f5f0e8; } }
+      img { max-width: 100%; height: auto; }
+      svg.icon { width: 1.25rem; height: 1.25rem; }
+    </style>
+    <!-- Hoja de estilos enlazada: bloquea el primer pintado hasta que carga,
+         así la página nunca se ve sin estilos (ni en desarrollo ni publicada). -->
+    <link rel="stylesheet" href="/src/styles/main.css" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fffdfa" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#110f0d" />
+    <link rel="icon" href="/img/favicon-64.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   </head>
-  <body class="bg-white text-carbon">
+  <body class="bg-void text-txt">
+    <a href="#main" class="skip-link">Saltar al contenido</a>
     <!-- Header -->
     <header class="site-header">
-      <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-3 md:px-10">
-        <a href="/" class="flex items-center gap-2">
-          <img src="/photos/logo.png" alt="El Taquito Gordo Feliz" class="h-12 w-12 rounded-full" />
-          <span class="hidden font-extrabold text-chile sm:inline">El Taquito Gordo Feliz</span>
+      <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-2 md:px-10">
+        <a href="/" class="flex min-h-11 items-center gap-2.5">
+          <img src="/img/logo-120.webp" alt="" width="40" height="40" class="h-10 w-10 rounded-full" />
+          <span class="font-display text-body font-semibold text-arc">El Taquito Gordo Feliz</span>
         </a>
 
         <button
           id="menu-icon"
-          class="bx bx-menu text-3xl text-carbon md:hidden"
+          type="button"
+          class="grid h-11 w-11 place-items-center rounded-full text-txt md:hidden"
           aria-label="Abrir menú"
           aria-controls="navbar"
           aria-expanded="false"
-        ></button>
+        >
+          <svg class="icon size-6" aria-hidden="true"><use href="/icons.svg#menu" /></svg>
+        </button>
 
-        <ul id="navbar" class="flex items-center gap-1 md:gap-2">
-          <li><a href="/" class="block px-4 py-2 font-semibold uppercase tracking-wide hover:text-chile">Inicio</a></li>
-          <li><a href="/#menu" class="block px-4 py-2 font-semibold uppercase tracking-wide hover:text-chile">Menú</a></li>
-          <li><a href="/catering" class="block px-4 py-2 font-semibold uppercase tracking-wide hover:text-chile">Catering</a></li>
-          <li><a href="/about" class="block px-4 py-2 font-semibold uppercase tracking-wide hover:text-chile">Nosotros</a></li>
+        <ul id="navbar" class="flex items-center gap-1">
+          <li><a href="/" aria-current="page" class="flex min-h-11 items-center px-4 text-meta font-medium text-arc">Inicio</a></li>
+          <li><a href="/menu" class="flex min-h-11 items-center px-4 text-meta text-txt hover:text-arc">Menú</a></li>
+          <li><a href="/catering" class="flex min-h-11 items-center px-4 text-meta text-txt hover:text-arc">Catering</a></li>
+          <li><a href="/about" class="flex min-h-11 items-center px-4 text-meta text-txt hover:text-arc">Nosotros</a></li>
         </ul>
       </div>
     </header>
 
-    <main>
+    <main id="main">
       <!-- Hero -->
-      <section
-        id="home"
-        class="flex min-h-screen flex-wrap items-center gap-8 bg-masa px-6 pt-28 pb-16 md:px-10"
-      >
-        <div class="flex-1 basis-72">
-          <span class="text-sm font-semibold uppercase tracking-widest text-carbon">Bienvenido a</span>
-          <h1 class="mt-2 text-4xl font-extrabold leading-tight text-chile md:text-6xl">
-            El Taquito Gordo Feliz™
-          </h1>
-          <h2 class="mt-3 text-xl font-semibold uppercase text-carbon md:text-2xl">
-            Tu próximo taco está<br />a un clic de distancia
-          </h2>
-          <a href="/catering" class="btn-primary mt-8">Pedir ahora</a>
-        </div>
-        <div class="flex-1 basis-72">
-          <img
-            src="/photos/Mascota.jpg"
-            alt="Mascota de El Taquito Gordo Feliz"
-            class="mx-auto max-w-md animate-float rounded-3xl"
-          />
+      <section id="home" class="flex min-h-svh items-center px-6 pt-24 pb-16 md:px-10">
+        <div class="mx-auto grid w-full max-w-7xl items-center gap-10 md:grid-cols-[1.15fr_1fr]">
+          <div>
+            <p class="enter text-body font-semibold text-mut" style="--i: 0">Bienvenido a</p>
+            <h1 class="enter gradient-name mt-2 pb-2 text-hero font-bold" style="--i: 1">
+              El Taquito Gordo Feliz
+            </h1>
+            <p class="enter mt-3 text-title font-medium text-txt" style="--i: 2">
+              Tu próximo taco está a un clic de distancia
+            </p>
+            <p class="enter mt-4 max-w-xl text-body text-mut" style="--i: 3">
+              Tacos auténticos en el centro de la ciudad. Pide en línea o por apps de delivery.
+            </p>
+            <div class="enter mt-8 flex flex-wrap items-center gap-x-6 gap-y-2" style="--i: 4">
+              <a href="/catering" class="btn-primary">Pedir ahora</a>
+              <a href="/menu" class="link-chevron">Ver el menú <span aria-hidden="true">›</span></a>
+            </div>
+            <ul class="enter mt-8 flex flex-wrap gap-2" style="--i: 5">
+              <li class="chip">Catering para eventos</li>
+              <li class="chip">Opciones vegetarianas y veganas</li>
+              <li class="chip">Delivery por apps</li>
+            </ul>
+          </div>
+          <div class="enter relative mx-auto w-full max-w-lg" style="--i: 3">
+            <div class="plate absolute inset-[6%] rounded-full" aria-hidden="true"></div>
+            <img
+              src="/img/mascota-surf.webp"
+              width="955"
+              height="879"
+              alt="Mascota de El Taquito Gordo Feliz surfeando"
+              class="relative w-full animate-float"
+            />
+          </div>
         </div>
       </section>
 
       <!-- Menú -->
       <section id="menu" class="section">
-        <div class="text-center">
+        <div class="text-center" data-reveal>
           <span class="heading-eyebrow">Pide ahora</span>
           <h2 class="heading-title">Nuestro menú</h2>
+          <a href="/menu" class="link-chevron mt-3">Ver el menú completo <span aria-hidden="true">›</span></a>
         </div>
 
-        <div class="mt-20 grid gap-12 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           <!-- Tarjeta -->
-          <article class="relative flex flex-col items-center rounded-3xl bg-maiz px-6 pb-8 pt-20 text-center shadow-lg">
-            <img src="/photos/rsz_11rsz_1taco2.png" alt="Taco El Taco-Liz" class="absolute -top-16 h-32 w-32 animate-float object-contain" />
-            <h3 class="text-xl font-bold text-chile">El Taco-Liz</h3>
-            <p class="mt-2 text-sm text-carbon/80">
+          <article class="panel lift flex flex-col items-center px-6 pt-8 pb-8 text-center" data-reveal>
+            <div class="plate grid size-36 place-items-center rounded-full">
+              <img src="/photos/rsz_11rsz_1taco2.png" alt="Taco El Taco-Liz" width="128" height="128" class="size-28 object-contain" loading="lazy" />
+            </div>
+            <h3 class="mt-6 text-title font-semibold text-txt">El Taco-Liz</h3>
+            <p class="mt-2 text-meta text-mut">
               Tierna carne o pollo sazonado, con cilantro y cebolla fresca en una tortilla
               calientita. Servido con salsa de la casa.
             </p>
-            <span class="mt-4 text-2xl font-extrabold text-chile">$2.35</span>
-            <a href="/catering" class="btn-outline mt-4">Pedir ahora</a>
+            <span class="mt-4 text-headline font-semibold text-arc">$2.35</span>
+            <a href="/catering" class="btn-secondary mt-5">Pedir ahora</a>
           </article>
 
-          <article class="relative flex flex-col items-center rounded-3xl bg-maiz px-6 pb-8 pt-20 text-center shadow-lg">
-            <img src="/photos/rsz_1rsz_1burrito.png" alt="Burrito El Burrito-Sabanero" class="absolute -top-16 h-32 w-32 animate-float object-contain" />
-            <h3 class="text-xl font-bold text-chile">El Burrito-Sabanero</h3>
-            <p class="mt-2 text-sm text-carbon/80">
+          <article class="panel lift flex flex-col items-center px-6 pt-8 pb-8 text-center" data-reveal data-reveal-delay="0.08">
+            <div class="plate grid size-36 place-items-center rounded-full">
+              <img src="/photos/rsz_1rsz_1burrito.png" alt="Burrito El Burrito-Sabanero" width="160" height="128" class="h-28 w-32 object-contain" loading="lazy" />
+            </div>
+            <h3 class="mt-6 text-title font-semibold text-txt">El Burrito-Sabanero</h3>
+            <p class="mt-2 text-meta text-mut">
               Relleno de tu carne favorita, arroz, frijoles refritos y queso fundido. Con
               salsa y crema. Un platillo que llena y encanta.
             </p>
-            <span class="mt-4 text-2xl font-extrabold text-chile">$4.00</span>
-            <a href="/catering" class="btn-outline mt-4">Pedir ahora</a>
+            <span class="mt-4 text-headline font-semibold text-arc">$4.00</span>
+            <a href="/catering" class="btn-secondary mt-5">Pedir ahora</a>
           </article>
 
-          <article class="relative flex flex-col items-center rounded-3xl bg-maiz px-6 pb-8 pt-20 text-center shadow-lg sm:col-span-2 sm:mx-auto sm:max-w-sm lg:col-span-1 lg:max-w-none">
-            <img src="/photos/rsz_1rsz_1nachos.png" alt="Nachos El Nacho-licious" class="absolute -top-16 h-32 w-32 animate-float object-contain" />
-            <h3 class="text-xl font-bold text-chile">El Nacho-licious</h3>
-            <p class="mt-2 text-sm text-carbon/80">
+          <article class="panel lift flex flex-col items-center px-6 pt-8 pb-8 text-center sm:col-span-2 sm:mx-auto sm:w-1/2 lg:col-span-1 lg:w-auto" data-reveal data-reveal-delay="0.16">
+            <div class="plate grid size-36 place-items-center rounded-full">
+              <img src="/photos/rsz_1rsz_1nachos.png" alt="Nachos El Nacho-licious" width="128" height="128" class="size-28 object-contain" loading="lazy" />
+            </div>
+            <h3 class="mt-6 text-title font-semibold text-txt">El Nacho-licious</h3>
+            <p class="mt-2 text-meta text-mut">
               Totopos crujientes con queso fundido y carne o pollo. Con pico de gallo,
               guacamole y crema. El antojo perfecto.
             </p>
-            <span class="mt-4 text-2xl font-extrabold text-chile">$4.25</span>
-            <a href="/catering" class="btn-outline mt-4">Pedir ahora</a>
+            <span class="mt-4 text-headline font-semibold text-arc">$4.25</span>
+            <a href="/catering" class="btn-secondary mt-5">Pedir ahora</a>
           </article>
         </div>
       </section>
 
       <!-- Delivery -->
-      <section id="delivery" class="bg-masa">
+      <section id="delivery" class="bg-deep">
         <div class="section">
-          <div class="text-center">
-            <span class="heading-eyebrow">Recíbelo en casa</span>
+          <div class="text-center" data-reveal>
+            <span class="heading-eyebrow text-acc-maiz">Recíbelo en casa</span>
             <h2 class="heading-title">Pide por apps de delivery</h2>
           </div>
-          <div class="mt-12 grid items-center gap-10 md:grid-cols-2">
-            <img
-              src="/photos/DeliveryFoods.jpg"
-              alt="Comida lista para entrega a domicilio"
-              class="rounded-3xl shadow-lg"
-              loading="lazy"
-            />
-            <div>
-              <h3 class="text-2xl font-bold text-chile">
-                Disfruta tu comida sin salir de casa.
+          <div class="mt-14 grid items-center gap-10 md:grid-cols-2 md:gap-16">
+            <div class="rounded-card bg-board p-6 shadow-[0_10px_30px_-16px_rgb(0_0_0/0.25)] md:p-10" data-reveal>
+              <img
+                src="/img/delivery-apps.webp"
+                width="1281"
+                height="661"
+                alt="Logotipos de apps de delivery: ChowNow, Uber Eats, Instacart, Grubhub, Gopuff, Postmates y DoorDash, entre otras"
+                class="w-full"
+                loading="lazy"
+              />
+            </div>
+            <div data-reveal data-reveal-delay="0.08">
+              <h3 class="text-title font-semibold text-txt">
+                Disfruta tu comida sin salir de casa
               </h3>
-              <p class="mt-4 text-justify leading-relaxed text-carbon/80">
+              <p class="mt-4 text-body text-mut">
                 Pedir tacos de El Taquito Gordo Feliz por apps de delivery es una gran
-                opción: somos una taquería muy bien valorada que ofrece tacos auténticos y
-                deliciosos hechos con ingredientes de calidad. Disfruta nuestra comida desde
+                opción: ofrecemos tacos auténticos y deliciosos hechos con ingredientes de
+                calidad. Disfruta nuestra comida desde
                 tu hogar con un servicio cómodo y confiable, sigue tu pedido en tiempo real y
                 recíbelo siempre fresco y caliente.
               </p>
@@ -147,72 +189,18 @@
           </div>
         </div>
       </section>
-
-      <!-- Reviews -->
-      <section id="reviews" class="section">
-        <div class="text-center">
-          <span class="heading-eyebrow">Lo que dicen</span>
-          <h2 class="heading-title">Reseñas</h2>
-        </div>
-
-        <div class="mt-20 grid gap-12 sm:grid-cols-2 lg:grid-cols-3">
-          <article class="relative flex flex-col items-center rounded-3xl bg-masa px-6 pb-8 pt-20 text-center shadow-md">
-            <img src="/photos/ELON.jpg" alt="Elon Reeve Musk" class="absolute -top-14 h-28 w-28 rounded-full object-cover ring-4 ring-white" loading="lazy" />
-            <h3 class="text-lg font-bold text-carbon">Elon Reeve Musk</h3>
-            <div class="my-2 text-chile" aria-label="5 de 5 estrellas">
-              <i class="bx bxs-star"></i><i class="bx bxs-star"></i><i class="bx bxs-star"></i><i class="bx bxs-star"></i><i class="bx bxs-star"></i>
-            </div>
-            <p class="text-sm text-carbon/80">
-              ¡Esta taquería es de otro nivel! Los mejores tacos que he probado, con
-              porciones generosas y tortillas hechas en casa. Servicio amable y eficiente.
-              ¡Muy recomendado!
-            </p>
-          </article>
-
-          <article class="relative flex flex-col items-center rounded-3xl bg-masa px-6 pb-8 pt-20 text-center shadow-md">
-            <img src="/photos/MRBEAST.jpg" alt="Jimmy Donaldson" class="absolute -top-14 h-28 w-28 rounded-full object-cover ring-4 ring-white" loading="lazy" />
-            <h3 class="text-lg font-bold text-carbon">Jimmy Donaldson</h3>
-            <div class="my-2 text-chile" aria-label="5 de 5 estrellas">
-              <i class="bx bxs-star"></i><i class="bx bxs-star"></i><i class="bx bxs-star"></i><i class="bx bxs-star"></i><i class="bx bxs-star"></i>
-            </div>
-            <p class="text-sm text-carbon/80">
-              Mi lugar favorito de comida mexicana auténtica. Las salsas son increíbles y los
-              tacos siempre llenos de sabor. Gran variedad de carnes y precios razonables.
-              ¡No se lo pierdan!
-            </p>
-          </article>
-
-          <article class="relative flex flex-col items-center rounded-3xl bg-masa px-6 pb-8 pt-20 text-center shadow-md sm:col-span-2 sm:mx-auto sm:max-w-sm lg:col-span-1 lg:max-w-none">
-            <img src="/photos/BADBUNNY.jpeg" alt="Benito Antonio Martínez Ocasio" class="absolute -top-14 h-28 w-28 rounded-full object-cover ring-4 ring-white" loading="lazy" />
-            <h3 class="text-lg font-bold text-carbon">Benito A. Martínez Ocasio</h3>
-            <div class="my-2 text-chile" aria-label="5 de 5 estrellas">
-              <i class="bx bxs-star"></i><i class="bx bxs-star"></i><i class="bx bxs-star"></i><i class="bx bxs-star"></i><i class="bx bxs-star"></i>
-            </div>
-            <p class="text-sm text-carbon/80">
-              Lo probé por primera vez hoy y ya estoy planeando volver. Tacos jugosos y llenos
-              de sabor, atención fantástica y un ambiente acogedor. ¡Muy recomendado!
-            </p>
-          </article>
-        </div>
-      </section>
     </main>
 
     <!-- Footer -->
-    <footer class="bg-carbon py-12 text-center text-white/80">
-      <div class="mx-auto flex max-w-7xl flex-col items-center gap-4 px-6">
-        <div class="flex gap-3 text-2xl">
-          <a href="#" aria-label="Facebook" class="grid h-11 w-11 place-items-center rounded-full bg-white/10 transition hover:bg-chile"><i class="bx bxl-facebook"></i></a>
-          <a href="#" aria-label="Instagram" class="grid h-11 w-11 place-items-center rounded-full bg-white/10 transition hover:bg-chile"><i class="bx bxl-instagram"></i></a>
-          <a href="#" aria-label="Twitter" class="grid h-11 w-11 place-items-center rounded-full bg-white/10 transition hover:bg-chile"><i class="bx bxl-twitter"></i></a>
-          <a href="#" aria-label="YouTube" class="grid h-11 w-11 place-items-center rounded-full bg-white/10 transition hover:bg-chile"><i class="bx bxl-youtube"></i></a>
-        </div>
-        <nav class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm">
-          <a href="#" class="hover:text-white">Política de privacidad</a>
-          <a href="#" class="hover:text-white">Términos de uso</a>
-          <a href="/about" class="hover:text-white">Nosotros</a>
+    <footer class="bg-ink py-12 text-center text-label text-ink-mut">
+      <div class="mx-auto flex max-w-7xl flex-col items-center gap-3 px-6">
+        <nav class="flex flex-wrap justify-center gap-x-4">
+          <a href="/menu" class="hit-link px-2 hover:text-ink-txt">Menú</a>
+          <a href="/catering" class="hit-link px-2 hover:text-ink-txt">Catering</a>
+          <a href="/about" class="hit-link px-2 hover:text-ink-txt">Nosotros</a>
         </nav>
-        <p class="text-sm">Avn. San Ramón Norte I, Montes de Ame, Santa Gertrudis Copo y Montebello</p>
-        <p class="text-xs text-white/50">
+        <p>Avn. San Ramón Norte I, Montes de Ame, Santa Gertrudis Copo y Montebello</p>
+        <p class="text-caption">
           © <span data-year>2026</span> Carpool Venom · D'mitri Medina Novelo &amp; William Moran Ramírez. Todos los derechos reservados.
         </p>
       </div>

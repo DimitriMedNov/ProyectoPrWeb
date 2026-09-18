@@ -14,7 +14,8 @@ multipágina con un stack moderno.
 | Archivo          | Ruta        | Descripción                                  |
 | ---------------- | ----------- | -------------------------------------------- |
 | `index.html`     | `/`         | Inicio: hero, menú, delivery y reseñas.      |
-| `catering.html`  | `/catering` | Formulario de solicitud de catering.         |
+| `menu.html`      | `/menu`     | Menú completo por categorías.                |
+| `catering.html`  | `/catering` | Paquetes y formulario de solicitud.          |
 | `about.html`     | `/about`    | Historia de la taquería y galería de fotos.  |
 
 ## Desarrollo
@@ -30,14 +31,21 @@ npm run preview  # previsualiza el build de producción
 
 ```
 .
-├── index.html · catering.html · about.html   # páginas (entradas de Vite)
+├── index.html · menu.html · catering.html · about.html   # páginas (entradas de Vite)
 ├── src/
-│   ├── main.ts          # entrada compartida (menú, año del footer)
+│   ├── main.ts          # entrada compartida (menú, año, galería, revelado)
 │   ├── ts/
-│   │   ├── menu.ts       # menú móvil + sombra del header
-│   │   └── catering.ts   # lógica del formulario de catering
-│   └── styles/main.css   # Tailwind + tema (colores de marca)
-├── public/photos/        # imágenes (servidas tal cual desde la raíz)
+│   │   ├── menu.ts       # menú móvil + estado de la barra al hacer scroll
+│   │   ├── catering.ts   # lógica del formulario de catering
+│   │   ├── gallery.ts    # botón de pausa del carrusel de fotos
+│   │   └── reveal.ts     # revelado al entrar en pantalla (nace visible)
+│   └── styles/main.css   # Tailwind + tokens de diseño (claro y oscuro)
+├── public/
+│   ├── photos/           # imágenes originales (servidas tal cual)
+│   ├── img/              # derivadas: recortes sin fondo, logo ligero, favicon
+│   ├── icons.svg         # iconos dibujados a mano (sprite SVG)
+│   ├── og.png            # imagen para compartir (1200×630)
+│   └── apple-touch-icon.png
 ├── vite.config.ts        # configuración multipágina
 └── vercel.json           # configuración de despliegue
 ```
@@ -56,3 +64,6 @@ También funciona en **Netlify** (build: `npm run build`, publish: `dist`).
 
 - El formulario de catering es una **demostración**: no procesa ni guarda datos reales.
 - Las imágenes viven en `public/photos/` y se referencian con rutas absolutas (`/photos/...`).
+- El tema claro u oscuro sigue la preferencia del sistema; no hay interruptor.
+- Después de tocar el bloque `@theme` de `main.css` o `vite.config.ts`, reinicia `npm run dev`
+  (y borra `node_modules/.vite` si algo se ve raro): la caché puede quedarse con la config vieja.

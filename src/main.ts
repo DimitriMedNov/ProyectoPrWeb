@@ -1,5 +1,7 @@
-import "./styles/main.css";
 import { initMenu } from "./ts/menu";
+import { initGallery } from "./ts/gallery";
+import "./ts/reveal";
+import "./ts/menu-page";
 
 // Año dinámico en el footer (todas las páginas).
 function initYear(): void {
@@ -10,3 +12,4 @@ function initYear(): void {
 
 initMenu();
 initYear();
+initGallery();

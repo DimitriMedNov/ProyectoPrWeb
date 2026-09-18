@@ -11,6 +11,7 @@ export default defineConfig({
         index: resolve(__dirname, "index.html"),
         catering: resolve(__dirname, "catering.html"),
         about: resolve(__dirname, "about.html"),
+        menu: resolve(__dirname, "menu.html"),
       },
     },
   },
