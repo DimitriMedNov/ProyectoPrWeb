@@ -2,100 +2,131 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="description" content="La historia de El Taquito Gordo Feliz, una taquería de tacos auténticos." />
     <title>Nosotros — El Taquito Gordo Feliz</title>
-    <link rel="icon" href="/photos/logo.png" type="image/png" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css"
-    />
-  </head>
-  <body class="bg-white text-carbon">
-    <!-- Header -->
-    <header class="site-header">
-      <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-3 md:px-10">
-        <a href="/" class="flex items-center gap-2">
-          <img src="/photos/logo.png" alt="El Taquito Gordo Feliz" class="h-12 w-12 rounded-full" />
-          <span class="hidden font-extrabold text-chile sm:inline">El Taquito Gordo Feliz</span>
-        </a>
-        <button
-          id="menu-icon"
-          class="bx bx-menu text-3xl text-carbon md:hidden"
-          aria-label="Abrir menú"
-          aria-controls="navbar"
-          aria-expanded="false"
-        ></button>
-        <ul id="navbar" class="flex items-center gap-1 md:gap-2">
-          <li><a href="/" class="block px-4 py-2 font-semibold uppercase tracking-wide hover:text-chile">Inicio</a></li>
-          <li><a href="/#menu" class="block px-4 py-2 font-semibold uppercase tracking-wide hover:text-chile">Menú</a></li>
-          <li><a href="/catering" class="block px-4 py-2 font-semibold uppercase tracking-wide hover:text-chile">Catering</a></li>
-          <li><a href="/about" class="block px-4 py-2 font-semibold uppercase tracking-wide text-chile">Nosotros</a></li>
-        </ul>
-      </div>
-    </header>
 
-    <main>
+    <meta property="og:title" content="Nosotros — El Taquito Gordo Feliz" />
+    <meta property="og:description" content="La historia de El Taquito Gordo Feliz, una taquería de tacos auténticos." />
+    <meta property="og:image" content="/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <meta name="color-scheme" content="light dark" />
+    <!-- CSS crítico en línea: fondo del tema y tamaños básicos antes de que
+         cargue la hoja de estilos (en desarrollo, Vite la inyecta con JS). -->
+    <style>
+      html { background: #fffdfa; color: #1a1a1a; }
+      @media (prefers-color-scheme: dark) { html { background: #110f0d; color: #f5f0e8; } }
+      img { max-width: 100%; height: auto; }
+      svg.icon { width: 1.25rem; height: 1.25rem; }
+    </style>
+    <!-- Hoja de estilos enlazada: bloquea el primer pintado hasta que carga,
+         así la página nunca se ve sin estilos (ni en desarrollo ni publicada). -->
+    <link rel="stylesheet" href="/src/styles/main.css" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fffdfa" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#110f0d" />
+    <link rel="icon" href="/img/favicon-64.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  </head>
+  <body class="bg-void text-txt">
+    <a href="#main" class="skip-link">Saltar al contenido</a>
+    <!-- Header -->
+    <!--#header current="about"-->
+
+    <main id="main">
       <!-- Historia -->
-      <section class="relative overflow-hidden bg-masa">
-        <div class="absolute right-0 top-0 -z-0 hidden h-full w-1/2 bg-maiz [clip-path:circle(70%_at_80%_20%)] lg:block"></div>
-        <div class="section relative z-10 grid items-center gap-10 pt-32 md:grid-cols-2">
+      <section class="px-6 pt-28 pb-16 md:px-10 md:pt-36 md:pb-24">
+        <div class="mx-auto grid max-w-7xl items-center gap-12 md:grid-cols-[1.2fr_1fr]">
           <div>
-            <h1 class="text-3xl font-extrabold leading-tight text-carbon md:text-4xl">
-              No es solo un taco<br />es <span class="text-chile">El Taquito Gordo Feliz</span>
+            <p class="enter heading-eyebrow text-acc-cilantro" style="--i: 0">Nuestra historia</p>
+            <h1 class="enter mt-2 text-headline font-bold text-txt md:text-display" style="--i: 1">
+              No es solo un taco,<br />es <span class="gradient-name">El Taquito Gordo Feliz</span>
             </h1>
-            <p class="mt-6 text-justify leading-relaxed text-carbon/80">
-              El Taquito Gordo Feliz es una taquería con tres años de operación, fundada por
-              D'mitri Medina Novelo y William Moran Ramírez. La historia comenzó cuando ambos
-              se conocieron en la universidad y compartieron su amor por la comida mexicana,
-              notando la falta de opciones auténticas en su zona.
-            </p>
-            <p class="mt-4 text-justify leading-relaxed text-carbon/80">
-              Tras meses desarrollando el concepto y el menú, encontraron el local perfecto y
-              lo decoraron con un estilo alegre y colorido que refleja la cultura mexicana. El
-              menú abarca desde los clásicos tacos de carne asada y al pastor hasta opciones
-              vegetarianas y veganas, además de bebidas como horchata y agua de jamaica.
-            </p>
-            <p class="mt-4 text-justify leading-relaxed text-carbon/80">
-              Desde su apertura, ha sido un éxito en la comunidad. Los clientes destacan la
-              autenticidad de la comida y el ambiente acogedor. D'mitri y William están
-              orgullosos de seguir sirviendo tacos deliciosos y difundiendo la cultura
-              mexicana por muchos años más.
-            </p>
-            <a href="/catering" class="btn-primary mt-8">Haz tu pedido</a>
+            <div class="enter" style="--i: 2">
+              <p class="mt-6 text-body text-mut">
+                El Taquito Gordo Feliz es una taquería con tres años de operación, fundada por
+                D'mitri Medina Novelo y William Moran Ramírez. La historia comenzó cuando ambos
+                se conocieron en la universidad y compartieron su amor por la comida mexicana,
+                notando la falta de opciones auténticas en su zona.
+              </p>
+              <p class="mt-4 text-body text-mut">
+                Tras meses desarrollando el concepto y el menú, encontraron el local perfecto y
+                lo decoraron con un estilo alegre y colorido que refleja la cultura mexicana. El
+                menú abarca desde los clásicos tacos de carne asada y al pastor hasta opciones
+                vegetarianas y veganas, además de bebidas como horchata y agua de jamaica.
+              </p>
+              <p class="mt-4 text-body text-mut">
+                Desde su apertura, ha sido un éxito en la comunidad. Los clientes destacan la
+                autenticidad de la comida y el ambiente acogedor. D'mitri y William están
+                orgullosos de seguir sirviendo tacos deliciosos y difundiendo la cultura
+                mexicana por muchos años más.
+              </p>
+            </div>
+            <div class="enter mt-8" style="--i: 3">
+              <a href="/catering" class="btn-primary">Haz tu pedido</a>
+            </div>
           </div>
-          <div class="flex justify-center">
-            <img src="/photos/logo-full.png" alt="Logo de El Taquito Gordo Feliz" class="max-w-xs drop-shadow-xl md:max-w-sm" />
+          <div class="enter relative mx-auto w-full max-w-md" style="--i: 2">
+            <div class="plate absolute inset-[4%] rounded-full" aria-hidden="true"></div>
+            <img
+              src="/img/fotos/logo-full-500.webp"
+              width="500"
+              height="500"
+              alt="Mascota de El Taquito Gordo Feliz"
+              class="relative w-full animate-float"
+            />
           </div>
         </div>
       </section>
 
       <!-- Galería -->
-      <section class="section">
-        <h2 class="heading-title text-center">¡Bienvenido al mejor restaurante!</h2>
-        <div class="mx-auto mt-10 max-w-5xl overflow-hidden rounded-3xl shadow-lg">
-          <div class="slider-track">
-            <img src="/photos/fachada.jpg" alt="Fachada del restaurante" class="aspect-video object-cover" loading="lazy" />
-            <img src="/photos/restaurant.png" alt="Interior del restaurante" class="aspect-video object-cover" loading="lazy" />
-            <img src="/photos/Drinks.jpg" alt="Bebidas mexicanas" class="aspect-video object-cover" loading="lazy" />
-            <img src="/photos/food.jpg" alt="Platillos del menú" class="aspect-video object-cover" loading="lazy" />
-            <img src="/photos/people.jpg" alt="Clientes disfrutando" class="aspect-video object-cover" loading="lazy" />
-            <img src="/photos/tacos.jpg" alt="Tacos recién hechos" class="aspect-video object-cover" loading="lazy" />
+      <section class="bg-deep">
+        <div class="section">
+          <div class="text-center" data-reveal>
+            <span class="heading-eyebrow text-acc-maiz">Galería</span>
+            <h2 id="galeria-titulo" class="heading-title">Así se ve la taquería</h2>
+          </div>
+          <!-- Galería deslizable: se recorre con el dedo, el trackpad o las flechas
+               del teclado; gallery.ts añade los botones y el contador. -->
+          <div class="gallery mx-auto mt-12 max-w-5xl" role="region" aria-roledescription="carrusel" aria-labelledby="galeria-titulo" data-gallery data-reveal>
+            <div class="gallery-track rounded-card shadow-[0_24px_48px_-28px_rgb(0_0_0/0.45)]" tabindex="0" aria-label="Fotos de la taquería. Desliza o usa las flechas para ver más." data-gallery-track>
+              <figure class="gallery-slide" aria-roledescription="diapositiva" aria-label="1 de 6">
+                <img src="/img/fotos/fachada-1280.webp" srcset="/img/fotos/fachada-640.webp 640w, /img/fotos/fachada-1280.webp 1280w" sizes="(min-width: 1100px) 1024px, calc(100vw - 3rem)" width="1280" height="853" alt="Fachada del restaurante" class="aspect-video w-full object-cover" loading="lazy" />
+              </figure>
+              <figure class="gallery-slide" aria-roledescription="diapositiva" aria-label="2 de 6">
+                <img src="/img/fotos/restaurant-640.webp" srcset="/img/fotos/restaurant-640.webp 640w" sizes="(min-width: 1100px) 1024px, calc(100vw - 3rem)" width="640" height="400" alt="Interior del restaurante" class="aspect-video w-full object-cover" loading="lazy" />
+              </figure>
+              <figure class="gallery-slide" aria-roledescription="diapositiva" aria-label="3 de 6">
+                <img src="/img/fotos/drinks-1280.webp" srcset="/img/fotos/drinks-640.webp 640w, /img/fotos/drinks-1280.webp 1280w" sizes="(min-width: 1100px) 1024px, calc(100vw - 3rem)" width="1280" height="841" alt="Bebidas mexicanas" class="aspect-video w-full object-cover" loading="lazy" />
+              </figure>
+              <figure class="gallery-slide" aria-roledescription="diapositiva" aria-label="4 de 6">
+                <img src="/img/fotos/food-800.webp" srcset="/img/fotos/food-640.webp 640w, /img/fotos/food-800.webp 800w" sizes="(min-width: 1100px) 1024px, calc(100vw - 3rem)" width="800" height="600" alt="Platillos del menú" class="aspect-video w-full object-cover" loading="lazy" />
+              </figure>
+              <figure class="gallery-slide" aria-roledescription="diapositiva" aria-label="5 de 6">
+                <img src="/img/fotos/people-760.webp" srcset="/img/fotos/people-640.webp 640w, /img/fotos/people-760.webp 760w" sizes="(min-width: 1100px) 1024px, calc(100vw - 3rem)" width="760" height="610" alt="Clientes disfrutando" class="aspect-video w-full object-cover" loading="lazy" />
+              </figure>
+              <figure class="gallery-slide" aria-roledescription="diapositiva" aria-label="6 de 6">
+                <img src="/img/fotos/tacos-1024.webp" srcset="/img/fotos/tacos-640.webp 640w, /img/fotos/tacos-1024.webp 1024w" sizes="(min-width: 1100px) 1024px, calc(100vw - 3rem)" width="1024" height="683" alt="Tacos recién hechos" class="aspect-video w-full object-cover" loading="lazy" />
+              </figure>
+            </div>
+            <div class="mt-5 flex items-center justify-center gap-4" data-gallery-controls hidden>
+              <button type="button" class="gallery-btn" aria-label="Foto anterior" data-gallery-prev>
+                <svg class="icon size-5" aria-hidden="true"><use href="/icons.svg#chevron-left" /></svg>
+              </button>
+              <p class="min-w-14 text-center text-meta text-mut tabular-nums" aria-live="polite" data-gallery-status>1 / 6</p>
+              <button type="button" class="gallery-btn" aria-label="Foto siguiente" data-gallery-next>
+                <svg class="icon size-5" aria-hidden="true"><use href="/icons.svg#chevron-right" /></svg>
+              </button>
+            </div>
           </div>
         </div>
       </section>
     </main>
 
-    <footer class="bg-carbon py-10 text-center text-sm text-white/70">
-      <div class="mx-auto flex max-w-7xl flex-col items-center gap-2 px-6">
-        <nav class="flex flex-wrap justify-center gap-x-6 gap-y-2">
-          <a href="/" class="hover:text-white">Inicio</a>
-          <a href="/catering" class="hover:text-white">Catering</a>
-        </nav>
-        <p>Avn. San Ramón Norte I, Montes de Ame, Santa Gertrudis Copo y Montebello</p>
-        <p class="text-xs text-white/50">© <span data-year>2026</span> D'mitri Medina Novelo &amp; William Moran Ramírez.</p>
-      </div>
-    </footer>
+    <!--#footer current="about"-->
 
     <script type="module" src="/src/main.ts"></script>
   </body>

@@ -1,23 +1,175 @@
-/* Fuente de marca (import corregido: el original tenía espacios y no cargaba) */
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap");
+/* SF Pro en dispositivos de Apple; Inter de respaldo en el resto. Inter se
+   enlaza desde el <head> (build/html.ts) para que cargue en paralelo con esta
+   hoja y no en cadena; el navegador solo descarga la fuente si la necesita. */
 @import "tailwindcss";
 
-/* ----- Tokens de tema (Tailwind v4 CSS-first) ----- */
-@theme {
-  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
+/* ----- Tokens de color -----
+   Tripletas RGB para que los modificadores de opacidad (bg-deep/60) funcionen.
+   Tonos de la marca (chile, maíz, masa) con la luminosidad ajustada hasta pasar
+   4.5:1 en texto y 3:1 en bordes. Cifras medidas en la fase 1 de la auditoría.
+   El tema sigue al sistema: sin interruptor ni JavaScript, así no hay parpadeo. */
+:root {
+  color-scheme: light dark;
 
-  /* Paleta de la taquería */
-  --color-masa: #ebdbc8; /* crema / tortilla */
-  --color-masa-dark: #e0ccb3;
-  --color-maiz: #ffdc54; /* amarillo maíz (marca) */
-  --color-maiz-dark: #f5c518;
-  --color-chile: #e63329; /* rojo chile */
-  --color-chile-dark: #c41e16;
-  --color-carbon: #1a1a1a; /* negro suave */
+  --void: 255 253 250; /* fondo de página */
+  --deep: 235 219 200; /* masa: sección alterna */
+  --panel: 255 255 255; /* tarjeta */
+  --panel-2: 247 240 233; /* relleno suave */
+  --maiz: 255 220 84; /* superficie amarilla; encima, siempre texto oscuro */
+  --arc: 183 30 21; /* rojo chile legible: lo accionable */
+  --fill: 183 30 21; /* relleno de botón */
+  --on-fill: 255 255 255;
+  --chile: 230 51 41; /* rojo de marca original, solo decorativo */
+  --txt: 26 26 26;
+  --mut: 102 94 87;
+  --field: 146 136 127; /* borde de campo (3:1) */
+  --line: 226 216 204; /* separador decorativo */
+  --ink: 26 26 26; /* pie de página */
+  --ink-txt: 245 240 232;
+  --ink-mut: 140 130 120;
 
-  --radius-pill: 60px;
+  /* Acentos por sección, sacados de la taquería. Medidos ≥4.6:1 sobre la
+     página, la masa y las zonas teñidas por las manchas del fondo. */
+  --acc-maiz: 129 87 3;
+  --acc-cilantro: 28 110 41;
+  --acc-jamaica: 182 32 95;
 
-  --animate-float: float 2.5s ease-in-out infinite;
+  /* Superficies fijas en ambos temas: el plato amarillo detrás de la comida
+     y el tablero claro de los logos de delivery (pensados para fondo claro). */
+  --maiz-bright: 255 220 84;
+  --on-maiz: 183 30 21; /* icono rojo sobre el plato amarillo: 4.87:1 */
+  --board: 255 255 255;
+
+  /* Curvas de Apple: entrada suave, salida larga. */
+  --ease: cubic-bezier(0.28, 0.11, 0.32, 1);
+  --ease-spring: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --void: 17 15 13;
+    --deep: 34 29 22;
+    --panel: 39 36 32;
+    --panel-2: 53 48 44;
+    --maiz: 50 44 21;
+    --arc: 237 111 104;
+    --fill: 205 34 24;
+    --on-fill: 255 255 255;
+    --txt: 245 240 232;
+    --mut: 161 153 145;
+    --field: 131 121 111;
+    --line: 60 55 50;
+    --ink: 10 9 8;
+    --ink-txt: 245 240 232;
+    --ink-mut: 131 121 111;
+    --acc-maiz: 199 134 5;
+    --acc-cilantro: 41 163 61;
+    --acc-jamaica: 227 97 151;
+    --board: 245 240 232;
+  }
+}
+
+/* Más contraste: bordes y texto secundario más firmes. */
+@media (prefers-contrast: more) {
+  :root {
+    --mut: 58 52 46;
+    --field: 90 82 74;
+    --line: 110 100 90;
+  }
+}
+@media (prefers-contrast: more) and (prefers-color-scheme: dark) {
+  :root {
+    --mut: 206 198 190;
+    --field: 170 160 150;
+    --line: 150 140 130;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .panel {
+    border-width: 2px;
+    border-color: rgb(var(--line)) !important;
+  }
+  .gradient-name {
+    background-image: none;
+    color: rgb(var(--txt));
+  }
+}
+
+/* Sin transparencia: el cristal desaparece y las superficies se vuelven sólidas. */
+@media (prefers-reduced-transparency: reduce) {
+  .site-header,
+  .panel,
+  .modal {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  .site-header {
+    background-color: rgb(var(--void)) !important;
+  }
+  .panel {
+    background-color: rgb(var(--panel)) !important;
+  }
+  body::before {
+    display: none;
+  }
+}
+
+@theme inline {
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, "Helvetica Neue", Arial,
+    sans-serif;
+  --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", Inter, "Helvetica Neue",
+    Arial, sans-serif;
+
+  --color-void: rgb(var(--void));
+  --color-deep: rgb(var(--deep));
+  --color-panel: rgb(var(--panel));
+  --color-panel-2: rgb(var(--panel-2));
+  --color-maiz: rgb(var(--maiz));
+  --color-arc: rgb(var(--arc));
+  --color-fill: rgb(var(--fill));
+  --color-on-fill: rgb(var(--on-fill));
+  --color-chile: rgb(var(--chile));
+  --color-txt: rgb(var(--txt));
+  --color-mut: rgb(var(--mut));
+  --color-field: rgb(var(--field));
+  --color-line: rgb(var(--line));
+  --color-ink: rgb(var(--ink));
+  --color-ink-txt: rgb(var(--ink-txt));
+  --color-ink-mut: rgb(var(--ink-mut));
+  --color-acc-maiz: rgb(var(--acc-maiz));
+  --color-acc-cilantro: rgb(var(--acc-cilantro));
+  --color-acc-jamaica: rgb(var(--acc-jamaica));
+  --color-maiz-bright: rgb(var(--maiz-bright));
+  --color-on-maiz: rgb(var(--on-maiz));
+  --color-board: rgb(var(--board));
+
+  /* Escala de roles, siempre en rem. 13px es el piso de cualquier texto
+     visible y 17px el cuerpo por defecto. */
+  --text-caption: 0.8125rem;
+  --text-caption--line-height: 1.4;
+  --text-label: 0.875rem;
+  --text-label--line-height: 1.45;
+  --text-meta: 0.9375rem;
+  --text-meta--line-height: 1.5;
+  --text-body: 1.0625rem;
+  --text-body--line-height: 1.5;
+  --text-title: 1.5rem;
+  --text-title--line-height: 1.25;
+  --text-title--letter-spacing: -0.01em;
+  --text-headline: 2rem;
+  --text-headline--line-height: 1.15;
+  --text-headline--letter-spacing: -0.016em;
+  --text-display: 3rem;
+  --text-display--line-height: 1.06;
+  --text-display--letter-spacing: -0.02em;
+  --text-hero: clamp(2.25rem, 8vw, 4.5rem);
+  --text-hero--line-height: 1.04;
+  --text-hero--letter-spacing: -0.022em;
+
+  --radius-card: 1.125rem;
+
+  --animate-float: float 2.5s ease-in-out 2;
 }
 
 @keyframes float {
@@ -39,24 +191,56 @@
 
   body {
     font-family: var(--font-sans);
-    color: var(--color-carbon);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    background-color: rgb(var(--void));
+    color: rgb(var(--txt));
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    isolation: isolate;
   }
 
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.015em;
+  }
+
+  /* El cristal necesita algo que difuminar: manchas de color fijas al viewport,
+     en los tonos de la taquería. Alfas medidas: el texto atenuado sigue por
+     encima de 4.6:1 en el punto más intenso de cada mancha. */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image:
+      radial-gradient(48rem 32rem at 88% -6%, rgb(255 220 84 / 0.3), transparent 60%),
+      radial-gradient(42rem 30rem at 6% 8%, rgb(230 51 41 / 0.1), transparent 58%),
+      radial-gradient(40rem 28rem at 70% 96%, rgb(60 150 70 / 0.1), transparent 60%);
+  }
+  @media (prefers-color-scheme: dark) {
+    body::before {
+      background-image:
+        radial-gradient(48rem 32rem at 88% -6%, rgb(230 51 41 / 0.2), transparent 60%),
+        radial-gradient(42rem 30rem at 6% 8%, rgb(255 200 60 / 0.12), transparent 58%),
+        radial-gradient(40rem 28rem at 70% 96%, rgb(200 40 120 / 0.16), transparent 60%);
+    }
+  }
+
+  /* Sobre amarillo va texto oscuro, nunca blanco. */
   ::selection {
-    background: var(--color-maiz);
-    color: #fff;
+    background: rgb(255 220 84);
+    color: rgb(26 26 26);
   }
 
-  /* Scrollbar de marca */
-  ::-webkit-scrollbar {
-    width: 12px;
-  }
-  ::-webkit-scrollbar-thumb {
-    background: var(--color-maiz);
-    border-radius: 50px;
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    background: var(--color-chile);
+  :focus-visible {
+    outline: 3px solid rgb(var(--arc));
+    outline-offset: 3px;
+    border-radius: 10px;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -75,53 +259,161 @@
 
 /* ----- Componentes reutilizables ----- */
 @layer components {
+  /* Botones en píldora. Hover al 85% de opacidad (medido: el texto sigue
+     por encima de 4.8:1) y el empuje de iOS al pulsar. */
   .btn-primary,
-  .btn-outline {
-    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3
-      font-semibold transition-all duration-200 focus-visible:outline-2
-      focus-visible:outline-offset-2 focus-visible:outline-carbon;
+  .btn-secondary {
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-6 py-2.5
+      text-body font-medium no-underline;
+    transition:
+      opacity 0.25s var(--ease),
+      transform 0.25s var(--ease);
+  }
+  .btn-primary:hover,
+  .btn-secondary:hover {
+    opacity: 0.85;
+  }
+  .btn-primary:active,
+  .btn-secondary:active {
+    transform: scale(0.97);
   }
   .btn-primary {
-    @apply bg-chile text-white shadow-lg shadow-chile/30 hover:bg-chile-dark hover:-translate-y-0.5;
+    @apply bg-fill text-on-fill;
   }
-  .btn-outline {
-    @apply border-2 border-carbon text-carbon hover:bg-carbon hover:text-white;
+  .btn-secondary {
+    @apply bg-panel-2 text-txt;
+  }
+
+  /* Enlace con chevron: el patrón de navegación de Apple. */
+  .link-chevron {
+    @apply inline-flex min-h-11 items-center gap-1 text-body text-arc no-underline hover:underline;
+  }
+
+  .icon {
+    @apply inline-block size-5 shrink-0;
   }
 
   .section {
-    @apply mx-auto max-w-7xl px-6 py-20 md:px-10;
+    @apply mx-auto max-w-7xl px-6 py-20 md:px-10 md:py-28;
   }
 
+  /* Material estándar para tarjetas (capa de contenido). Los rellenos 0.8 en
+     claro y 0.62 en oscuro son pisos: bajarlos rompe el contraste. */
+  .panel {
+    position: relative;
+    border-radius: var(--radius-card);
+    background-color: rgb(var(--panel) / 0.8);
+    backdrop-filter: saturate(160%) blur(20px);
+    -webkit-backdrop-filter: saturate(160%) blur(20px);
+    border: 1px solid rgb(255 255 255 / 0.55);
+    box-shadow:
+      0 1px 2px rgb(0 0 0 / 0.04),
+      0 10px 30px -16px rgb(0 0 0 / 0.18);
+  }
+
+  /* Las tarjetas se levantan al pasar el cursor. */
+  .lift {
+    transition:
+      transform 0.45s var(--ease),
+      box-shadow 0.45s var(--ease);
+  }
+  .lift:hover {
+    transform: translateY(-4px);
+    box-shadow:
+      0 2px 6px rgb(0 0 0 / 0.05),
+      0 24px 48px -28px rgb(0 0 0 / 0.28);
+  }
+
+  /* Degradado de marca, solo para el nombre de la portada (texto grande:
+     ambos extremos medidos por encima de 4.6:1). */
+  .gradient-name {
+    background-image: linear-gradient(
+      100deg,
+      rgb(var(--arc)),
+      rgb(var(--acc-jamaica)) 55%,
+      rgb(var(--acc-maiz))
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Píldora de dato: relleno suave, sin borde. */
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full bg-panel-2 px-3 py-1 text-caption text-mut;
+  }
+
+  /* Plato amarillo detrás de la comida y de los iconos. */
+  .plate {
+    background: radial-gradient(circle at 35% 30%, rgb(255 232 140), rgb(var(--maiz-bright)) 70%);
+    color: rgb(var(--on-maiz));
+  }
+
+  /* Cabecera de sección: antetítulo en color y título grande debajo. */
   .heading-eyebrow {
-    @apply text-sm font-semibold uppercase tracking-widest text-chile;
+    @apply block text-body font-semibold text-arc;
   }
   .heading-title {
-    @apply mt-1 text-3xl font-extrabold text-carbon md:text-4xl;
+    @apply mt-1 text-headline font-semibold text-txt md:text-display;
   }
 
   .field-label {
-    @apply mb-1 block text-sm font-semibold text-carbon;
+    @apply mb-1 block text-label font-medium text-txt;
   }
   .field-input {
-    @apply w-full rounded-lg border border-carbon/20 bg-white px-3 py-2.5 text-carbon
-      outline-none transition focus:border-maiz-dark focus:ring-2 focus:ring-maiz/50;
+    @apply min-h-11 w-full rounded-xl border border-field bg-panel px-3 py-2.5 text-body text-txt
+      outline-none transition focus:border-arc focus:ring-2 focus:ring-arc/40;
   }
 
-  /* Header con sombra al hacer scroll */
+  /* Enlace de texto con área táctil de 44px. */
+  .hit-link {
+    @apply inline-flex min-h-11 min-w-11 items-center justify-center;
+  }
+
+  /* Capa funcional: Liquid Glass solo en la barra de navegación.
+     menu.ts añade .is-scrolled al pasar de 10px; entonces se vuelve más opaca
+     para que las etiquetas sigan leyéndose sobre las fotos que pasan detrás. */
   .site-header {
-    @apply fixed inset-x-0 top-0 z-50 bg-white/95 backdrop-blur transition-shadow duration-200;
+    @apply fixed inset-x-0 top-0 z-50;
+    background-color: rgb(var(--void) / 0.72);
+    backdrop-filter: saturate(180%) blur(28px);
+    -webkit-backdrop-filter: saturate(180%) blur(28px);
+    border-bottom: 1px solid transparent;
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.55);
+    transition:
+      background-color 0.4s var(--ease),
+      border-color 0.4s var(--ease),
+      box-shadow 0.4s var(--ease);
+  }
+  .site-header::after {
+    content: "";
+    position: absolute;
+    inset: 100% 0 auto 0;
+    height: 20px;
+    background: linear-gradient(rgb(var(--void) / 0.75), rgb(var(--void) / 0));
+    pointer-events: none;
   }
   .site-header.is-scrolled {
-    @apply shadow-md;
+    background-color: rgb(var(--void) / 0.94);
+    border-bottom-color: rgb(var(--line) / 0.6);
+    box-shadow: 0 1px 12px -6px rgb(0 0 0 / 0.25);
   }
 
-  /* Tarjeta de paquete de catering */
+  /* Enlace para saltar la navegación: visible solo al recibir foco. */
+  .skip-link {
+    @apply fixed left-4 top-4 z-[200] -translate-y-24 rounded-full bg-fill px-5 py-3
+      font-medium text-on-fill transition-transform focus-visible:translate-y-0;
+  }
+
+  /* Tarjeta de paquete de catering (sobre .panel) */
   .package-card {
-    @apply flex flex-col rounded-3xl border border-carbon/10 bg-white p-8 text-left shadow-lg
-      transition-all duration-200 hover:-translate-y-2 hover:border-maiz hover:shadow-xl;
+    @apply flex flex-col p-8 text-left;
   }
   .package-card.is-featured {
-    @apply border-maiz-dark ring-2 ring-maiz;
+    border-color: rgb(var(--chile));
+    box-shadow:
+      0 0 0 1px rgb(var(--chile)),
+      0 10px 30px -16px rgb(var(--chile) / 0.45);
   }
 
   /* ----- Modal ----- */
@@ -131,21 +423,354 @@
     backdrop-filter: blur(4px);
     opacity: 0;
     visibility: hidden;
+    /* Al cerrar, la visibilidad espera a que acabe el fundido. */
     transition:
-      opacity 0.25s ease,
-      visibility 0.25s ease;
+      opacity 0.25s var(--ease),
+      visibility 0s linear 0.25s;
   }
+  /* Al abrir, visible al instante: si no, el focus() de catering.ts llega
+     mientras el modal aún cuenta como oculto y el navegador lo ignora. */
   .modal.is-open {
     opacity: 1;
     visibility: visible;
+    transition:
+      opacity 0.25s var(--ease),
+      visibility 0s;
   }
+  /* El panel es una columna: cabecera fija, cuerpo que se desplaza y pie fijo
+     con el total y el botón de enviar siempre a la vista. */
   .modal-panel {
-    @apply max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-3xl bg-white p-6 shadow-2xl md:p-8;
+    @apply flex w-full max-w-2xl flex-col overflow-hidden bg-panel;
+    border-radius: var(--radius-card);
+    box-shadow: 0 30px 80px -30px rgb(0 0 0 / 0.5);
+    max-height: 92dvh;
     transform: translateY(16px) scale(0.98);
-    transition: transform 0.25s ease;
+    transition: transform 0.4s var(--ease-spring);
   }
   .modal.is-open .modal-panel {
     transform: translateY(0) scale(1);
+  }
+  .modal-head {
+    @apply flex shrink-0 items-start justify-between gap-4 border-b border-line px-6 pt-5 pb-4 md:px-8;
+  }
+  .modal-form {
+    @apply flex min-h-0 flex-1 flex-col;
+  }
+  .modal-body {
+    @apply min-h-0 flex-1 overflow-y-auto px-6 py-6 md:px-8;
+    overscroll-behavior: contain;
+  }
+  .modal-foot {
+    @apply shrink-0 border-t border-line bg-panel px-6 py-4 md:px-8;
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+
+  /* Pasos numerados del formulario. */
+  .step + .step {
+    @apply mt-8 border-t border-line pt-8;
+  }
+  /* float saca la leyenda del borde del fieldset: si no, la línea separadora
+     la atraviesa y deja un hueco debajo. */
+  .step-legend {
+    @apply float-left mb-4 flex w-full items-center gap-3 text-body font-semibold text-txt;
+  }
+  .step-legend + * {
+    clear: both;
+  }
+  .step-num {
+    @apply grid size-7 place-items-center rounded-full bg-fill text-label font-semibold text-on-fill;
+  }
+  .field-hint {
+    @apply mt-1 text-caption text-mut;
+  }
+  /* Campo trampa antispam: fuera de la pantalla, no oculto con display:none
+     (muchos bots se saltan los campos ocultos). */
+  .honeypot {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+  #mensaje-enviado[data-state="error"] {
+    background-color: rgb(var(--arc) / 0.1);
+    box-shadow: inset 0 0 0 1px rgb(var(--arc) / 0.5);
+  }
+
+  /* Errores: solo cuando la persona ya interactuó con el campo. */
+  .field-input:user-invalid {
+    border-color: rgb(var(--arc));
+    box-shadow: 0 0 0 3px rgb(var(--arc) / 0.15);
+  }
+
+  /* Tarjetas de paquete: un radio visualmente oculto (pero enfocable) y la
+     tarjeta como su etiqueta. */
+  .pkg-option {
+    @apply relative block cursor-pointer;
+  }
+  .pkg-card {
+    @apply relative flex h-full min-h-11 flex-col items-center rounded-2xl border border-field bg-panel px-2 py-4
+      text-center sm:px-3;
+    transition:
+      border-color 0.25s var(--ease),
+      background-color 0.25s var(--ease),
+      transform 0.25s var(--ease);
+  }
+  .pkg-option:hover .pkg-card {
+    border-color: rgb(var(--txt) / 0.5);
+  }
+  .pkg-option:active .pkg-card {
+    transform: scale(0.98);
+  }
+  .pkg-check {
+    @apply absolute top-2 right-2 text-arc opacity-0;
+    transition: opacity 0.2s var(--ease);
+  }
+  input:checked + .pkg-card {
+    border-color: rgb(var(--arc));
+    background-color: rgb(var(--arc) / 0.06);
+    box-shadow: 0 0 0 1px rgb(var(--arc));
+  }
+  input:checked + .pkg-card .pkg-check {
+    opacity: 1;
+  }
+  input:focus-visible + .pkg-card,
+  input:focus-visible + span {
+    outline: 3px solid rgb(var(--arc));
+    outline-offset: 3px;
+  }
+
+  /* Complementos como píldoras con casilla. */
+  .choice-chip > span {
+    @apply inline-flex min-h-11 cursor-pointer items-center gap-1.5 rounded-full border border-field bg-panel
+      px-4 text-meta text-txt select-none;
+    transition:
+      border-color 0.2s var(--ease),
+      background-color 0.2s var(--ease),
+      opacity 0.2s var(--ease);
+  }
+  .chip-check {
+    @apply -ml-1 hidden text-arc;
+  }
+  .choice-chip input:checked + span {
+    border-color: rgb(var(--arc));
+    background-color: rgb(var(--arc) / 0.08);
+  }
+  .choice-chip input:checked + span .chip-check {
+    display: inline-block;
+  }
+  .choice-chip input:disabled + span {
+    cursor: not-allowed;
+    opacity: 0.45;
+  }
+
+  /* Contador de meseras: − valor + */
+  .stepper {
+    @apply inline-flex items-center gap-1 rounded-full border border-field bg-panel p-1;
+  }
+  .stepper-btn {
+    @apply grid size-11 place-items-center rounded-full bg-panel-2 text-txt;
+    transition:
+      opacity 0.2s var(--ease),
+      transform 0.2s var(--ease);
+  }
+  .stepper-btn:active {
+    transform: scale(0.94);
+  }
+  .stepper-btn[aria-disabled="true"] {
+    cursor: not-allowed;
+    opacity: 0.4;
+  }
+  .stepper-value {
+    @apply h-11 w-12 bg-transparent text-center text-title font-semibold text-txt outline-none;
+    -moz-appearance: textfield;
+  }
+  .stepper-value::-webkit-inner-spin-button,
+  .stepper-value::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+
+/* En móvil el modal es una hoja que sube desde abajo, como en iOS. */
+@media (max-width: 639.98px) {
+  .modal {
+    padding: 0;
+    place-items: end stretch;
+  }
+  .modal-panel {
+    max-width: none;
+    height: 94dvh;
+    max-height: 94dvh;
+    border-radius: var(--radius-card) var(--radius-card) 0 0;
+    transform: translateY(100%);
+  }
+  .modal.is-open .modal-panel {
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .site-header {
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.08);
+  }
+  .panel {
+    background-color: rgb(var(--panel) / 0.62);
+    border-color: rgb(255 255 255 / 0.08);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.05),
+      0 12px 32px -20px rgb(0 0 0 / 0.8);
+  }
+  .package-card.is-featured {
+    border-color: rgb(var(--arc));
+    box-shadow:
+      0 0 0 1px rgb(var(--arc)),
+      0 12px 32px -20px rgb(0 0 0 / 0.8);
+  }
+}
+
+/* ----- Movimiento ----- */
+/* Transición suave entre páginas (View Transitions entre documentos). Donde el
+   navegador no la soporta, la navegación es la de siempre. */
+@view-transition {
+  navigation: auto;
+}
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.3s;
+  animation-timing-function: var(--ease);
+}
+/* La barra no se funde: se queda quieta mientras cambia el contenido. */
+.site-header {
+  view-transition-name: site-header;
+}
+@media (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: none;
+  }
+}
+
+/* Revelado al entrar en pantalla. El elemento nace visible: reveal.ts solo lo
+   oculta si puede garantizar que volverá a mostrarlo. */
+[data-reveal] {
+  transition:
+    opacity 0.7s var(--ease),
+    transform 0.7s var(--ease);
+}
+[data-reveal][data-hidden="true"] {
+  opacity: 0;
+  transform: translateY(28px);
+}
+
+/* Entrada escalonada de la portada, solo con CSS: si el JavaScript no corre,
+   la animación termina igual y nada se queda en blanco. */
+.enter {
+  animation: enter 0.8s var(--ease) both;
+  animation-delay: calc(var(--i, 0) * 0.06s);
+}
+@keyframes enter {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}
+
+/* ----- Página de menú ----- */
+/* Pestañas de categoría: capa funcional, así que llevan el mismo cristal que la
+   barra y se quedan pegadas justo debajo de ella. */
+.menu-tabs {
+  position: sticky;
+  top: 3.75rem;
+  z-index: 40;
+  background-color: rgb(var(--void) / 0.72);
+  backdrop-filter: saturate(180%) blur(28px);
+  -webkit-backdrop-filter: saturate(180%) blur(28px);
+  border-block: 1px solid rgb(var(--line) / 0.6);
+}
+.menu-tabs ul,
+.menu-tabs [data-menu-filter] {
+  scrollbar-width: none;
+}
+.menu-tab {
+  @apply inline-flex min-h-11 items-center rounded-full bg-panel-2 px-4 text-meta font-medium whitespace-nowrap
+    text-txt no-underline;
+  transition: opacity 0.2s var(--ease);
+}
+.menu-tab:hover {
+  opacity: 0.85;
+}
+.menu-tab[aria-current="true"] {
+  background-color: rgb(var(--txt));
+  color: rgb(var(--void));
+}
+.menu-section {
+  scroll-margin-top: 8rem;
+}
+.menu-filter {
+  @apply inline-flex min-h-11 shrink-0 items-center gap-1.5 rounded-full border border-field px-4 text-label
+    font-medium whitespace-nowrap text-txt;
+  transition:
+    background-color 0.2s var(--ease),
+    border-color 0.2s var(--ease);
+}
+.menu-filter[aria-pressed="true"] {
+  border-color: rgb(var(--arc));
+  background-color: rgb(var(--arc) / 0.08);
+}
+/* La carta: una hoja con marco doble fino, como un menú impreso sobre la mesa. */
+.carta {
+  @apply bg-panel px-5 py-10 sm:px-10 md:px-14 md:py-14;
+  border-radius: var(--radius-card);
+  box-shadow:
+    inset 0 0 0 1px rgb(var(--line)),
+    inset 0 0 0 7px rgb(var(--panel)),
+    inset 0 0 0 8px rgb(var(--line)),
+    0 24px 48px -28px rgb(0 0 0 / 0.35);
+}
+.carta-grid {
+  @apply mt-12 grid gap-x-14 gap-y-12 md:grid-cols-2;
+}
+.carta-cat {
+  scroll-margin-top: 9rem;
+}
+.carta-head {
+  @apply mb-2 flex items-center gap-3 border-b-2 pb-3;
+  border-color: rgb(var(--chile));
+}
+.carta-item {
+  @apply border-b border-dashed border-line py-4 last:border-b-0;
+}
+/* Nombre ····· precio: la línea de puntos se estira entre los dos. */
+.carta-line {
+  @apply flex items-baseline gap-2;
+}
+.carta-name {
+  @apply text-body font-semibold text-txt;
+}
+.carta-leader {
+  @apply min-w-6 flex-1 translate-y-[-0.25em] border-b-2 border-dotted;
+  border-color: rgb(var(--mut) / 0.45);
+}
+.carta-price {
+  @apply text-body font-semibold text-txt tabular-nums;
+}
+.carta-desc {
+  @apply mt-1 text-meta text-mut;
+}
+.carta-tags {
+  @apply mt-1.5 flex flex-wrap gap-x-3 gap-y-1 text-caption text-mut;
+}
+.menu-list {
+  @apply divide-y divide-line px-5;
+}
+.menu-row {
+  @apply flex min-h-16 items-center gap-4 py-3;
+}
+@media (prefers-reduced-transparency: reduce) {
+  .menu-tabs {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background-color: rgb(var(--void));
   }
 }
 
@@ -155,56 +780,70 @@ body.modal-open {
 }
 
 /* ----- Navegación móvil ----- */
-/* El ícono de Boxicons fuerza display:inline-block; lo ocultamos en escritorio
-   con un selector por ID (mayor especificidad que .md\:hidden). */
-@media (min-width: 768px) {
-  #menu-icon {
-    display: none;
-  }
-}
-
-@media (max-width: 768px) {
+@media (max-width: 767.98px) {
   #navbar {
     position: absolute;
     inset: 100% 0 auto 0;
     flex-direction: column;
-    background: #fff;
-    border-top: 3px solid var(--color-maiz);
-    box-shadow: 0 8px 16px rgb(0 0 0 / 0.08);
+    align-items: stretch;
+    /* Sólido: un backdrop-filter anidado dentro de la barra no difuminaría nada. */
+    background: rgb(var(--void) / 0.98);
+    border-bottom: 1px solid rgb(var(--line));
+    box-shadow: 0 16px 24px -16px rgb(0 0 0 / 0.25);
     transform: scaleY(0);
     transform-origin: top;
     opacity: 0;
+    /* visibility saca los enlaces del orden de tabulación y del lector de
+       pantalla mientras el menú está cerrado. */
+    visibility: hidden;
     transition:
-      transform 0.2s ease,
-      opacity 0.2s ease;
-    pointer-events: none;
+      transform 0.3s var(--ease-spring),
+      opacity 0.2s var(--ease),
+      visibility 0.3s var(--ease);
   }
   #navbar.is-open {
     transform: scaleY(1);
     opacity: 1;
-    pointer-events: auto;
+    visibility: visible;
   }
   #navbar a {
     padding: 1rem 1.5rem;
   }
 }
 
-/* ----- Slider de la página About (responsive, antes era 1280px fijo) ----- */
-.slider-track {
+/* ----- Galería de la página About ----- */
+/* Desplazamiento horizontal con encaje por foto: funciona con el dedo, el
+   trackpad y las flechas del teclado, sin JavaScript. */
+.gallery-track {
   display: flex;
-  width: 600%;
-  animation: slide 24s infinite alternate ease-in-out;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
 }
-.slider-track > * {
-  width: 100%;
-  flex-shrink: 0;
+.gallery-track::-webkit-scrollbar {
+  display: none;
 }
-
-@keyframes slide {
-  0%, 13% { margin-left: 0; }
-  16%, 29% { margin-left: -100%; }
-  33%, 46% { margin-left: -200%; }
-  49%, 62% { margin-left: -300%; }
-  66%, 79% { margin-left: -400%; }
-  83%, 100% { margin-left: -500%; }
+.gallery-slide {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+}
+.gallery-btn {
+  @apply grid size-11 place-items-center rounded-full bg-panel-2 text-txt;
+  transition:
+    opacity 0.2s var(--ease),
+    transform 0.2s var(--ease);
+}
+.gallery-btn:active {
+  transform: scale(0.94);
+}
+.gallery-btn[aria-disabled="true"] {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+@media (prefers-reduced-motion: reduce) {
+  .gallery-track {
+    scroll-behavior: auto;
+  }
 }

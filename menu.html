@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="description" content="Menú de El Taquito Gordo Feliz: especialidades de la casa, tacos, bebidas y opciones vegetarianas y veganas." />
+    <title>Menú — El Taquito Gordo Feliz</title>
+
+    <meta property="og:title" content="Menú — El Taquito Gordo Feliz" />
+    <meta property="og:description" content="Especialidades de la casa, tacos, bebidas y opciones vegetarianas y veganas." />
+    <meta property="og:image" content="/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <meta name="color-scheme" content="light dark" />
+    <!-- CSS crítico en línea: fondo del tema y tamaños básicos antes de que
+         cargue la hoja de estilos (en desarrollo, Vite la inyecta con JS). -->
+    <style>
+      html { background: #fffdfa; color: #1a1a1a; }
+      @media (prefers-color-scheme: dark) { html { background: #110f0d; color: #f5f0e8; } }
+      img { max-width: 100%; height: auto; }
+      svg.icon { width: 1.25rem; height: 1.25rem; }
+    </style>
+    <!-- Hoja de estilos enlazada: bloquea el primer pintado hasta que carga,
+         así la página nunca se ve sin estilos (ni en desarrollo ni publicada). -->
+    <link rel="stylesheet" href="/src/styles/main.css" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fffdfa" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#110f0d" />
+    <link rel="icon" href="/img/favicon-64.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  </head>
+  <body class="bg-void text-txt">
+    <a href="#main" class="skip-link">Saltar al contenido</a>
+    <!-- Header -->
+    <!--#header current="menu"-->
+
+    <main id="main">
+      <!-- Hero -->
+      <section class="px-6 pt-28 pb-10 text-center md:px-10 md:pt-36 md:pb-14">
+        <p class="enter heading-eyebrow" style="--i: 0">Menú</p>
+        <h1 class="enter gradient-name mx-auto mt-2 max-w-3xl pb-2 text-hero font-bold" style="--i: 1">
+          Lo que sale de nuestra cocina
+        </h1>
+        <p class="enter mx-auto mt-4 max-w-2xl text-title font-medium text-txt" style="--i: 2">
+          Tacos de trompo y de parrilla, antojitos yucatecos, aguas frescas del día y opciones vegetarianas y veganas.
+        </p>
+        <div class="enter mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2" style="--i: 3">
+          <a href="/catering" class="btn-primary">Pedir para un evento</a>
+          <a href="/#delivery" class="link-chevron">Pedir por apps de delivery <span aria-hidden="true">›</span></a>
+        </div>
+      </section>
+
+      <!-- Categorías: navegación por anclas, funciona sin JavaScript.
+           El filtro aparece solo si corre menu-page.ts. -->
+      <nav class="menu-tabs" aria-label="Categorías del menú">
+        <ul class="mx-auto flex max-w-7xl gap-2 overflow-x-auto px-6 py-3 md:justify-center md:px-10" data-menu-tabs>
+<!--#menu-tabs-->
+        </ul>
+        <div class="mx-auto flex max-w-7xl items-center gap-2 overflow-x-auto px-6 pb-3 md:justify-center md:px-10" data-menu-filter hidden>
+          <span class="mr-1 shrink-0 text-label text-mut">Mostrar:</span>
+          <button type="button" class="menu-filter" data-filter="" aria-pressed="true">Todo</button>
+          <button type="button" class="menu-filter" data-filter="vegetariano" aria-pressed="false"><svg class="icon size-4 text-acc-cilantro" aria-hidden="true"><use href="/icons.svg#leaf" /></svg>Vegetariano</button>
+          <button type="button" class="menu-filter" data-filter="vegano" aria-pressed="false"><svg class="icon size-4 text-acc-cilantro" aria-hidden="true"><use href="/icons.svg#leaf" /></svg>Vegano</button>
+          <button type="button" class="menu-filter" data-filter="picante" aria-pressed="false"><svg class="icon size-4 text-arc" aria-hidden="true"><use href="/icons.svg#chile" /></svg>Picante</button>
+          <p class="sr-only" aria-live="polite" data-menu-count></p>
+        </div>
+      </nav>
+
+      <!-- Especialidades (datos de la portada) -->
+      <section id="especialidades" class="menu-section section" data-menu-section>
+        <div class="text-center" data-reveal>
+          <span class="heading-eyebrow">Especialidades de la casa</span>
+          <h2 class="heading-title">Los platillos de la casa</h2>
+        </div>
+
+        <div class="mt-14 grid gap-6 lg:grid-cols-3">
+<!--#specials variant="menu"-->
+        </div>
+      </section>
+
+      <!-- ===== La carta (menú de ejemplo) =====
+           Platillos, descripciones y precios inventados para el proyecto
+           (a partir de los que ya se mencionaban en Nosotros y Catering).
+           Sustitúyelos por el menú real cuando exista. -->
+      <section class="bg-deep">
+        <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6 md:px-10 md:py-24">
+          <article class="carta" aria-labelledby="carta-titulo" data-reveal>
+            <header class="text-center">
+              <img src="/img/logo-120.webp" alt="" width="56" height="56" class="mx-auto size-14 rounded-full" />
+              <h2 id="carta-titulo" class="mt-4 text-headline font-semibold text-txt md:text-display">La carta</h2>
+              <p class="mx-auto mt-2 max-w-md text-body text-mut">Precios por pieza u orden. Salsas de la casa incluidas.</p>
+              <p class="mt-4 flex flex-wrap justify-center gap-x-5 gap-y-1 text-caption text-mut">
+                <span class="inline-flex items-center gap-1"><svg class="icon size-3.5 text-acc-cilantro" aria-hidden="true"><use href="/icons.svg#leaf" /></svg>Vegetariano o vegano</span>
+                <span class="inline-flex items-center gap-1"><svg class="icon size-3.5 text-arc" aria-hidden="true"><use href="/icons.svg#chile" /></svg>Picante</span>
+              </p>
+            </header>
+            <div class="carta-grid">
+<!--#carta-->
+            </div>
+            <p class="py-10 text-center text-body text-mut" data-menu-empty hidden>No hay platillos con ese filtro.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- Cierre: une el menú con catering y delivery -->
+      <section>
+        <div class="section">
+          <div class="grid gap-6 md:grid-cols-2">
+            <a href="/catering" class="panel lift group flex flex-col p-8" data-reveal>
+              <span class="plate grid size-14 place-items-center rounded-full"><svg class="icon size-7" aria-hidden="true"><use href="/icons.svg#party" /></svg></span>
+              <span class="mt-5 text-title font-semibold text-txt">¿Es para un evento?</span>
+              <span class="mt-2 text-body text-mut">Buffet, comida formal o cena temática, con precio por persona.</span>
+              <span class="link-chevron mt-2 group-hover:underline">Ver paquetes de catering <span aria-hidden="true">›</span></span>
+            </a>
+            <a href="/#delivery" class="panel lift group flex flex-col p-8" data-reveal data-reveal-delay="0.08">
+              <span class="plate grid size-14 place-items-center rounded-full"><svg class="icon size-7" aria-hidden="true"><use href="/icons.svg#truck" /></svg></span>
+              <span class="mt-5 text-title font-semibold text-txt">¿Lo quieres en casa?</span>
+              <span class="mt-2 text-body text-mut">Pide por tu app de delivery favorita.</span>
+              <span class="link-chevron mt-2 group-hover:underline">Ver apps de delivery <span aria-hidden="true">›</span></span>
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!--#footer current="menu"-->
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
