@@ -3,3 +3,6 @@ dist
 .vercel
 *.local
 .DS_Store
+.claude/viernes/
+test-results
+playwright-report

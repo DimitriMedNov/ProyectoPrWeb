@@ -1,270 +1,82 @@
 /**
- * Plugin de Vite hecho a mano (sin dependencias): sustituye marcadores en los
- * HTML por piezas compartidas al compilar y en desarrollo.
+ * Plugin de Vite hecho a mano (sin dependencias). El contenido de las páginas
+ * lo pinta React; aquí queda solo lo que tiene que estar en el HTML servido:
  *
- *   <!--#header current="menu"-->
- *   <!--#footer current="index"-->
- *   <!--#specials variant="home|menu"-->
- *   <!--#carta-->            categorías de la carta en /menu
- *   <!--#menu-tabs-->        pestañas de categoría de /menu
- *   <!--#packages-->         tarjetas de paquete de /catering
- *   <!--#package-options-->  opciones de paquete del formulario
- *   <!--#addons-->           casillas de complementos del formulario
- *   <!--#colonias-->         opciones del select de colonia
- *
- * Además añade canonical y og:url a cada página, vuelve absoluta la URL de
- * og:image y genera sitemap.xml al compilar.
- *
- * El resultado es HTML estático: la página se ve completa sin JavaScript.
+ * - Inter (Google Fonts) antes de la hoja principal: en desarrollo, enlazada;
+ *   al compilar, sus reglas `@font-face` van dentro del HTML (`fetchFontCss`),
+ *   así el primer pintado no espera a un servidor de terceros;
+ * - `og:image` con URL absoluta;
+ * - `canonical` y `og:url` en las 4 páginas indexables (no en 404);
+ * - `sitemap.xml` al compilar;
+ * - la imagen principal de cada ruta, adelantada con `<link rel="preload">`;
+ * - en `npm run dev` y `npm run preview`, una ruta desconocida sirve 404.html,
+ *   igual que hace Vercel (las rutas limpias `/menu`, `/catering`, `/about` las
+ *   resuelve Vite a su `.html`).
  */
 import { basename } from "node:path";
+import type { IncomingMessage, ServerResponse } from "node:http";
 import type { Plugin } from "vite";
-import { ADDRESS, DISCLAIMER, HOURS, PAGES, SITE_URL } from "./site";
-import {
-  carta,
-  cateringPackages,
-  cateringRules,
-  money,
-  specials,
-  type Category,
-  type Dish,
-  type Icon,
-  type Tag,
-} from "../src/data/menu";
+import { NOT_FOUND, PAGES, SITE_URL } from "./site";
 
-type Page = "index" | "menu" | "catering" | "about" | "404";
+const FONT_CSS_URL = "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap";
+const FONT_FILES_PRECONNECT = '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />';
 
-const NAV: { page: Page; href: string; label: string }[] = [
-  { page: "index", href: "/", label: "Inicio" },
-  { page: "menu", href: "/menu", label: "Menú" },
-  { page: "catering", href: "/catering", label: "Catering" },
-  { page: "about", href: "/about", label: "Nosotros" },
-];
-
-const esc = (s: string) =>
-  s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-
-const icon = (name: Icon | "check" | "menu" | "chile", cls: string) =>
-  `<svg class="${cls}" aria-hidden="true"><use href="/icons.svg#${name}" /></svg>`;
-
-const reveal = (delay: number) =>
-  delay ? ` data-reveal data-reveal-delay="${delay}"` : " data-reveal";
-
-// ----- Cabecera y pie -----
-
-function header(current: Page | undefined): string {
-  const items = NAV.map(({ page, href, label }) =>
-    page === current
-      ? `          <li><a href="${href}" aria-current="page" class="flex min-h-11 items-center px-4 text-meta font-medium text-arc">${label}</a></li>`
-      : `          <li><a href="${href}" class="flex min-h-11 items-center px-4 text-meta text-txt hover:text-arc">${label}</a></li>`,
-  ).join("\n");
-  return `<header class="site-header">
-      <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-2 md:px-10">
-        <a href="/" class="flex min-h-11 items-center gap-2.5">
-          <img src="/img/logo-120.webp" alt="" width="40" height="40" class="h-10 w-10 rounded-full" />
-          <span class="font-display text-body font-semibold text-arc">El Taquito Gordo Feliz</span>
-        </a>
-        <button
-          id="menu-icon"
-          type="button"
-          class="grid h-11 w-11 place-items-center rounded-full text-txt md:hidden"
-          aria-label="Abrir menú"
-          aria-controls="navbar"
-          aria-expanded="false"
-        >
-          ${icon("menu", "icon size-6")}
-        </button>
-        <ul id="navbar" class="flex items-center gap-1">
-${items}
-        </ul>
-      </div>
-    </header>`;
-}
-
-function footer(current: Page | undefined): string {
-  const links = NAV.filter(({ page }) => page !== current)
-    .map(({ href, label }) => `          <a href="${href}" class="hit-link px-2 hover:text-ink-txt">${label}</a>`)
-    .join("\n");
-  return `<footer class="bg-ink py-12 text-center text-label text-ink-mut">
-      <div class="mx-auto flex max-w-7xl flex-col items-center gap-3 px-6">
-        <nav class="flex flex-wrap justify-center gap-x-4">
-${links}
-        </nav>
-        <p>${ADDRESS}</p>
-        <p>${HOURS}</p>
-        <p class="text-caption">© <span data-year>2026</span> Carpool Venom · D'mitri Medina Novelo &amp; William Moran Ramírez.</p>
-        <p class="max-w-md text-caption">${DISCLAIMER}</p>
-      </div>
-    </footer>`;
-}
-
-// ----- Menú -----
-
-/** Clases de la imagen según su proporción (el burrito es más ancho que alto). */
-const imgClass = (s: (typeof specials)[number], size: "home" | "menu") => {
-  const wide = s.image.width > s.image.height;
-  if (size === "home") return wide ? "h-28 w-32" : "size-28";
-  return wide ? "h-32 w-36" : "size-32";
-};
-
-function specialsHome(): string {
-  return specials
-    .map((s, i) => {
-      const extra =
-        i === 2 ? " sm:col-span-2 sm:mx-auto sm:w-1/2 lg:col-span-1 lg:w-auto" : "";
-      return `          <article class="panel lift flex flex-col items-center px-6 pt-8 pb-8 text-center${extra}"${reveal(i * 0.08)}>
-            <div class="plate grid size-36 place-items-center rounded-full">
-              <img src="${s.image.src}" alt="${esc(s.image.alt)}" width="${s.image.width}" height="${s.image.height}" class="${imgClass(s, "home")} object-contain" loading="lazy" />
-            </div>
-            <h3 class="mt-6 text-title font-semibold text-txt">${esc(s.name)}</h3>
-            <p class="mt-2 text-meta text-mut">${esc(s.description)}</p>
-            <span class="mt-4 text-headline font-semibold text-arc">${money(s.price)}</span>
-            <a href="/catering" class="btn-secondary mt-5">Pedir ahora</a>
-          </article>`;
-    })
-    .join("\n\n");
-}
-
-function specialsMenu(): string {
-  return specials
-    .map(
-      (s, i) => `          <article data-dish data-tags="${s.tags.join(" ")}" class="panel lift flex flex-col p-6 sm:flex-row sm:items-center sm:gap-6 lg:flex-col lg:items-stretch lg:gap-0"${reveal(i * 0.08)}>
-            <div class="plate mx-auto grid size-40 shrink-0 place-items-center rounded-full sm:mx-0 lg:mx-auto">
-              <img src="${s.image.src}" alt="${esc(s.image.alt)}" width="${s.image.width}" height="${s.image.height}" class="${imgClass(s, "menu")} object-contain" loading="lazy" />
-            </div>
-            <div class="mt-6 flex flex-1 flex-col sm:mt-0 lg:mt-6">
-              <div class="flex items-baseline justify-between gap-4">
-                <h3 class="text-title font-semibold text-txt">${esc(s.name)}</h3>
-                <span class="text-title font-semibold text-arc">${money(s.price)}</span>
-              </div>
-              <p class="mt-2 text-body text-mut">${esc(s.description)}</p>
-              <ul class="mt-4 flex flex-wrap gap-2" aria-label="Lleva">
-${s.highlights.map((h) => `                <li class="chip">${esc(h)}</li>`).join("\n")}
-              </ul>
-            </div>
-          </article>`,
-    )
-    .join("\n\n");
-}
-
-const TAGS: Record<Tag, { icon: "leaf" | "chile"; color: string; label: string }> = {
-  vegetariano: { icon: "leaf", color: "text-acc-cilantro", label: "Vegetariano" },
-  vegano: { icon: "leaf", color: "text-acc-cilantro", label: "Vegano" },
-  picante: { icon: "chile", color: "text-arc", label: "Picante" },
-};
-
-function cartaItem(d: Dish): string {
-  // Vegano implica vegetariano: no se repite la etiqueta.
-  const shown = d.tags.filter((t) => !(t === "vegetariano" && d.tags.includes("vegano")));
-  const tags = shown.length
-    ? `\n                  <p class="carta-tags">${shown
-        .map((t) => `<span class="inline-flex items-center gap-1">${icon(TAGS[t].icon, `icon size-3.5 ${TAGS[t].color}`)}${TAGS[t].label}</span>`)
-        .join("")}</p>`
-    : "";
-  return `                <li class="carta-item" data-dish data-tags="${d.tags.join(" ")}">
-                  <div class="carta-line">
-                    <h4 class="carta-name">${esc(d.name)}</h4>
-                    <span class="carta-leader" aria-hidden="true"></span>
-                    <span class="carta-price">${money(d.price)}</span>
-                  </div>
-                  <p class="carta-desc">${esc(d.description)}</p>${tags}
-                </li>`;
-}
-
-function cartaCategory(c: Category): string {
-  return `            <section id="${c.id}" class="carta-cat menu-section" data-menu-section aria-labelledby="${c.id}-titulo">
-              <header class="carta-head">
-                <span class="plate grid size-10 shrink-0 place-items-center rounded-full">${icon(c.icon, "icon size-5")}</span>
-                <div>
-                  <h3 id="${c.id}-titulo" class="text-title font-semibold text-txt">${esc(c.title)}</h3>
-                  <p class="text-meta text-mut">${esc(c.note)}</p>
-                </div>
-              </header>
-              <ul>
-${c.dishes.map(cartaItem).join("\n")}
-              </ul>
-            </section>`;
-}
-
-const cartaHtml = () => carta.map(cartaCategory).join("\n");
-
-/** Pestañas de /menu: especialidades y luego una por categoría de la carta. */
-const menuTabs = () =>
-  [{ id: "especialidades", title: "Especialidades" }, ...carta]
-    .map((c) => `          <li><a class="menu-tab" href="#${c.id}">${esc(c.title)}</a></li>`)
-    .join("\n");
-
-// ----- Catering -----
-
-function packages(): string {
-  return cateringPackages
-    .map((p, i) => {
-      const featured = Boolean(p.featuredLabel);
-      const badge = featured
-        ? `\n              <span class="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-fill px-3 py-1 text-caption font-semibold text-on-fill">${esc(p.featuredLabel!)}</span>`
-        : "";
-      return `            <article class="panel lift package-card${featured ? " is-featured" : ""}"${reveal(i * 0.08)}>${badge}
-              <div class="plate mb-5 grid size-16 place-items-center rounded-2xl">${icon(p.icon, "icon size-9")}</div>
-              <h3 class="text-title font-semibold text-txt">${esc(p.name)}</h3>
-              <p class="mt-1 text-meta text-mut">${esc(p.summary)}</p>
-              <p class="mt-4"><span class="text-headline font-semibold text-arc">${money(p.pricePerPerson, 0)}</span><span class="text-label text-mut"> / persona</span></p>
-              <ul class="mt-4 flex-1 space-y-2 text-meta text-mut">
-${p.features.map((f) => `                <li class="flex gap-2">${icon("check", "icon mt-0.5 text-arc")} ${esc(f)}</li>`).join("\n")}
-              </ul>
-              <button type="button" class="${featured ? "btn-primary" : "btn-secondary"} mt-6" data-open-modal data-package="${esc(p.name)}">Elegir ${esc(p.name)}</button>
-            </article>`;
-    })
-    .join("\n\n");
-}
-
-function packageOptions(): string {
-  return cateringPackages
-    .map(
-      (p, i) => `              <label class="pkg-option">
-                <input class="sr-only" type="radio" name="catering" value="${esc(p.name)}" data-price="${p.pricePerPerson}" required${i === 0 ? " checked" : ""} />
-                <span class="pkg-card">
-                  <span class="plate grid size-11 place-items-center rounded-xl">${icon(p.icon, "icon size-6")}</span>
-                  <span class="mt-3 block text-meta font-semibold text-txt">${esc(p.name)}</span>
-                  <span class="block text-label text-mut">${money(p.pricePerPerson, 0)} / persona</span>
-                  ${icon("check", "pkg-check icon size-5")}
-                </span>
-              </label>`,
-    )
-    .join("\n");
-}
-
-const addons = () =>
-  cateringRules.addons
-    .map(
-      (a) => `              <label class="choice-chip">
-                <input class="sr-only" type="checkbox" name="complementos" value="${a.value}" />
-                <span>${icon("check", "chip-check icon size-4")}${esc(a.label)}</span>
-              </label>`,
-    )
-    .join("\n");
-
-const colonias = () =>
-  cateringRules.colonias.map((c) => `                  <option value="${esc(c)}">${esc(c)}</option>`).join("\n");
-
-// ----- SEO -----
-
-/** Inter en paralelo con la hoja principal, con preconnect a Google Fonts. */
+/** Inter enlazada (en paralelo con la hoja principal), con preconnect a Google Fonts. */
 const FONT_LINKS = `<link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+    ${FONT_FILES_PRECONNECT}
+    <link rel="stylesheet" href="${FONT_CSS_URL}" />
     `;
 
+/** Google Fonts responde según el navegador: con este recibe woff2 y `unicode-range`. */
+const FONT_USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36";
+/** Solo reglas `@font-face` con `font-display: swap` y archivos de fonts.gstatic.com. */
+const FONT_FACE = /^@font-face\{[^{}<>]*font-display:\s*swap;[^{}<>]*src:\s*url\(https:\/\/fonts\.gstatic\.com\/[\w./-]+\)[^{}<>]*\}$/;
+
+/**
+ * Deja la hoja de Google Fonts lista para ir dentro de un `<style>`: sin
+ * comentarios ni saltos. Devuelve `null` si no es exactamente lo esperado (lo que
+ * llega de la red no se copia al HTML sin comprobarlo).
+ */
+export function inlineableFontCss(css: string): string | null {
+  const rules = css
+    .replace(/\/\*[^*]*\*\//g, "")
+    .split("}")
+    .map((rule) => rule.replace(/\s+/g, " ").replace(/\s*([{;])\s*/g, "$1").trim())
+    .filter(Boolean)
+    .map((rule) => `${rule}}`);
+  return rules.length > 0 && rules.every((rule) => FONT_FACE.test(rule)) ? rules.join("") : null;
+}
+
+/**
+ * Pide a Google Fonts las reglas de Inter para meterlas en el HTML. Si no hay
+ * red, tarda más de 5 s o la respuesta no es la esperada, devuelve `null` y el
+ * build sigue con la hoja enlazada, como en desarrollo.
+ */
+export async function fetchFontCss(): Promise<string | null> {
+  try {
+    const res = await fetch(FONT_CSS_URL, { headers: { "user-agent": FONT_USER_AGENT }, signal: AbortSignal.timeout(5000) });
+    return res.ok ? inlineableFontCss(await res.text()) : null;
+  } catch {
+    return null;
+  }
+}
+
+/** Inter antes de la hoja principal: enlazada, o con sus reglas dentro del HTML si se pudieron traer. */
+const fontHead = (fontCss: string | null) =>
+  fontCss ? `${FONT_FILES_PRECONNECT}\n    <style data-font="inter">${fontCss}</style>\n    ` : FONT_LINKS;
+
 /** canonical + og:url, y og:image absoluta (los rastreadores no resuelven rutas relativas). */
-function seoHead(html: string, file: string): string {
-  html = html.replace('<link rel="stylesheet" href="/src/styles/main.css" />', (m) => FONT_LINKS + m);
-  const page = PAGES.find((p) => p.file === file);
+function seoHead(html: string, file: string, fontCss: string | null): string {
+  html = html.replace('<link rel="stylesheet" href="/src/styles/main.css" />', (m) => fontHead(fontCss) + m);
   html = html.replace('content="/og.png"', `content="${SITE_URL}/og.png"`);
-  if (!page) return html;
-  const url = `${SITE_URL}${page.path}`;
-  return html.replace(
-    "</head>",
-    `    <link rel="canonical" href="${url}" />\n    <meta property="og:url" content="${url}" />\n  </head>`,
-  );
+  const head = [routeImagePreload(file)];
+  const page = PAGES.find((p) => p.file === file);
+  if (page) {
+    const url = `${SITE_URL}${page.path}`;
+    head.push(`<link rel="canonical" href="${url}" />`, `<meta property="og:url" content="${url}" />`);
+  }
+  const extra = head.filter(Boolean);
+  return extra.length ? html.replace(/[ \t]*<\/head>/, () => `${extra.map((tag) => `    ${tag}\n`).join("")}  </head>`) : html;
 }
 
 function sitemap(): string {
@@ -275,53 +87,122 @@ function sitemap(): string {
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
 }
 
-// ----- Plugin -----
-
-const DIRECTIVE = /<!--#([\w-]+)((?:\s+[\w-]+="[^"]*")*)\s*-->/g;
-
-function render(name: string, attrs: Record<string, string>): string {
-  const current = attrs.current as Page | undefined;
-  switch (name) {
-    case "header":
-      return header(current);
-    case "footer":
-      return footer(current);
-    case "specials":
-      return attrs.variant === "menu" ? specialsMenu() : specialsHome();
-    case "carta":
-      return cartaHtml();
-    case "menu-tabs":
-      return menuTabs();
-    case "packages":
-      return packages();
-    case "package-options":
-      return packageOptions();
-    case "addons":
-      return addons();
-    case "colonias":
-      return colonias();
-    default:
-      throw new Error(`build/html.ts: marcador desconocido <!--#${name}-->`);
-  }
+/**
+ * ¿Esta petición es una navegación a una ruta que no existe? Solo documentos
+ * HTML sin extensión; nunca `/api/*` ni los módulos internos de Vite.
+ */
+export function isUnknownRoute(url: string, accept = ""): boolean {
+  const path = url.split(/[?#]/)[0].replace(/\/+$/, "") || "/";
+  if (!accept.includes("text/html")) return false;
+  if (path.startsWith("/api/") || path === "/api" || path.startsWith("/@") || path.startsWith("/src/")) return false;
+  if (/\.[\w-]+$/.test(path)) return false;
+  return !PAGES.some((p) => p.path === path || `/${p.file}` === path) && path !== `/${NOT_FOUND.file}`;
 }
 
+type Next = (err?: unknown) => void;
+
+/** Reescribe las rutas desconocidas a /404.html (con código 404, como Vercel). */
+const notFoundFallback = (req: IncomingMessage, res: ServerResponse, next: Next) => {
+  if ((req.method === "GET" || req.method === "HEAD") && req.url && isUnknownRoute(req.url, req.headers.accept)) {
+    req.url = `/${NOT_FOUND.file}.html`;
+    // Vite y sirv responden 200 al servir el archivo: se fija el 404 al escribir.
+    const writeHead = res.writeHead.bind(res) as (...args: unknown[]) => ServerResponse;
+    res.writeHead = ((status: number, ...rest: unknown[]) =>
+      writeHead(status === 200 ? 404 : status, ...rest)) as typeof res.writeHead;
+    const end = res.end.bind(res) as (...args: unknown[]) => ServerResponse;
+    res.end = ((...args: unknown[]) => {
+      if (!res.headersSent && res.statusCode === 200) res.statusCode = 404;
+      return end(...args);
+    }) as typeof res.end;
+  }
+  next();
+};
+
 export function sharedHtml(): Plugin {
+  let building = false;
+  /** Reglas de Inter traídas al compilar; `null` = se enlaza la hoja de Google Fonts. */
+  let fontCss: string | null = null;
   return {
     name: "taquito-shared-html",
+    configResolved(config) {
+      building = config.command === "build";
+    },
+    async buildStart() {
+      if (!building) return;
+      fontCss = await fetchFontCss();
+      if (!fontCss) this.warn("No se pudo traer la hoja de Inter de Google Fonts: se deja enlazada (bloquea el primer pintado).");
+    },
     transformIndexHtml: {
       order: "pre",
-      handler: (html, ctx) => {
-        const withParts = html.replace(DIRECTIVE, (_, name: string, rawAttrs: string) => {
-          const attrs = Object.fromEntries(
-            [...rawAttrs.matchAll(/([\w-]+)="([^"]*)"/g)].map((m) => [m[1], m[2]]),
-          );
-          return render(name, attrs);
-        });
-        return seoHead(withParts, basename(ctx.filename, ".html"));
-      },
+      handler: (html, ctx) => seoHead(html, basename(ctx.filename, ".html"), fontCss),
+    },
+    configureServer(server) {
+      server.middlewares.use(notFoundFallback);
+    },
+    configurePreviewServer(server) {
+      server.middlewares.use(notFoundFallback);
     },
     generateBundle() {
       this.emitFile({ type: "asset", fileName: "sitemap.xml", source: sitemap() });
     },
+  };
+}
+
+/** Imagen del primer pantallazo de una ruta. Mismos `srcset` y `sizes` que su `<img>`. */
+export interface RouteImage {
+  href: string;
+  srcset?: string;
+  sizes?: string;
+  /** Consulta de medios: la precarga solo se hace donde la imagen cae en el primer pantallazo. */
+  media?: string;
+}
+
+/**
+ * Imagen que adelanta cada HTML (clave: nombre del archivo sin extensión). Sin
+ * esto el navegador no sabe que existe hasta que React pinta la página. Repiten
+ * las del contenido de cada pantalla; `build/html.test.ts` falla si dejan de
+ * coincidir. La carta no tiene imagen en el primer pantallazo.
+ */
+export const ROUTE_IMAGES: Readonly<Record<string, RouteImage>> = {
+  index: {
+    href: "/img/mascota-surf.webp",
+    srcset: "/img/mascota-surf-720.webp 720w, /img/mascota-surf.webp 955w",
+    sizes: "(min-width: 1024px) 34rem, (min-width: 420px) 24rem, 92vw",
+  },
+  catering: {
+    href: "/img/fotos/food-800.webp",
+    srcset: "/img/fotos/food-640.webp 640w, /img/fotos/food-720.webp 720w, /img/fotos/food-800.webp 800w",
+    sizes: "(min-width: 1280px) 33rem, (min-width: 1024px) 41vw, 92vw",
+  },
+  // Por debajo de 640 px la mascota queda bajo el texto, fuera del primer pantallazo: adelantarla
+  // solo le quitaría ancho de banda al JavaScript que pinta el título.
+  about: { href: "/img/fotos/logo-full-500.webp", media: "(min-width: 640px)" },
+  "404": { href: "/img/fotos/logo-full-500.webp" },
+};
+
+/** `<link rel="preload">` de la imagen principal de `file`, o cadena vacía si no tiene. */
+export function routeImagePreload(file: string): string {
+  const image = ROUTE_IMAGES[file];
+  if (!image) return "";
+  const srcset = image.srcset ? ` imagesrcset="${image.srcset}"` : "";
+  const sizes = image.sizes ? ` imagesizes="${image.sizes}"` : "";
+  const media = image.media ? ` media="${image.media}"` : "";
+  return `<link rel="preload" as="image" href="${image.href}"${srcset}${sizes}${media} fetchpriority="high" />`;
+}
+
+/** Módulos que `src/app/paginas.tsx` importa solo para que viajen en el trozo principal. */
+const SHARED_IN_MAIN = /\/src\/components\/shared\/(movimiento\/)?index\.ts$/;
+
+/**
+ * Las piezas que comparten varias páginas (imagen, tarjeta, precio, entradas en
+ * cascada…) se quedan en el trozo principal. Sin esto el empaquetador descarta
+ * esos `import` sin uso y reparte las piezas en cinco archivos de menos de 2 kB,
+ * cada uno con su petición en la carga de la página.
+ */
+export function sharedInMain(): Plugin {
+  return {
+    name: "taquito-shared-in-main",
+    apply: "build",
+    transform: (_code, id) => (SHARED_IN_MAIN.test(id.split("?")[0]) ? { moduleSideEffects: "no-treeshake" } : null),
   };
 }

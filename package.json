@@ -9,15 +9,23 @@
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
-    "check": "npm run lint && npm run typecheck && npm run test && npm run build && node scripts/check-dist.mjs",
+    "check": "npm run lint && npm run typecheck && npm run check:arch && npm run test && npm run build && node scripts/check-dist.mjs",
+    "check:arch": "node scripts/check-arch.mjs",
     "lint": "eslint .",
     "test": "vitest run"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
     "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.64.0",
     "@tailwindcss/vite": "^4.1.0",
     "@types/node": "^26.0.0",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^5.2.0",
     "eslint": "^10.11.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.7",
     "globals": "^17.12.0",
     "tailwindcss": "^4.1.0",
     "typescript": "^5.7.0",
@@ -27,5 +35,26 @@
   },
   "allowScripts": {
     "esbuild@0.25.12": true
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^5.104.2",
+    "@visx/event": "^4.0.0",
+    "@visx/grid": "^4.0.0",
+    "@visx/pattern": "^4.0.0",
+    "@visx/responsive": "^4.0.0",
+    "@visx/scale": "^4.0.0",
+    "@visx/shape": "^4.0.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^1.55.0",
+    "motion": "^14.1.0",
+    "radix-ui": "^1.8.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "react-router-dom": "^7.18.4",
+    "react-use-measure": "^2.1.7",
+    "shadcn": "^4.21.4",
+    "tailwind-merge": "^3.7.0",
+    "tw-animate-css": "^1.4.0"
   }
 }

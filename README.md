@@ -21,18 +21,18 @@ rediseñado con un sistema de diseño inspirado en las páginas de producto de A
 - **Accesible:** áreas táctiles de 44px, navegación completa con teclado, foco
   retenido en el modal, enlace para saltar al contenido, y respeto a
   `prefers-reduced-motion`, `prefers-contrast` y `prefers-reduced-transparency`.
-- **Todo el contenido se ve sin JavaScript:** el HTML se genera al compilar. El
-  JS añade las interacciones: el formulario de catering, el filtro del menú y
-  las flechas de la galería.
+- **Hecho con React:** cada ruta tiene su HTML y todas montan la misma app
+  (`src/main.tsx`); el formulario de catering, el filtro del menú y la galería
+  son componentes de React.
 - **Menú** con filtro por etiquetas (vegetariano, vegano, picante) y pestañas
   que siguen la sección visible.
 - **Catering** con paquetes como tarjetas, total estimado y validación en el
   navegador y en el servidor.
-- **Ligero:** sin frameworks ni librerías en el navegador; imágenes en WebP con
-  `srcset`; iconos SVG propios.
+- **Imágenes en WebP** con `srcset`.
 
 ## Stack
 
+- **[React](https://react.dev/)** con **[React Router](https://reactrouter.com/)** y **[shadcn/ui](https://ui.shadcn.com/)**.
 - **[Vite](https://vitejs.dev/)** — servidor de desarrollo y build multipágina.
 - **[TypeScript](https://www.typescriptlang.org/)** — tipado estricto en todo el proyecto.
 - **[Tailwind CSS v4](https://tailwindcss.com/)** — estilos con tokens de diseño propios.
@@ -57,7 +57,7 @@ Necesitas Node 24 (está en `.nvmrc`).
 ```bash
 npm install      # instala dependencias
 npm run dev      # servidor local (http://localhost:5173), /api/solicitud incluido
-npm run check    # lint + typecheck + tests + build + revisión de dist (igual que CI)
+npm run check    # lint + typecheck + arquitectura + tests + build + revisión de dist (igual que CI)
 npm run preview  # previsualiza el build de producción
 ```
 
@@ -67,24 +67,24 @@ Otros: `npm run lint`, `npm run typecheck`, `npm run test`, `npm run build`.
 
 ```
 .
-├── index.html · menu.html · catering.html · about.html · 404.html   # páginas
+├── index.html · menu.html · catering.html · about.html · 404.html   # una por ruta; todas montan src/main.tsx
 ├── api/
 │   └── solicitud.ts      # función de Vercel: POST /api/solicitud
 ├── build/
-│   ├── html.ts           # plugin de Vite: cabecera, pie, menú, paquetes y SEO
+│   ├── html.ts           # plugin de Vite: fuentes, SEO, sitemap y 404 en desarrollo
 │   ├── api-dev.ts        # sirve /api/solicitud en npm run dev
-│   └── site.ts           # URL del sitio, dirección, horario y aviso
+│   └── site.ts           # URL del sitio y datos para SEO
 ├── src/
-│   ├── data/menu.ts      # ÚNICA fuente del menú, precios y paquetes de catering
-│   ├── lib/solicitud.ts  # validación de la solicitud (la usa el servidor)
-│   ├── main.ts           # entrada compartida (menú, año, galería, revelado)
-│   ├── ts/
-│   │   ├── menu.ts       # menú móvil + estado de la barra al hacer scroll
-│   │   ├── catering.ts   # formulario de catering
-│   │   ├── gallery.ts    # flechas y contador de la galería deslizable
-│   │   ├── menu-page.ts  # filtro y pestañas de la página de menú
-│   │   └── reveal.ts     # revelado al entrar en pantalla (nace visible)
-│   └── styles/main.css   # Tailwind + tokens de diseño (claro y oscuro)
+│   ├── main.tsx          # entrada: crea los adaptadores y monta la app
+│   ├── domain/           # reglas y datos puros (menu.ts: ÚNICA fuente del menú, precios y paquetes; solicitud.ts; sitio.ts)
+│   ├── application/      # casos de uso y puertos
+│   ├── infrastructure/   # adaptadores (único sitio con fetch y localStorage)
+│   ├── app/              # armazón de la app, rutas y dependencias
+│   ├── hooks/            # hooks use*
+│   ├── pages/            # una página por ruta
+│   ├── components/       # ui (shadcn, Animate UI), charts (Bklit), layout, shared y uno por pantalla
+│   ├── lib/utils.ts      # cn()
+│   └── styles/main.css  # Tailwind + tokens de diseño (claro y oscuro)
 ├── public/
 │   ├── photos/           # imágenes de los platillos
 │   ├── img/              # derivadas: WebP, recortes sin fondo, logo, favicon
@@ -93,7 +93,8 @@ Otros: `npm run lint`, `npm run typecheck`, `npm run test`, `npm run build`.
 │   ├── robots.txt
 │   └── apple-touch-icon.png
 ├── tests/                # tests de la función de Vercel (fuera de api/ a propósito)
-├── scripts/check-dist.mjs  # revisión del build que corre en CI
+├── scripts/              # check-dist.mjs (revisión del build) y check-arch.mjs (capas)
+├── ARCHITECTURE.md       # capas y reglas del front
 ├── assets-src/           # originales de las imágenes optimizadas (no se publican)
 ├── docs/                 # capturas y material del proyecto (no se publica)
 ├── vite.config.ts
@@ -102,11 +103,10 @@ Otros: `npm run lint`, `npm run typecheck`, `npm run test`, `npm run build`.
 
 ## Cómo cambiar contenido compartido
 
-- **Menú, precios o paquetes:** edita `src/data/menu.ts`. La portada, `/menu`,
+- **Menú, precios o paquetes:** edita `src/domain/menu.ts`. La portada, `/menu`,
   `/catering` y la validación del servidor salen de ahí.
-- **Cabecera o pie:** edita `build/html.ts`. En los HTML solo hay marcadores como
-  `<!--#header current="menu"-->`.
-- **Dirección, horario o aviso:** edita `build/site.ts`.
+- **Cabecera o pie:** edita `src/components/layout/` (`cabecera.tsx`, `pie.tsx`).
+- **Dirección, horario, aviso o títulos de página:** edita `src/domain/sitio.ts`.
 
 ## Despliegue
 
@@ -117,12 +117,12 @@ entorno `SITE_URL`.
 ## Notas
 
 - **Formulario de catering:** `api/solicitud.ts` vuelve a validar los datos,
-  recalcula el total con los precios de `src/data/menu.ts`, descarta el spam con
+  recalcula el total con los precios de `src/domain/menu.ts`, descarta el spam con
   un campo trampa y registra un resumen en los logs de Vercel (sin correo ni
   teléfono). No se guarda ni se envía a nadie, y no se piden datos de tarjeta.
 - **No pongas tests dentro de `api/`:** Vercel publica cada archivo de esa
   carpeta como función. `npm run check` falla si encuentra uno.
-- **Tema:** sigue la preferencia del sistema; no hay interruptor.
+- **Tema:** sigue la preferencia del sistema y hay un interruptor de tema; la elección se guarda.
 - **Caché de Vite:** después de tocar `@theme` en `main.css` o `vite.config.ts`,
   reinicia `npm run dev` (y borra `node_modules/.vite` si algo se ve raro).
 

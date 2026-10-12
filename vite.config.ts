@@ -1,12 +1,24 @@
-import { defineConfig } from "vite";
+import { configDefaults, defineConfig } from "vitest/config";
 import tailwindcss from "@tailwindcss/vite";
-import { sharedHtml } from "./build/html";
+import react from "@vitejs/plugin-react";
+import { sharedHtml, sharedInMain } from "./build/html";
 import { apiDev } from "./build/api-dev";
 import { resolve } from "node:path";
 
 // Sitio estático multipágina (MPA). Cada HTML es un punto de entrada.
 export default defineConfig({
-  plugins: [sharedHtml(), apiDev(), tailwindcss()],
+  plugins: [sharedHtml(), sharedInMain(), apiDev(), react(), tailwindcss()],
+  test: {
+    exclude: [
+      ...configDefaults.exclude,
+      ".claude/**",
+      "test-results/**",
+      "playwright-report/**",
+      "dist/**",
+      "node_modules/**",
+    ],
+  },
+  resolve: { alias: { "@": resolve(__dirname, "src") } },
   build: {
     rollupOptions: {
       input: {
