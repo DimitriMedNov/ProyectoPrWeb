@@ -5,10 +5,10 @@
  * dependencias. En desarrollo la sirve build/api-dev.ts desde el mismo archivo.
  *
  * Valida con las mismas reglas del formulario, recalcula el total con los
- * precios de src/data/menu.ts y registra un resumen en los logs de Vercel.
+ * precios de src/domain/menu.ts y registra un resumen en los logs de Vercel.
  * Es un proyecto universitario: la solicitud no se guarda ni se envía a nadie.
  */
-import { validarSolicitud } from "../src/lib/solicitud.js";
+import { validarSolicitud } from "../src/domain/solicitud.js";
 
 /** Campo trampa: invisible para personas; los bots que rellenan todo lo llenan. */
 const HONEYPOT = "sitio_web";

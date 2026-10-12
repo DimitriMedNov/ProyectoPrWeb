@@ -2,14 +2,20 @@
    enlaza desde el <head> (build/html.ts) para que cargue en paralelo con esta
    hoja y no en cadena; el navegador solo descarga la fuente si la necesita. */
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-/* ----- Tokens de color -----
+/* Tema: UN solo mecanismo. La clase `dark` en <html> la ponen el script en
+   línea del <head> (antes del primer pintado) y el hook `useTema()`.
+   `dark:` de Tailwind y de los componentes de registro depende de esta línea. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ----- Tokens de color (marca; no se tocan) -----
    Tripletas RGB para que los modificadores de opacidad (bg-deep/60) funcionen.
    Tonos de la marca (chile, maíz, masa) con la luminosidad ajustada hasta pasar
-   4.5:1 en texto y 3:1 en bordes. Cifras medidas en la fase 1 de la auditoría.
-   El tema sigue al sistema: sin interruptor ni JavaScript, así no hay parpadeo. */
+   4.5:1 en texto y 3:1 en bordes. */
 :root {
-  color-scheme: light dark;
+  color-scheme: light;
 
   --void: 255 253 250; /* fondo de página */
   --deep: 235 219 200; /* masa: sección alterna */
@@ -28,8 +34,7 @@
   --ink-txt: 245 240 232;
   --ink-mut: 140 130 120;
 
-  /* Acentos por sección, sacados de la taquería. Medidos ≥4.6:1 sobre la
-     página, la masa y las zonas teñidas por las manchas del fondo. */
+  /* Acentos por sección, sacados de la taquería. */
   --acc-maiz: 129 87 3;
   --acc-cilantro: 28 110 41;
   --acc-jamaica: 182 32 95;
@@ -40,55 +45,130 @@
   --on-maiz: 183 30 21; /* icono rojo sobre el plato amarillo: 4.87:1 */
   --board: 255 255 255;
 
-  /* Curvas de Apple: entrada suave, salida larga. */
+  /* Color del anillo de foco. Las superficies `ink` lo cambian (.surface-ink). */
+  --focus: var(--arc);
+
+  /* Sombras por altura: tarjeta, elemento levantado, capa flotante. */
+  --sombra-card: 0 1px 2px rgb(0 0 0 / 0.05), 0 10px 28px -16px rgb(0 0 0 / 0.18);
+  --sombra-raised: 0 2px 6px rgb(0 0 0 / 0.06), 0 22px 44px -24px rgb(0 0 0 / 0.28);
+  --sombra-overlay: 0 30px 80px -30px rgb(0 0 0 / 0.5);
+
+  /* Manchas del fondo decorativo (body::before). */
+  --mancha-1: 255 220 84 / 0.28;
+  --mancha-2: 230 51 41 / 0.09;
+  --mancha-3: 60 150 70 / 0.09;
+
+  /* Curvas de movimiento: entrada suave, salida larga. */
   --ease: cubic-bezier(0.28, 0.11, 0.32, 1);
   --ease-spring: cubic-bezier(0.32, 0.72, 0, 1);
+
+  /* ----- Puente shadcn/ui -> tokens del proyecto -----
+     shadcn y los componentes de registro leen estas variables. Aquí NO hay
+     paleta propia: cada una apunta a un token del proyecto, así que cambian
+     solas con el tema (claro/oscuro/contraste) igual que él. */
+  --background: rgb(var(--void));
+  --foreground: rgb(var(--txt));
+  --card: rgb(var(--panel));
+  --card-foreground: rgb(var(--txt));
+  --popover: rgb(var(--panel));
+  --popover-foreground: rgb(var(--txt));
+  --primary: rgb(var(--fill));
+  --primary-foreground: rgb(var(--on-fill));
+  --secondary: rgb(var(--panel-2));
+  --secondary-foreground: rgb(var(--txt));
+  --muted: rgb(var(--panel-2));
+  --muted-foreground: rgb(var(--mut));
+  --accent: rgb(var(--panel-2));
+  --accent-foreground: rgb(var(--txt));
+  --destructive: rgb(var(--chile));
+  --border: rgb(var(--line));
+  --input: rgb(var(--field));
+  --ring: rgb(var(--arc));
+  --chart-1: rgb(var(--arc));
+  --chart-2: rgb(var(--acc-maiz));
+  --chart-3: rgb(var(--acc-cilantro));
+  --chart-4: rgb(var(--acc-jamaica));
+  --chart-5: rgb(var(--mut));
+  --radius: 1.125rem; /* = rounded-card */
+  --sidebar: rgb(var(--panel));
+  --sidebar-foreground: rgb(var(--txt));
+  --sidebar-primary: rgb(var(--fill));
+  --sidebar-primary-foreground: rgb(var(--on-fill));
+  --sidebar-accent: rgb(var(--panel-2));
+  --sidebar-accent-foreground: rgb(var(--txt));
+  --sidebar-border: rgb(var(--line));
+  --sidebar-ring: rgb(var(--arc));
+  /* Bklit (gráficas) -> tokens del proyecto, sin paleta propia. */
+  --chart-background: rgb(var(--panel));
+  --chart-foreground: rgb(var(--mut));
+  --chart-foreground-muted: rgb(var(--mut));
+  --chart-line-primary: var(--chart-1);
+  --chart-line-secondary: var(--chart-2);
+  --chart-crosshair: rgb(var(--mut));
+  --chart-grid: rgb(var(--line));
+  --chart-brush-border: var(--chart-grid);
+  --chart-tooltip-background: rgb(var(--ink) / 0.92);
+  --chart-tooltip-foreground: rgb(var(--ink-txt));
+  --chart-tooltip-muted: rgb(var(--ink-mut));
+  --chart-marker-background: rgb(var(--panel-2));
+  --chart-marker-border: rgb(var(--line));
+  --chart-marker-foreground: rgb(var(--txt));
+  --chart-label: rgb(var(--mut));
+  --chart-scale-01: rgb(var(--panel-2));
+  --chart-scale-02: color-mix(in srgb, rgb(var(--fill)) 25%, rgb(var(--panel)));
+  --chart-scale-03: color-mix(in srgb, rgb(var(--fill)) 50%, rgb(var(--panel)));
+  --chart-scale-04: color-mix(in srgb, rgb(var(--fill)) 75%, rgb(var(--panel)));
+  --chart-scale-05: rgb(var(--fill));
+  --chart-scale-pattern-color: rgb(var(--panel));
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --void: 17 15 13;
-    --deep: 34 29 22;
-    --panel: 39 36 32;
-    --panel-2: 53 48 44;
-    --maiz: 50 44 21;
-    --arc: 237 111 104;
-    --fill: 205 34 24;
-    --on-fill: 255 255 255;
-    --txt: 245 240 232;
-    --mut: 161 153 145;
-    --field: 131 121 111;
-    --line: 60 55 50;
-    --ink: 10 9 8;
-    --ink-txt: 245 240 232;
-    --ink-mut: 131 121 111;
-    --acc-maiz: 199 134 5;
-    --acc-cilantro: 41 163 61;
-    --acc-jamaica: 227 97 151;
-    --board: 245 240 232;
-  }
+.dark {
+  color-scheme: dark;
+
+  --void: 17 15 13;
+  --deep: 34 29 22;
+  --panel: 39 36 32;
+  --panel-2: 53 48 44;
+  --maiz: 50 44 21;
+  --arc: 237 111 104;
+  --fill: 205 34 24;
+  --on-fill: 255 255 255;
+  --txt: 245 240 232;
+  --mut: 161 153 145;
+  --field: 131 121 111;
+  --line: 60 55 50;
+  --ink: 10 9 8;
+  --ink-txt: 245 240 232;
+  --ink-mut: 131 121 111;
+  --acc-maiz: 199 134 5;
+  --acc-cilantro: 41 163 61;
+  --acc-jamaica: 227 97 151;
+  --board: 245 240 232;
+
+  --sombra-card: inset 0 1px 0 rgb(255 255 255 / 0.05), 0 12px 32px -20px rgb(0 0 0 / 0.8);
+  --sombra-raised: inset 0 1px 0 rgb(255 255 255 / 0.06), 0 24px 48px -24px rgb(0 0 0 / 0.9);
+  --sombra-overlay: 0 30px 80px -30px rgb(0 0 0 / 0.9);
+
+  --mancha-1: 230 51 41 / 0.18;
+  --mancha-2: 255 200 60 / 0.1;
+  --mancha-3: 200 40 120 / 0.14;
 }
 
-/* Más contraste: bordes y texto secundario más firmes. */
+/* Más contraste: bordes y texto secundario más firmes, en los dos temas. */
 @media (prefers-contrast: more) {
   :root {
     --mut: 58 52 46;
     --field: 90 82 74;
     --line: 110 100 90;
   }
-}
-@media (prefers-contrast: more) and (prefers-color-scheme: dark) {
-  :root {
+  .dark {
     --mut: 206 198 190;
     --field: 170 160 150;
     --line: 150 140 130;
   }
-}
-
-@media (prefers-contrast: more) {
-  .panel {
+  /* Las tarjetas pasan a borde de 2 px y el degradado de marca a color liso. */
+  [data-slot="card"] {
     border-width: 2px;
-    border-color: rgb(var(--line)) !important;
   }
   .gradient-name {
     background-image: none;
@@ -96,19 +176,12 @@
   }
 }
 
-/* Sin transparencia: el cristal desaparece y las superficies se vuelven sólidas. */
+/* Sin transparencia: nada de cristal ni manchas; superficies sólidas. */
 @media (prefers-reduced-transparency: reduce) {
-  .site-header,
-  .panel,
-  .modal {
+  [data-cristal] {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
-  }
-  .site-header {
     background-color: rgb(var(--void)) !important;
-  }
-  .panel {
-    background-color: rgb(var(--panel)) !important;
   }
   body::before {
     display: none;
@@ -168,8 +241,147 @@
   --text-hero--letter-spacing: -0.022em;
 
   --radius-card: 1.125rem;
+  /* Radio de controles (campos, botones cuadrados, miniaturas). */
+  --radius-control: 0.75rem;
+
+  /* ----- Medidas del sistema nuevo -----
+     gutter  = margen lateral de toda la página (16 px a 320, 40 px en escritorio)
+     section = aire vertical de una sección; section-sm para bandas compactas
+     header  = alto de la cabecera fija
+     page / copy = anchos máximos del contenedor y de un párrafo. */
+  --spacing-gutter: clamp(1rem, 4vw, 2.5rem);
+  --spacing-section: clamp(3.5rem, 9vw, 7rem);
+  --spacing-section-sm: clamp(2.5rem, 6vw, 4rem);
+  --spacing-header: 4rem;
+  --container-page: 80rem;
+  --container-copy: 40rem;
+
+  /* Sombras: tres alturas. Cambian con el tema (ver --sombra-* arriba). */
+  --shadow-card: var(--sombra-card);
+  --shadow-raised: var(--sombra-raised);
+  --shadow-overlay: var(--sombra-overlay);
 
   --animate-float: float 2.5s ease-in-out 2;
+
+  --font-heading: var(--font-sans);
+
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --color-sidebar-border: var(--sidebar-border);
+
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+
+  --color-sidebar-accent: var(--sidebar-accent);
+
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+
+  --color-sidebar-primary: var(--sidebar-primary);
+
+  --color-sidebar-foreground: var(--sidebar-foreground);
+
+  --color-sidebar: var(--sidebar);
+
+  --color-chart-5: var(--chart-5);
+
+  --color-chart-4: var(--chart-4);
+
+  --color-chart-3: var(--chart-3);
+
+  --color-chart-2: var(--chart-2);
+
+  --color-chart-1: var(--chart-1);
+
+  --color-ring: var(--ring);
+
+  --color-input: var(--input);
+
+  --color-border: var(--border);
+
+  --color-destructive: var(--destructive);
+
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-accent: var(--accent);
+
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-muted: var(--muted);
+
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-secondary: var(--secondary);
+
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-primary: var(--primary);
+
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-popover: var(--popover);
+
+  --color-card-foreground: var(--card-foreground);
+
+  --color-card: var(--card);
+
+  --color-foreground: var(--foreground);
+
+  --color-background: var(--background);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+
+  --radius-md: calc(var(--radius) * 0.8);
+
+  --radius-lg: var(--radius);
+
+  --radius-xl: calc(var(--radius) * 1.4);
+
+  --radius-2xl: calc(var(--radius) * 1.8);
+
+  --radius-3xl: calc(var(--radius) * 2.2);
+
+  --radius-4xl: calc(var(--radius) * 2.6);
+
+  --color-chart-scale-pattern-color: var(--chart-scale-pattern-color);
+
+  --color-chart-scale-05: var(--chart-scale-05);
+
+  --color-chart-scale-04: var(--chart-scale-04);
+
+  --color-chart-scale-03: var(--chart-scale-03);
+
+  --color-chart-scale-02: var(--chart-scale-02);
+
+  --color-chart-scale-01: var(--chart-scale-01);
+
+  --color-chart-label: var(--chart-label);
+
+  --color-chart-marker-foreground: var(--chart-marker-foreground);
+
+  --color-chart-marker-border: var(--chart-marker-border);
+
+  --color-chart-marker-background: var(--chart-marker-background);
+
+  --color-chart-tooltip-muted: var(--chart-tooltip-muted);
+
+  --color-chart-tooltip-foreground: var(--chart-tooltip-foreground);
+
+  --color-chart-tooltip-background: var(--chart-tooltip-background);
+
+  --chart-brush-border: var(--chart-brush-border);
+
+  --color-chart-grid: var(--chart-grid);
+
+  --color-chart-crosshair: var(--chart-crosshair);
+
+  --chart-line-secondary: var(--chart-line-secondary);
+
+  --chart-line-primary: var(--chart-line-primary);
+
+  --color-chart-foreground-muted: var(--chart-foreground-muted);
+
+  --color-chart-foreground: var(--chart-foreground);
+
+  --color-chart-background: var(--chart-background);
 }
 
 @keyframes float {
@@ -184,9 +396,18 @@
 
 /* ----- Base ----- */
 @layer base {
+  * {
+    @apply border-border;
+    /* Color de contorno en reposo = color del anillo de foco, opaco. shadcn dejaba aquí
+       `outline-ring/50`: en todo elemento con `transition-colors` el anillo arrancaba al
+       50 % (≈2,5:1) y tardaba en llegar al color pleno. Así no hay nada que fundir. */
+    outline-color: rgb(var(--focus));
+  }
+
   html {
     scroll-behavior: smooth;
-    scroll-padding-top: 5rem;
+    /* Las anclas no quedan tapadas por la cabecera fija. */
+    scroll-padding-top: calc(var(--spacing-header) + 1rem);
   }
 
   body {
@@ -206,11 +427,11 @@
   h4 {
     font-family: var(--font-display);
     letter-spacing: -0.015em;
+    text-wrap: balance;
   }
 
-  /* El cristal necesita algo que difuminar: manchas de color fijas al viewport,
-     en los tonos de la taquería. Alfas medidas: el texto atenuado sigue por
-     encima de 4.6:1 en el punto más intenso de cada mancha. */
+  /* Fondo decorativo: tres manchas fijas en los tonos de la taquería. Alfas
+     bajas para que el texto secundario siga por encima de 4.5:1. */
   body::before {
     content: "";
     position: fixed;
@@ -218,29 +439,27 @@
     z-index: -1;
     pointer-events: none;
     background-image:
-      radial-gradient(48rem 32rem at 88% -6%, rgb(255 220 84 / 0.3), transparent 60%),
-      radial-gradient(42rem 30rem at 6% 8%, rgb(230 51 41 / 0.1), transparent 58%),
-      radial-gradient(40rem 28rem at 70% 96%, rgb(60 150 70 / 0.1), transparent 60%);
-  }
-  @media (prefers-color-scheme: dark) {
-    body::before {
-      background-image:
-        radial-gradient(48rem 32rem at 88% -6%, rgb(230 51 41 / 0.2), transparent 60%),
-        radial-gradient(42rem 30rem at 6% 8%, rgb(255 200 60 / 0.12), transparent 58%),
-        radial-gradient(40rem 28rem at 70% 96%, rgb(200 40 120 / 0.16), transparent 60%);
-    }
+      radial-gradient(48rem 32rem at 88% -6%, rgb(var(--mancha-1)), transparent 60%),
+      radial-gradient(42rem 30rem at 6% 8%, rgb(var(--mancha-2)), transparent 58%),
+      radial-gradient(40rem 28rem at 70% 96%, rgb(var(--mancha-3)), transparent 60%);
   }
 
   /* Sobre amarillo va texto oscuro, nunca blanco. */
   ::selection {
-    background: rgb(255 220 84);
+    background: rgb(var(--maiz-bright));
     color: rgb(26 26 26);
   }
 
+  /* Foco: anillo de 3 px separado del elemento, siempre visible con teclado. */
   :focus-visible {
-    outline: 3px solid rgb(var(--arc));
+    outline: 3px solid rgb(var(--focus));
     outline-offset: 3px;
-    border-radius: 10px;
+  }
+  /* El <main> recibe el foco al navegar (tabindex="-1") solo para que el lector
+     de pantalla y el Tab sigan desde ahí: no se dibuja contorno alrededor. */
+  main[tabindex="-1"]:focus,
+  main[tabindex="-1"]:focus-visible {
+    outline: none;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -257,75 +476,16 @@
   }
 }
 
-/* ----- Componentes reutilizables ----- */
+/* ----- Utilidades de marca (lo único que no sale de una clase de Tailwind) ----- */
 @layer components {
-  /* Botones en píldora. Hover al 85% de opacidad (medido: el texto sigue
-     por encima de 4.8:1) y el empuje de iOS al pulsar. */
-  .btn-primary,
-  .btn-secondary {
-    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-6 py-2.5
-      text-body font-medium no-underline;
-    transition:
-      opacity 0.25s var(--ease),
-      transform 0.25s var(--ease);
-  }
-  .btn-primary:hover,
-  .btn-secondary:hover {
-    opacity: 0.85;
-  }
-  .btn-primary:active,
-  .btn-secondary:active {
-    transform: scale(0.97);
-  }
-  .btn-primary {
-    @apply bg-fill text-on-fill;
-  }
-  .btn-secondary {
-    @apply bg-panel-2 text-txt;
+  /* Banda oscura (pie): el anillo de foco pasa a claro para que se vea. */
+  .surface-ink {
+    --focus: var(--ink-txt);
+    background-color: rgb(var(--ink));
+    color: rgb(var(--ink-txt));
   }
 
-  /* Enlace con chevron: el patrón de navegación de Apple. */
-  .link-chevron {
-    @apply inline-flex min-h-11 items-center gap-1 text-body text-arc no-underline hover:underline;
-  }
-
-  .icon {
-    @apply inline-block size-5 shrink-0;
-  }
-
-  .section {
-    @apply mx-auto max-w-7xl px-6 py-20 md:px-10 md:py-28;
-  }
-
-  /* Material estándar para tarjetas (capa de contenido). Los rellenos 0.8 en
-     claro y 0.62 en oscuro son pisos: bajarlos rompe el contraste. */
-  .panel {
-    position: relative;
-    border-radius: var(--radius-card);
-    background-color: rgb(var(--panel) / 0.8);
-    backdrop-filter: saturate(160%) blur(20px);
-    -webkit-backdrop-filter: saturate(160%) blur(20px);
-    border: 1px solid rgb(255 255 255 / 0.55);
-    box-shadow:
-      0 1px 2px rgb(0 0 0 / 0.04),
-      0 10px 30px -16px rgb(0 0 0 / 0.18);
-  }
-
-  /* Las tarjetas se levantan al pasar el cursor. */
-  .lift {
-    transition:
-      transform 0.45s var(--ease),
-      box-shadow 0.45s var(--ease);
-  }
-  .lift:hover {
-    transform: translateY(-4px);
-    box-shadow:
-      0 2px 6px rgb(0 0 0 / 0.05),
-      0 24px 48px -28px rgb(0 0 0 / 0.28);
-  }
-
-  /* Degradado de marca, solo para el nombre de la portada (texto grande:
-     ambos extremos medidos por encima de 4.6:1). */
+  /* Degradado de marca, solo para titulares grandes (ambos extremos > 4.5:1). */
   .gradient-name {
     background-image: linear-gradient(
       100deg,
@@ -338,151 +498,12 @@
     color: transparent;
   }
 
-  /* Píldora de dato: relleno suave, sin borde. */
-  .chip {
-    @apply inline-flex items-center gap-1.5 rounded-full bg-panel-2 px-3 py-1 text-caption text-mut;
-  }
-
-  /* Plato amarillo detrás de la comida y de los iconos. */
+  /* Plato amarillo detrás de la comida y de los iconos; igual en los dos temas. */
   .plate {
     background: radial-gradient(circle at 35% 30%, rgb(255 232 140), rgb(var(--maiz-bright)) 70%);
     color: rgb(var(--on-maiz));
   }
 
-  /* Cabecera de sección: antetítulo en color y título grande debajo. */
-  .heading-eyebrow {
-    @apply block text-body font-semibold text-arc;
-  }
-  .heading-title {
-    @apply mt-1 text-headline font-semibold text-txt md:text-display;
-  }
-
-  .field-label {
-    @apply mb-1 block text-label font-medium text-txt;
-  }
-  .field-input {
-    @apply min-h-11 w-full rounded-xl border border-field bg-panel px-3 py-2.5 text-body text-txt
-      outline-none transition focus:border-arc focus:ring-2 focus:ring-arc/40;
-  }
-
-  /* Enlace de texto con área táctil de 44px. */
-  .hit-link {
-    @apply inline-flex min-h-11 min-w-11 items-center justify-center;
-  }
-
-  /* Capa funcional: Liquid Glass solo en la barra de navegación.
-     menu.ts añade .is-scrolled al pasar de 10px; entonces se vuelve más opaca
-     para que las etiquetas sigan leyéndose sobre las fotos que pasan detrás. */
-  .site-header {
-    @apply fixed inset-x-0 top-0 z-50;
-    background-color: rgb(var(--void) / 0.72);
-    backdrop-filter: saturate(180%) blur(28px);
-    -webkit-backdrop-filter: saturate(180%) blur(28px);
-    border-bottom: 1px solid transparent;
-    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.55);
-    transition:
-      background-color 0.4s var(--ease),
-      border-color 0.4s var(--ease),
-      box-shadow 0.4s var(--ease);
-  }
-  .site-header::after {
-    content: "";
-    position: absolute;
-    inset: 100% 0 auto 0;
-    height: 20px;
-    background: linear-gradient(rgb(var(--void) / 0.75), rgb(var(--void) / 0));
-    pointer-events: none;
-  }
-  .site-header.is-scrolled {
-    background-color: rgb(var(--void) / 0.94);
-    border-bottom-color: rgb(var(--line) / 0.6);
-    box-shadow: 0 1px 12px -6px rgb(0 0 0 / 0.25);
-  }
-
-  /* Enlace para saltar la navegación: visible solo al recibir foco. */
-  .skip-link {
-    @apply fixed left-4 top-4 z-[200] -translate-y-24 rounded-full bg-fill px-5 py-3
-      font-medium text-on-fill transition-transform focus-visible:translate-y-0;
-  }
-
-  /* Tarjeta de paquete de catering (sobre .panel) */
-  .package-card {
-    @apply flex flex-col p-8 text-left;
-  }
-  .package-card.is-featured {
-    border-color: rgb(var(--chile));
-    box-shadow:
-      0 0 0 1px rgb(var(--chile)),
-      0 10px 30px -16px rgb(var(--chile) / 0.45);
-  }
-
-  /* ----- Modal ----- */
-  .modal {
-    @apply fixed inset-0 z-[100] grid place-items-center p-4;
-    background: rgb(0 0 0 / 0.6);
-    backdrop-filter: blur(4px);
-    opacity: 0;
-    visibility: hidden;
-    /* Al cerrar, la visibilidad espera a que acabe el fundido. */
-    transition:
-      opacity 0.25s var(--ease),
-      visibility 0s linear 0.25s;
-  }
-  /* Al abrir, visible al instante: si no, el focus() de catering.ts llega
-     mientras el modal aún cuenta como oculto y el navegador lo ignora. */
-  .modal.is-open {
-    opacity: 1;
-    visibility: visible;
-    transition:
-      opacity 0.25s var(--ease),
-      visibility 0s;
-  }
-  /* El panel es una columna: cabecera fija, cuerpo que se desplaza y pie fijo
-     con el total y el botón de enviar siempre a la vista. */
-  .modal-panel {
-    @apply flex w-full max-w-2xl flex-col overflow-hidden bg-panel;
-    border-radius: var(--radius-card);
-    box-shadow: 0 30px 80px -30px rgb(0 0 0 / 0.5);
-    max-height: 92dvh;
-    transform: translateY(16px) scale(0.98);
-    transition: transform 0.4s var(--ease-spring);
-  }
-  .modal.is-open .modal-panel {
-    transform: translateY(0) scale(1);
-  }
-  .modal-head {
-    @apply flex shrink-0 items-start justify-between gap-4 border-b border-line px-6 pt-5 pb-4 md:px-8;
-  }
-  .modal-form {
-    @apply flex min-h-0 flex-1 flex-col;
-  }
-  .modal-body {
-    @apply min-h-0 flex-1 overflow-y-auto px-6 py-6 md:px-8;
-    overscroll-behavior: contain;
-  }
-  .modal-foot {
-    @apply shrink-0 border-t border-line bg-panel px-6 py-4 md:px-8;
-    padding-bottom: max(1rem, env(safe-area-inset-bottom));
-  }
-
-  /* Pasos numerados del formulario. */
-  .step + .step {
-    @apply mt-8 border-t border-line pt-8;
-  }
-  /* float saca la leyenda del borde del fieldset: si no, la línea separadora
-     la atraviesa y deja un hueco debajo. */
-  .step-legend {
-    @apply float-left mb-4 flex w-full items-center gap-3 text-body font-semibold text-txt;
-  }
-  .step-legend + * {
-    clear: both;
-  }
-  .step-num {
-    @apply grid size-7 place-items-center rounded-full bg-fill text-label font-semibold text-on-fill;
-  }
-  .field-hint {
-    @apply mt-1 text-caption text-mut;
-  }
   /* Campo trampa antispam: fuera de la pantalla, no oculto con display:none
      (muchos bots se saltan los campos ocultos). */
   .honeypot {
@@ -492,358 +513,26 @@
     height: 1px;
     overflow: hidden;
   }
-  #mensaje-enviado[data-state="error"] {
-    background-color: rgb(var(--arc) / 0.1);
-    box-shadow: inset 0 0 0 1px rgb(var(--arc) / 0.5);
-  }
 
-  /* Errores: solo cuando la persona ya interactuó con el campo. */
-  .field-input:user-invalid {
-    border-color: rgb(var(--arc));
-    box-shadow: 0 0 0 3px rgb(var(--arc) / 0.15);
+  /* Carril con desplazamiento sin barra visible (pestañas, galería). */
+  .scrollbar-none {
+    scrollbar-width: none;
   }
-
-  /* Tarjetas de paquete: un radio visualmente oculto (pero enfocable) y la
-     tarjeta como su etiqueta. */
-  .pkg-option {
-    @apply relative block cursor-pointer;
-  }
-  .pkg-card {
-    @apply relative flex h-full min-h-11 flex-col items-center rounded-2xl border border-field bg-panel px-2 py-4
-      text-center sm:px-3;
-    transition:
-      border-color 0.25s var(--ease),
-      background-color 0.25s var(--ease),
-      transform 0.25s var(--ease);
-  }
-  .pkg-option:hover .pkg-card {
-    border-color: rgb(var(--txt) / 0.5);
-  }
-  .pkg-option:active .pkg-card {
-    transform: scale(0.98);
-  }
-  .pkg-check {
-    @apply absolute top-2 right-2 text-arc opacity-0;
-    transition: opacity 0.2s var(--ease);
-  }
-  input:checked + .pkg-card {
-    border-color: rgb(var(--arc));
-    background-color: rgb(var(--arc) / 0.06);
-    box-shadow: 0 0 0 1px rgb(var(--arc));
-  }
-  input:checked + .pkg-card .pkg-check {
-    opacity: 1;
-  }
-  input:focus-visible + .pkg-card,
-  input:focus-visible + span {
-    outline: 3px solid rgb(var(--arc));
-    outline-offset: 3px;
-  }
-
-  /* Complementos como píldoras con casilla. */
-  .choice-chip > span {
-    @apply inline-flex min-h-11 cursor-pointer items-center gap-1.5 rounded-full border border-field bg-panel
-      px-4 text-meta text-txt select-none;
-    transition:
-      border-color 0.2s var(--ease),
-      background-color 0.2s var(--ease),
-      opacity 0.2s var(--ease);
-  }
-  .chip-check {
-    @apply -ml-1 hidden text-arc;
-  }
-  .choice-chip input:checked + span {
-    border-color: rgb(var(--arc));
-    background-color: rgb(var(--arc) / 0.08);
-  }
-  .choice-chip input:checked + span .chip-check {
-    display: inline-block;
-  }
-  .choice-chip input:disabled + span {
-    cursor: not-allowed;
-    opacity: 0.45;
-  }
-
-  /* Contador de meseras: − valor + */
-  .stepper {
-    @apply inline-flex items-center gap-1 rounded-full border border-field bg-panel p-1;
-  }
-  .stepper-btn {
-    @apply grid size-11 place-items-center rounded-full bg-panel-2 text-txt;
-    transition:
-      opacity 0.2s var(--ease),
-      transform 0.2s var(--ease);
-  }
-  .stepper-btn:active {
-    transform: scale(0.94);
-  }
-  .stepper-btn[aria-disabled="true"] {
-    cursor: not-allowed;
-    opacity: 0.4;
-  }
-  .stepper-value {
-    @apply h-11 w-12 bg-transparent text-center text-title font-semibold text-txt outline-none;
-    -moz-appearance: textfield;
-  }
-  .stepper-value::-webkit-inner-spin-button,
-  .stepper-value::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
   }
 }
 
-/* En móvil el modal es una hoja que sube desde abajo, como en iOS. */
-@media (max-width: 639.98px) {
-  .modal {
-    padding: 0;
-    place-items: end stretch;
-  }
-  .modal-panel {
-    max-width: none;
-    height: 94dvh;
-    max-height: 94dvh;
-    border-radius: var(--radius-card) var(--radius-card) 0 0;
-    transform: translateY(100%);
-  }
-  .modal.is-open .modal-panel {
-    transform: translateY(0);
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  .site-header {
-    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.08);
-  }
-  .panel {
-    background-color: rgb(var(--panel) / 0.62);
-    border-color: rgb(255 255 255 / 0.08);
-    box-shadow:
-      inset 0 1px 0 rgb(255 255 255 / 0.05),
-      0 12px 32px -20px rgb(0 0 0 / 0.8);
-  }
-  .package-card.is-featured {
-    border-color: rgb(var(--arc));
-    box-shadow:
-      0 0 0 1px rgb(var(--arc)),
-      0 12px 32px -20px rgb(0 0 0 / 0.8);
-  }
-}
-
-/* ----- Movimiento ----- */
-/* Transición suave entre páginas (View Transitions entre documentos). Donde el
-   navegador no la soporta, la navegación es la de siempre. */
-@view-transition {
-  navigation: auto;
-}
+/* ----- Movimiento global ----- */
+/* Fundido al cambiar de tema o de página (View Transitions). Solo opacidad. */
 ::view-transition-old(root),
 ::view-transition-new(root) {
   animation-duration: 0.3s;
   animation-timing-function: var(--ease);
 }
-/* La barra no se funde: se queda quieta mientras cambia el contenido. */
-.site-header {
-  view-transition-name: site-header;
-}
 @media (prefers-reduced-motion: reduce) {
-  @view-transition {
-    navigation: none;
-  }
-}
-
-/* Revelado al entrar en pantalla. El elemento nace visible: reveal.ts solo lo
-   oculta si puede garantizar que volverá a mostrarlo. */
-[data-reveal] {
-  transition:
-    opacity 0.7s var(--ease),
-    transform 0.7s var(--ease);
-}
-[data-reveal][data-hidden="true"] {
-  opacity: 0;
-  transform: translateY(28px);
-}
-
-/* Entrada escalonada de la portada, solo con CSS: si el JavaScript no corre,
-   la animación termina igual y nada se queda en blanco. */
-.enter {
-  animation: enter 0.8s var(--ease) both;
-  animation-delay: calc(var(--i, 0) * 0.06s);
-}
-@keyframes enter {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-}
-
-/* ----- Página de menú ----- */
-/* Pestañas de categoría: capa funcional, así que llevan el mismo cristal que la
-   barra y se quedan pegadas justo debajo de ella. */
-.menu-tabs {
-  position: sticky;
-  top: 3.75rem;
-  z-index: 40;
-  background-color: rgb(var(--void) / 0.72);
-  backdrop-filter: saturate(180%) blur(28px);
-  -webkit-backdrop-filter: saturate(180%) blur(28px);
-  border-block: 1px solid rgb(var(--line) / 0.6);
-}
-.menu-tabs ul,
-.menu-tabs [data-menu-filter] {
-  scrollbar-width: none;
-}
-.menu-tab {
-  @apply inline-flex min-h-11 items-center rounded-full bg-panel-2 px-4 text-meta font-medium whitespace-nowrap
-    text-txt no-underline;
-  transition: opacity 0.2s var(--ease);
-}
-.menu-tab:hover {
-  opacity: 0.85;
-}
-.menu-tab[aria-current="true"] {
-  background-color: rgb(var(--txt));
-  color: rgb(var(--void));
-}
-.menu-section {
-  scroll-margin-top: 8rem;
-}
-.menu-filter {
-  @apply inline-flex min-h-11 shrink-0 items-center gap-1.5 rounded-full border border-field px-4 text-label
-    font-medium whitespace-nowrap text-txt;
-  transition:
-    background-color 0.2s var(--ease),
-    border-color 0.2s var(--ease);
-}
-.menu-filter[aria-pressed="true"] {
-  border-color: rgb(var(--arc));
-  background-color: rgb(var(--arc) / 0.08);
-}
-/* La carta: una hoja con marco doble fino, como un menú impreso sobre la mesa. */
-.carta {
-  @apply bg-panel px-5 py-10 sm:px-10 md:px-14 md:py-14;
-  border-radius: var(--radius-card);
-  box-shadow:
-    inset 0 0 0 1px rgb(var(--line)),
-    inset 0 0 0 7px rgb(var(--panel)),
-    inset 0 0 0 8px rgb(var(--line)),
-    0 24px 48px -28px rgb(0 0 0 / 0.35);
-}
-.carta-grid {
-  @apply mt-12 grid gap-x-14 gap-y-12 md:grid-cols-2;
-}
-.carta-cat {
-  scroll-margin-top: 9rem;
-}
-.carta-head {
-  @apply mb-2 flex items-center gap-3 border-b-2 pb-3;
-  border-color: rgb(var(--chile));
-}
-.carta-item {
-  @apply border-b border-dashed border-line py-4 last:border-b-0;
-}
-/* Nombre ····· precio: la línea de puntos se estira entre los dos. */
-.carta-line {
-  @apply flex items-baseline gap-2;
-}
-.carta-name {
-  @apply text-body font-semibold text-txt;
-}
-.carta-leader {
-  @apply min-w-6 flex-1 translate-y-[-0.25em] border-b-2 border-dotted;
-  border-color: rgb(var(--mut) / 0.45);
-}
-.carta-price {
-  @apply text-body font-semibold text-txt tabular-nums;
-}
-.carta-desc {
-  @apply mt-1 text-meta text-mut;
-}
-.carta-tags {
-  @apply mt-1.5 flex flex-wrap gap-x-3 gap-y-1 text-caption text-mut;
-}
-.menu-list {
-  @apply divide-y divide-line px-5;
-}
-.menu-row {
-  @apply flex min-h-16 items-center gap-4 py-3;
-}
-@media (prefers-reduced-transparency: reduce) {
-  .menu-tabs {
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-    background-color: rgb(var(--void));
-  }
-}
-
-/* Bloquea el scroll del fondo cuando el modal está abierto */
-body.modal-open {
-  overflow: hidden;
-}
-
-/* ----- Navegación móvil ----- */
-@media (max-width: 767.98px) {
-  #navbar {
-    position: absolute;
-    inset: 100% 0 auto 0;
-    flex-direction: column;
-    align-items: stretch;
-    /* Sólido: un backdrop-filter anidado dentro de la barra no difuminaría nada. */
-    background: rgb(var(--void) / 0.98);
-    border-bottom: 1px solid rgb(var(--line));
-    box-shadow: 0 16px 24px -16px rgb(0 0 0 / 0.25);
-    transform: scaleY(0);
-    transform-origin: top;
-    opacity: 0;
-    /* visibility saca los enlaces del orden de tabulación y del lector de
-       pantalla mientras el menú está cerrado. */
-    visibility: hidden;
-    transition:
-      transform 0.3s var(--ease-spring),
-      opacity 0.2s var(--ease),
-      visibility 0.3s var(--ease);
-  }
-  #navbar.is-open {
-    transform: scaleY(1);
-    opacity: 1;
-    visibility: visible;
-  }
-  #navbar a {
-    padding: 1rem 1.5rem;
-  }
-}
-
-/* ----- Galería de la página About ----- */
-/* Desplazamiento horizontal con encaje por foto: funciona con el dedo, el
-   trackpad y las flechas del teclado, sin JavaScript. */
-.gallery-track {
-  display: flex;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
-  overscroll-behavior-x: contain;
-  scrollbar-width: none;
-}
-.gallery-track::-webkit-scrollbar {
-  display: none;
-}
-.gallery-slide {
-  flex: 0 0 100%;
-  scroll-snap-align: start;
-}
-.gallery-btn {
-  @apply grid size-11 place-items-center rounded-full bg-panel-2 text-txt;
-  transition:
-    opacity 0.2s var(--ease),
-    transform 0.2s var(--ease);
-}
-.gallery-btn:active {
-  transform: scale(0.94);
-}
-.gallery-btn[aria-disabled="true"] {
-  cursor: not-allowed;
-  opacity: 0.4;
-}
-@media (prefers-reduced-motion: reduce) {
-  .gallery-track {
-    scroll-behavior: auto;
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
   }
 }

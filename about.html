@@ -14,120 +14,41 @@
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
 
-    <meta name="color-scheme" content="light dark" />
+    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#fffdfa" />
+    <!-- Tema antes del primer pintado (sin destello): pone la clase `dark` en
+         <html> según la preferencia guardada (clave "tema": "light" | "dark") o,
+         si no hay, según el sistema. Misma clave que src/hooks/use-tema.ts. -->
+    <script>
+      (function () {
+        var t = null;
+        try { t = localStorage.getItem("tema"); } catch (e) {}
+        var d = t === "dark" || (t !== "light" && matchMedia("(prefers-color-scheme: dark)").matches);
+        var r = document.documentElement;
+        r.classList.toggle("dark", d);
+        r.style.colorScheme = d ? "dark" : "light";
+        if (d) {
+          document.querySelector('meta[name="color-scheme"]').content = "dark";
+          document.querySelector('meta[name="theme-color"]').content = "#110f0d";
+        }
+      })();
+    </script>
     <!-- CSS crítico en línea: fondo del tema y tamaños básicos antes de que
          cargue la hoja de estilos (en desarrollo, Vite la inyecta con JS). -->
     <style>
       html { background: #fffdfa; color: #1a1a1a; }
-      @media (prefers-color-scheme: dark) { html { background: #110f0d; color: #f5f0e8; } }
+      html.dark { background: #110f0d; color: #f5f0e8; }
       img { max-width: 100%; height: auto; }
-      svg.icon { width: 1.25rem; height: 1.25rem; }
     </style>
     <!-- Hoja de estilos enlazada: bloquea el primer pintado hasta que carga,
          así la página nunca se ve sin estilos (ni en desarrollo ni publicada). -->
     <link rel="stylesheet" href="/src/styles/main.css" />
-    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fffdfa" />
-    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#110f0d" />
     <link rel="icon" href="/img/favicon-64.png" type="image/png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   </head>
   <body class="bg-void text-txt">
-    <a href="#main" class="skip-link">Saltar al contenido</a>
-    <!-- Header -->
-    <!--#header current="about"-->
-
-    <main id="main">
-      <!-- Historia -->
-      <section class="px-6 pt-28 pb-16 md:px-10 md:pt-36 md:pb-24">
-        <div class="mx-auto grid max-w-7xl items-center gap-12 md:grid-cols-[1.2fr_1fr]">
-          <div>
-            <p class="enter heading-eyebrow text-acc-cilantro" style="--i: 0">Nuestra historia</p>
-            <h1 class="enter mt-2 text-headline font-bold text-txt md:text-display" style="--i: 1">
-              No es solo un taco,<br />es <span class="gradient-name">El Taquito Gordo Feliz</span>
-            </h1>
-            <div class="enter" style="--i: 2">
-              <p class="mt-6 text-body text-mut">
-                El Taquito Gordo Feliz es una taquería con tres años de operación, fundada por
-                D'mitri Medina Novelo y William Moran Ramírez. La historia comenzó cuando ambos
-                se conocieron en la universidad y compartieron su amor por la comida mexicana,
-                notando la falta de opciones auténticas en su zona.
-              </p>
-              <p class="mt-4 text-body text-mut">
-                Tras meses desarrollando el concepto y el menú, encontraron el local perfecto y
-                lo decoraron con un estilo alegre y colorido que refleja la cultura mexicana. El
-                menú abarca desde los clásicos tacos de carne asada y al pastor hasta opciones
-                vegetarianas y veganas, además de bebidas como horchata y agua de jamaica.
-              </p>
-              <p class="mt-4 text-body text-mut">
-                Desde su apertura, ha sido un éxito en la comunidad. Los clientes destacan la
-                autenticidad de la comida y el ambiente acogedor. D'mitri y William están
-                orgullosos de seguir sirviendo tacos deliciosos y difundiendo la cultura
-                mexicana por muchos años más.
-              </p>
-            </div>
-            <div class="enter mt-8" style="--i: 3">
-              <a href="/catering" class="btn-primary">Haz tu pedido</a>
-            </div>
-          </div>
-          <div class="enter relative mx-auto w-full max-w-md" style="--i: 2">
-            <div class="plate absolute inset-[4%] rounded-full" aria-hidden="true"></div>
-            <img
-              src="/img/fotos/logo-full-500.webp"
-              width="500"
-              height="500"
-              alt="Mascota de El Taquito Gordo Feliz"
-              class="relative w-full animate-float"
-            />
-          </div>
-        </div>
-      </section>
-
-      <!-- Galería -->
-      <section class="bg-deep">
-        <div class="section">
-          <div class="text-center" data-reveal>
-            <span class="heading-eyebrow text-acc-maiz">Galería</span>
-            <h2 id="galeria-titulo" class="heading-title">Así se ve la taquería</h2>
-          </div>
-          <!-- Galería deslizable: se recorre con el dedo, el trackpad o las flechas
-               del teclado; gallery.ts añade los botones y el contador. -->
-          <div class="gallery mx-auto mt-12 max-w-5xl" role="region" aria-roledescription="carrusel" aria-labelledby="galeria-titulo" data-gallery data-reveal>
-            <div class="gallery-track rounded-card shadow-[0_24px_48px_-28px_rgb(0_0_0/0.45)]" tabindex="0" aria-label="Fotos de la taquería. Desliza o usa las flechas para ver más." data-gallery-track>
-              <figure class="gallery-slide" aria-roledescription="diapositiva" aria-label="1 de 6">
-                <img src="/img/fotos/fachada-1280.webp" srcset="/img/fotos/fachada-640.webp 640w, /img/fotos/fachada-1280.webp 1280w" sizes="(min-width: 1100px) 1024px, calc(100vw - 3rem)" width="1280" height="853" alt="Fachada del restaurante" class="aspect-video w-full object-cover" loading="lazy" />
-              </figure>
-              <figure class="gallery-slide" aria-roledescription="diapositiva" aria-label="2 de 6">
-                <img src="/img/fotos/restaurant-640.webp" srcset="/img/fotos/restaurant-640.webp 640w" sizes="(min-width: 1100px) 1024px, calc(100vw - 3rem)" width="640" height="400" alt="Interior del restaurante" class="aspect-video w-full object-cover" loading="lazy" />
-              </figure>
-              <figure class="gallery-slide" aria-roledescription="diapositiva" aria-label="3 de 6">
-                <img src="/img/fotos/drinks-1280.webp" srcset="/img/fotos/drinks-640.webp 640w, /img/fotos/drinks-1280.webp 1280w" sizes="(min-width: 1100px) 1024px, calc(100vw - 3rem)" width="1280" height="841" alt="Bebidas mexicanas" class="aspect-video w-full object-cover" loading="lazy" />
-              </figure>
-              <figure class="gallery-slide" aria-roledescription="diapositiva" aria-label="4 de 6">
-                <img src="/img/fotos/food-800.webp" srcset="/img/fotos/food-640.webp 640w, /img/fotos/food-800.webp 800w" sizes="(min-width: 1100px) 1024px, calc(100vw - 3rem)" width="800" height="600" alt="Platillos del menú" class="aspect-video w-full object-cover" loading="lazy" />
-              </figure>
-              <figure class="gallery-slide" aria-roledescription="diapositiva" aria-label="5 de 6">
-                <img src="/img/fotos/people-760.webp" srcset="/img/fotos/people-640.webp 640w, /img/fotos/people-760.webp 760w" sizes="(min-width: 1100px) 1024px, calc(100vw - 3rem)" width="760" height="610" alt="Clientes disfrutando" class="aspect-video w-full object-cover" loading="lazy" />
-              </figure>
-              <figure class="gallery-slide" aria-roledescription="diapositiva" aria-label="6 de 6">
-                <img src="/img/fotos/tacos-1024.webp" srcset="/img/fotos/tacos-640.webp 640w, /img/fotos/tacos-1024.webp 1024w" sizes="(min-width: 1100px) 1024px, calc(100vw - 3rem)" width="1024" height="683" alt="Tacos recién hechos" class="aspect-video w-full object-cover" loading="lazy" />
-              </figure>
-            </div>
-            <div class="mt-5 flex items-center justify-center gap-4" data-gallery-controls hidden>
-              <button type="button" class="gallery-btn" aria-label="Foto anterior" data-gallery-prev>
-                <svg class="icon size-5" aria-hidden="true"><use href="/icons.svg#chevron-left" /></svg>
-              </button>
-              <p class="min-w-14 text-center text-meta text-mut tabular-nums" aria-live="polite" data-gallery-status>1 / 6</p>
-              <button type="button" class="gallery-btn" aria-label="Foto siguiente" data-gallery-next>
-                <svg class="icon size-5" aria-hidden="true"><use href="/icons.svg#chevron-right" /></svg>
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <!--#footer current="about"-->
-
-    <script type="module" src="/src/main.ts"></script>
+    <div id="root"></div>
+    <noscript>Este sitio necesita JavaScript para mostrarse. Actívalo en tu navegador y vuelve a cargar la página.</noscript>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

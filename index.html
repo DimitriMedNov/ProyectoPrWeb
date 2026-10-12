@@ -20,117 +20,41 @@
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
 
-    <meta name="color-scheme" content="light dark" />
+    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#fffdfa" />
+    <!-- Tema antes del primer pintado (sin destello): pone la clase `dark` en
+         <html> según la preferencia guardada (clave "tema": "light" | "dark") o,
+         si no hay, según el sistema. Misma clave que src/hooks/use-tema.ts. -->
+    <script>
+      (function () {
+        var t = null;
+        try { t = localStorage.getItem("tema"); } catch (e) {}
+        var d = t === "dark" || (t !== "light" && matchMedia("(prefers-color-scheme: dark)").matches);
+        var r = document.documentElement;
+        r.classList.toggle("dark", d);
+        r.style.colorScheme = d ? "dark" : "light";
+        if (d) {
+          document.querySelector('meta[name="color-scheme"]').content = "dark";
+          document.querySelector('meta[name="theme-color"]').content = "#110f0d";
+        }
+      })();
+    </script>
     <!-- CSS crítico en línea: fondo del tema y tamaños básicos antes de que
          cargue la hoja de estilos (en desarrollo, Vite la inyecta con JS). -->
     <style>
       html { background: #fffdfa; color: #1a1a1a; }
-      @media (prefers-color-scheme: dark) { html { background: #110f0d; color: #f5f0e8; } }
+      html.dark { background: #110f0d; color: #f5f0e8; }
       img { max-width: 100%; height: auto; }
-      svg.icon { width: 1.25rem; height: 1.25rem; }
     </style>
     <!-- Hoja de estilos enlazada: bloquea el primer pintado hasta que carga,
          así la página nunca se ve sin estilos (ni en desarrollo ni publicada). -->
     <link rel="stylesheet" href="/src/styles/main.css" />
-    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fffdfa" />
-    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#110f0d" />
     <link rel="icon" href="/img/favicon-64.png" type="image/png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   </head>
   <body class="bg-void text-txt">
-    <a href="#main" class="skip-link">Saltar al contenido</a>
-    <!-- Header -->
-    <!--#header current="index"-->
-
-    <main id="main">
-      <!-- Hero -->
-      <section id="home" class="flex min-h-svh items-center px-6 pt-24 pb-16 md:px-10">
-        <div class="mx-auto grid w-full max-w-7xl items-center gap-10 md:grid-cols-[1.15fr_1fr]">
-          <div>
-            <p class="enter text-body font-semibold text-mut" style="--i: 0">Bienvenido a</p>
-            <h1 class="enter gradient-name mt-2 pb-2 text-hero font-bold" style="--i: 1">
-              El Taquito Gordo Feliz
-            </h1>
-            <p class="enter mt-3 text-title font-medium text-txt" style="--i: 2">
-              Tu próximo taco está a un clic de distancia
-            </p>
-            <p class="enter mt-4 max-w-xl text-body text-mut" style="--i: 3">
-              Tacos auténticos en el centro de la ciudad. Pide en línea o por apps de delivery.
-            </p>
-            <div class="enter mt-8 flex flex-wrap items-center gap-x-6 gap-y-2" style="--i: 4">
-              <a href="/catering" class="btn-primary">Pedir ahora</a>
-              <a href="/menu" class="link-chevron">Ver el menú <span aria-hidden="true">›</span></a>
-            </div>
-            <ul class="enter mt-8 flex flex-wrap gap-2" style="--i: 5">
-              <li class="chip">Catering para eventos</li>
-              <li class="chip">Opciones vegetarianas y veganas</li>
-              <li class="chip">Delivery por apps</li>
-            </ul>
-          </div>
-          <div class="enter relative mx-auto w-full max-w-lg" style="--i: 3">
-            <div class="plate absolute inset-[6%] rounded-full" aria-hidden="true"></div>
-            <img
-              src="/img/mascota-surf.webp"
-              width="955"
-              height="879"
-              alt="Mascota de El Taquito Gordo Feliz surfeando"
-              class="relative w-full animate-float"
-            />
-          </div>
-        </div>
-      </section>
-
-      <!-- Menú -->
-      <section id="menu" class="section">
-        <div class="text-center" data-reveal>
-          <span class="heading-eyebrow">Pide ahora</span>
-          <h2 class="heading-title">Nuestro menú</h2>
-          <a href="/menu" class="link-chevron mt-3">Ver el menú completo <span aria-hidden="true">›</span></a>
-        </div>
-
-        <div class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-<!--#specials variant="home"-->
-        </div>
-      </section>
-
-      <!-- Delivery -->
-      <section id="delivery" class="bg-deep">
-        <div class="section">
-          <div class="text-center" data-reveal>
-            <span class="heading-eyebrow text-acc-maiz">Recíbelo en casa</span>
-            <h2 class="heading-title">Pide por apps de delivery</h2>
-          </div>
-          <div class="mt-14 grid items-center gap-10 md:grid-cols-2 md:gap-16">
-            <div class="rounded-card bg-board p-6 shadow-[0_10px_30px_-16px_rgb(0_0_0/0.25)] md:p-10" data-reveal>
-              <img
-                src="/img/delivery-apps.webp"
-                width="1281"
-                height="661"
-                alt="Logotipos de apps de delivery: ChowNow, Uber Eats, Instacart, Grubhub, Gopuff, Postmates y DoorDash, entre otras"
-                class="w-full"
-                loading="lazy"
-              />
-            </div>
-            <div data-reveal data-reveal-delay="0.08">
-              <h3 class="text-title font-semibold text-txt">
-                Disfruta tu comida sin salir de casa
-              </h3>
-              <p class="mt-4 text-body text-mut">
-                Pedir tacos de El Taquito Gordo Feliz por apps de delivery es una gran
-                opción: ofrecemos tacos auténticos y deliciosos hechos con ingredientes de
-                calidad. Disfruta nuestra comida desde
-                tu hogar con un servicio cómodo y confiable, sigue tu pedido en tiempo real y
-                recíbelo siempre fresco y caliente.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <!-- Footer -->
-    <!--#footer current="index"-->
-
-    <script type="module" src="/src/main.ts"></script>
+    <div id="root"></div>
+    <noscript>Este sitio necesita JavaScript para mostrarse. Actívalo en tu navegador y vuelve a cargar la página.</noscript>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
